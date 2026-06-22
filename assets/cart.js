@@ -3840,19 +3840,6 @@ function lumeIsIsolatedCartAddContext(form, source) {
   );
 }
 
-function lumeIsQuickShopBundleContext(form, source) {
-  const sourceElement = source && source.nodeType === 1 ? source : null;
-  const quickShopRoot =
-    form?.closest?.('.quick_shop, .qvPopup, .tingle-modal, .tingle-modal-box, quick-add-modal') ||
-    sourceElement?.closest?.('.quick_shop, .qvPopup, .tingle-modal, .tingle-modal-box, quick-add-modal');
-
-  if (!quickShopRoot) return false;
-
-  return Boolean(
-    quickShopRoot.querySelector?.('.Avada-Bundle-Volume__Container, .lume-bundle-qty[data-lume-bundle-qty]')
-  );
-}
-
 function lumeNormalizeVariantIdForBody(variantId) {
   const value = String(variantId || '').trim();
   return /^\d+$/.test(value) ? Number(value) : value;
@@ -4195,6 +4182,7 @@ function lumeStripAovBundlePropertyFromParams(params) {
 
 function lumeShouldPreserveAovBundlePayload(form, source) {
   if (!form || !form.isConnected) return false;
+  if (lumeIsIsolatedCartAddContext(form, source)) return false;
 
   const scope = lumeGetProductScopeFromForm(form, source);
   const hasBundleUi = Boolean(
@@ -4202,8 +4190,6 @@ function lumeShouldPreserveAovBundlePayload(form, source) {
   );
 
   if (!hasBundleUi) return false;
-
-  if (lumeIsIsolatedCartAddContext(form, source) && !lumeIsQuickShopBundleContext(form, source)) return false;
 
   const submittedVariantId = lumeGetFormVariantId(form);
   const productVariantId = lumeGetCurrentProductVariantId(form);
@@ -4227,7 +4213,7 @@ function lumeForceSubmittedVariantInParams(params, form, source) {
   return true;
 }
 
-function lumeSetIsolatedCartAddQuantityInParams(params, form, source, preserveAovBundlePayload) {
+function lumeSetIsolatedCartAddQuantityInParams(params, form, source) {
   if (!lumeIsIsolatedCartAddContext(form, source)) return false;
   const variantId = params.get('id');
   const quantity = lumeGetInventoryCappedAddQuantity(
@@ -4237,7 +4223,7 @@ function lumeSetIsolatedCartAddQuantityInParams(params, form, source, preserveAo
     lumeGetIsolatedCartAddQuantity(form, source, params.get('quantity'))
   );
   const changed = String(params.get('quantity') || '') !== String(quantity);
-  const hadAovProperty = preserveAovBundlePayload ? false : lumeStripAovBundlePropertyFromParams(params);
+  const hadAovProperty = lumeStripAovBundlePropertyFromParams(params);
   if (changed) params.set('quantity', String(quantity));
   return changed || hadAovProperty;
 }
@@ -4250,7 +4236,7 @@ function lumeGuardCartAddBody(body, form, source) {
   if (typeof FormData !== 'undefined' && body instanceof FormData) {
     if (!preserveAovBundlePayload) lumeStripAovBundlePropertyFromParams(body);
     const forced = lumeForceSubmittedVariantInParams(body, form, source);
-    const isolatedQtyChanged = lumeSetIsolatedCartAddQuantityInParams(body, form, source, preserveAovBundlePayload);
+    const isolatedQtyChanged = lumeSetIsolatedCartAddQuantityInParams(body, form, source);
     if (forced || isolatedQtyChanged) return body;
     const variantId = body.get('id');
     const desiredQty = lumeGetInventoryCappedAddQuantity(
@@ -4266,7 +4252,7 @@ function lumeGuardCartAddBody(body, form, source) {
   if (typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams) {
     if (!preserveAovBundlePayload) lumeStripAovBundlePropertyFromParams(body);
     const forced = lumeForceSubmittedVariantInParams(body, form, source);
-    const isolatedQtyChanged = lumeSetIsolatedCartAddQuantityInParams(body, form, source, preserveAovBundlePayload);
+    const isolatedQtyChanged = lumeSetIsolatedCartAddQuantityInParams(body, form, source);
     if (forced || isolatedQtyChanged) return body;
     const variantId = body.get('id');
     const desiredQty = lumeGetInventoryCappedAddQuantity(
@@ -4390,7 +4376,7 @@ function lumeGuardCartAddBody(body, form, source) {
     const params = new URLSearchParams(body);
     const strippedAovProperty = preserveAovBundlePayload ? false : lumeStripAovBundlePropertyFromParams(params);
     const changed = lumeForceSubmittedVariantInParams(params, form, source);
-    const isolatedQtyChanged = lumeSetIsolatedCartAddQuantityInParams(params, form, source, preserveAovBundlePayload);
+    const isolatedQtyChanged = lumeSetIsolatedCartAddQuantityInParams(params, form, source);
     if (changed || isolatedQtyChanged) return params.toString();
     const variantId = params.get('id');
     const desiredQty = lumeGetInventoryCappedAddQuantity(
