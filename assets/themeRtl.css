@@ -1688,3 +1688,109 @@ button[name="add"] .btnin {
   opacity: 1 !important;
   display: block;
 }
+
+body.template-product .shipping-announcer-main,
+body.template-product .lume-fulfilment,
+body.template-product pickup-availability.product__pickup-availabilities:not(.sls-product-pickup) {
+  display: none !important;
+}
+
+.sls-product-fulfilment {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.sls-fulfilment-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 11px 14px;
+  color: #222222;
+  background: #ffffff;
+  border: 1px solid rgba(203, 196, 188, 0.55);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.sls-fulfilment-card__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: #222222;
+}
+
+.sls-fulfilment-card__icon .at-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+}
+
+.sls-fulfilment-card__text {
+  margin: 0;
+  color: #222222;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.sls-fulfilment-card__text strong {
+  color: inherit;
+  font-weight: 700;
+}
+
+.sls-fulfilment-card__separator {
+  margin: 0 4px;
+  color: #867e73;
+}
+
+.sls-product-pickup,
+.sls-product-pickup .pickup-availability-preview,
+.sls-product-pickup .pickup-availability-info {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #222222 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.sls-product-pickup .svg-wrapper {
+  display: none !important;
+}
+
+.sls-product-pickup p,
+.sls-fulfilment-card--pickup .caption-large {
+  margin: 0 !important;
+  color: #222222 !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+}
+
+.sls-product-pickup .pickup-availability-button {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 0 !important;
+  color: #222222 !important;
+  background: none !important;
+  border: 0 !important;
+  font: inherit;
+  font-size: 12px !important;
+  line-height: 1.35;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width:749px) {
+  .sls-fulfilment-card {
+    align-items: flex-start;
+    padding: 11px 12px;
+  }
+}

@@ -1,0 +1,237 @@
+{%- liquid
+  assign fulfilment_margin = margin_bottom | default: 15
+  assign selected_variant = current_variant | default: product.selected_or_first_available_variant
+  assign pick_up_availabilities = selected_variant.store_availabilities | where: 'pick_up_enabled', true
+-%}
+
+<div class="sls-product-fulfilment mb{{ fulfilment_margin }}" id="SlsProductFulfilment-{{ section.id }}" data-sls-product-fulfilment>
+  <div class="sls-fulfilment-card sls-fulfilment-card--shipping">
+    <span class="sls-fulfilment-card__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="at-icon">
+        <path d="M12 6v6l4 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <p class="sls-fulfilment-card__text">
+      <span data-sls-shipping-prefix>Order before <strong>2pm AEST</strong></span>
+      <span class="sls-fulfilment-card__separator" data-sls-shipping-separator aria-hidden="true">-</span>
+      <span data-sls-shipping-status>ships today</span>
+    </p>
+  </div>
+
+  <div class="sls-fulfilment-card sls-fulfilment-card--pickup">
+    <span class="sls-fulfilment-card__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="at-icon">
+        <path d="M12 21s6-4.7 6-11a6 6 0 1 0-12 0c0 6.3 6 11 6 11Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 12.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+      </svg>
+    </span>
+    <div class="sls-fulfilment-card__text sls-fulfilment-card__pickup-text">
+      {%- if pick_up_availabilities.size > 0 -%}
+        <pickup-availability
+          class="product__pickup-availabilities sls-product-pickup"
+          {% if selected_variant.available %}available{% endif %}
+          data-root-url="{{ routes.root_url }}"
+          data-variant-id="{{ selected_variant.id }}"
+          data-has-only-default-variant="{{ product.has_only_default_variant }}"
+          data-product-page-color-scheme="gradient color-{{ section.settings.color_scheme }}"
+        >
+          <template>
+            <pickup-availability-preview class="pickup-availability-preview">
+              <div class="pickup-availability-info">
+                <p class="caption-large">{{ 'products.pickup_availability.unavailable' | t }}</p>
+                <button class="pickup-availability-button link link--text underlined-link">{{ 'products.pickup_availability.refresh' | t }}</button>
+              </div>
+            </pickup-availability-preview>
+          </template>
+        </pickup-availability>
+      {%- else -%}
+        <p class="caption-large">Pickup availability will show at checkout</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    var root = document.getElementById('SlsProductFulfilment-{{ section.id }}');
+    if (!root) return;
+
+    var prefixEl = root.querySelector('[data-sls-shipping-prefix]');
+    var separatorEl = root.querySelector('[data-sls-shipping-separator]');
+    var statusEl = root.querySelector('[data-sls-shipping-status]');
+    if (!prefixEl || !separatorEl || !statusEl) return;
+
+    var cutoffHour = 14;
+    var cutoffMinute = 0;
+    var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var holidayCache = {};
+
+    function getBrisbaneParts() {
+      var parts = new Intl.DateTimeFormat('en-AU', {
+        timeZone: 'Australia/Brisbane',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).formatToParts(new Date());
+
+      return parts.reduce(function(result, part) {
+        if (part.type !== 'literal') result[part.type] = Number(part.value);
+        return result;
+      }, {});
+    }
+
+    function toDate(parts) {
+      return new Date(parts.year, parts.month - 1, parts.day, parts.hour || 0, parts.minute || 0, parts.second || 0);
+    }
+
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function addDays(date, days) {
+      var next = new Date(date);
+      next.setDate(next.getDate() + days);
+      return next;
+    }
+
+    function dateKey(date) {
+      return [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, '0'),
+        String(date.getDate()).padStart(2, '0')
+      ].join('-');
+    }
+
+    function sameDate(a, b) {
+      return dateKey(a) === dateKey(b);
+    }
+
+    function nthWeekdayOfMonth(year, month, weekday, nth) {
+      var date = new Date(year, month - 1, 1);
+      var offset = (weekday - date.getDay() + 7) % 7;
+      date.setDate(1 + offset + ((nth - 1) * 7));
+      return date;
+    }
+
+    function easterSunday(year) {
+      var a = year % 19;
+      var b = Math.floor(year / 100);
+      var c = year % 100;
+      var d = Math.floor(b / 4);
+      var e = b % 4;
+      var f = Math.floor((b + 8) / 25);
+      var g = Math.floor((b - f + 1) / 3);
+      var h = (19 * a + b - d - g + 15) % 30;
+      var i = Math.floor(c / 4);
+      var k = c % 4;
+      var l = (32 + (2 * e) + (2 * i) - h - k) % 7;
+      var m = Math.floor((a + (11 * h) + (22 * l)) / 451);
+      var month = Math.floor((h + l - (7 * m) + 114) / 31);
+      var day = ((h + l - (7 * m) + 114) % 31) + 1;
+      return new Date(year, month - 1, day);
+    }
+
+    function brisbaneShowDay(year) {
+      var firstFriday = nthWeekdayOfMonth(year, 8, 5, 1);
+      var showStart = firstFriday.getDate() < 5 ? nthWeekdayOfMonth(year, 8, 5, 2) : firstFriday;
+      return addDays(showStart, 5);
+    }
+
+    function queenslandPublicHolidays(year) {
+      if (holidayCache[year]) return holidayCache[year];
+
+      var holidays = new Set();
+      function add(date) {
+        holidays.add(dateKey(date));
+      }
+
+      var newYearsDay = new Date(year, 0, 1);
+      add(newYearsDay);
+      if (newYearsDay.getDay() === 6) add(new Date(year, 0, 3));
+      if (newYearsDay.getDay() === 0) add(new Date(year, 0, 2));
+
+      var australiaDay = new Date(year, 0, 26);
+      add(australiaDay);
+      if (australiaDay.getDay() === 6) add(new Date(year, 0, 28));
+      if (australiaDay.getDay() === 0) add(new Date(year, 0, 27));
+
+      var easter = easterSunday(year);
+      add(addDays(easter, -2));
+      add(addDays(easter, -1));
+      add(easter);
+      add(addDays(easter, 1));
+
+      var anzacDay = new Date(year, 3, 25);
+      add(anzacDay);
+      if (anzacDay.getDay() === 0) add(new Date(year, 3, 26));
+
+      add(nthWeekdayOfMonth(year, 5, 1, 1));
+      add(brisbaneShowDay(year));
+      add(nthWeekdayOfMonth(year, 10, 1, 1));
+
+      var christmasDay = new Date(year, 11, 25);
+      var boxingDay = new Date(year, 11, 26);
+      add(christmasDay);
+      add(boxingDay);
+      if (christmasDay.getDay() === 6 || christmasDay.getDay() === 0) add(new Date(year, 11, 27));
+      if (boxingDay.getDay() === 6 || boxingDay.getDay() === 0) add(new Date(year, 11, 28));
+
+      holidayCache[year] = holidays;
+      return holidays;
+    }
+
+    function isPublicHoliday(date) {
+      return queenslandPublicHolidays(date.getFullYear()).has(dateKey(date));
+    }
+
+    function isDispatchDay(date) {
+      var day = date.getDay();
+      return day !== 0 && day !== 6 && !isPublicHoliday(date);
+    }
+
+    function nextDispatchDate(today, isPastCutoff) {
+      var candidate = new Date(today);
+      if (isPastCutoff || !isDispatchDay(candidate)) candidate = addDays(candidate, 1);
+      while (!isDispatchDay(candidate)) candidate = addDays(candidate, 1);
+      return candidate;
+    }
+
+    function updateShippingCard() {
+      var parts = getBrisbaneParts();
+      var today = startOfDay(toDate(parts));
+      var isPastCutoff = parts.hour > cutoffHour || (parts.hour === cutoffHour && parts.minute >= cutoffMinute);
+      var isHoliday = isPublicHoliday(today);
+      var canShipToday = isDispatchDay(today) && !isPastCutoff;
+      var dispatchDate = canShipToday ? today : nextDispatchDate(today, isPastCutoff);
+
+      if (canShipToday) {
+        prefixEl.innerHTML = 'Order before <strong>2pm AEST</strong>';
+        separatorEl.hidden = false;
+        statusEl.textContent = 'ships today';
+        return;
+      }
+
+      if (isHoliday) {
+        prefixEl.textContent = 'Public holiday';
+        separatorEl.hidden = false;
+        statusEl.textContent = 'shipping resumes ' + weekdays[dispatchDate.getDay()];
+        return;
+      }
+
+      prefixEl.textContent = 'Order now';
+      separatorEl.hidden = false;
+      statusEl.textContent = sameDate(dispatchDate, addDays(today, 1))
+        ? 'ships tomorrow'
+        : 'ships ' + weekdays[dispatchDate.getDay()];
+    }
+
+    updateShippingCard();
+    setInterval(updateShippingCard, 60000);
+  })();
+</script>
+
+<script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
