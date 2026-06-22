@@ -2,6 +2,8 @@
     assign current_variant = product.selected_or_first_available_variant   
     assign section_id = section.id
     assign product_form_id = 'product-form-' | append: section.id
+    assign lume_quick_buy_2_discount = 10
+    assign lume_quick_buy_3_discount = 15
 -%}
 <div class="tinglebox quick_shop pr {{ settings.quickview_align }}" id="quickshop-{{ product.id }}" data-url="{{ product.url }}">
     <h2 class="pr_title mb15 {{ settings.qptfw }}">{{ product.title }}</h2>
@@ -147,6 +149,46 @@
                 </volume-pricing>
             {%- endif -%}
         </div>        
+        <div
+            class="lume-bundle-qty lume-bundle-qty--quick-hidden"
+            data-lume-bundle-qty
+            data-lume-active="true"
+            data-product-form-id="{{ product_form_id }}"
+            data-discount-2="{{ lume_quick_buy_2_discount }}"
+            data-discount-3="{{ lume_quick_buy_3_discount }}"
+            data-initial-variant-id="{{ current_variant.id }}"
+            data-money-format="{{ shop.money_format | escape }}"
+            data-money-with-currency-format="{{ shop.money_with_currency_format | escape }}"
+            data-currency-code="{{ cart.currency.iso_code | default: shop.currency }}"
+            hidden
+        >
+            <script type="application/json" data-lume-variants>
+                {{ product.variants | json }}
+            </script>
+
+            <button type="button" class="lume-bundle-option is-active" data-lume-option data-lume-qty="1" aria-checked="true">
+                <span class="lume-bundle-option__price" data-lume-price-buy1>{{ current_variant.price | money }}</span>
+            </button>
+            <button type="button" class="lume-bundle-option" data-lume-option data-lume-qty="2" aria-checked="false">
+                <span class="lume-bundle-option__label">Buy 2</span>
+                <span class="lume-bundle-option__save-pill" data-lume-save-buy2></span>
+                <span class="lume-bundle-option__price" data-lume-price-buy2></span>
+                <span class="lume-bundle-option__compare" data-lume-compare-buy2></span>
+            </button>
+            <button type="button" class="lume-bundle-option" data-lume-option data-lume-qty="3" aria-checked="false">
+                <span class="lume-bundle-option__label" data-lume-label-buy3>Buy 3</span>
+                <span class="lume-bundle-option__save-pill" data-lume-save-buy3></span>
+                <span class="lume-bundle-option__price" data-lume-price-buy3></span>
+                <span class="lume-bundle-option__compare" data-lume-compare-buy3></span>
+            </button>
+        </div>
+
+        <div class="lume-quick-bundle-summary" data-lume-quick-bundle-summary hidden>
+            <span data-lume-quick-bundle-title></span>
+            <span data-lume-quick-bundle-price></span>
+            <s data-lume-quick-bundle-compare></s>
+        </div>
+
         <product-form class="db product-form" data-hide-errors="" data-section-id="{{ section_id }}">
             <div class="product-form__error-message-wrapper ermsg mb15" role="alert" hidden>
                 {{ 'icon-error.svg' | inline_asset_content }} <span class="product-form__error-message"></span>
@@ -183,6 +225,136 @@
         </product-form>
     </div>
 </div>
+<style>
+  #shopify-section-{{ section_id }} .lume-bundle-qty--quick-hidden {
+    display: none !important;
+  }
+
+  #shopify-section-{{ section_id }} .lume-quick-bundle-summary {
+    margin: 10px 0 12px;
+    padding: 9px 11px;
+    border: 1px solid rgba(203, 196, 188, 0.62);
+    border-radius: 8px;
+    color: #222222;
+    font-size: 12.5px;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  #shopify-section-{{ section_id }} .lume-quick-bundle-summary span:first-child {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section_id }} .lume-quick-bundle-summary [data-lume-quick-bundle-price] {
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section_id }} .lume-quick-bundle-summary s {
+    margin-left: 6px;
+    color: #867e73;
+    font-size: 12px;
+  }
+</style>
+<script>
+  (function () {
+    var root = document.getElementById('quickshop-{{ product.id }}');
+    if (!root) return;
+
+    var summary = root.querySelector('[data-lume-quick-bundle-summary]');
+    var title = root.querySelector('[data-lume-quick-bundle-title]');
+    var price = root.querySelector('[data-lume-quick-bundle-price]');
+    var compare = root.querySelector('[data-lume-quick-bundle-compare]');
+    var bundle = root.querySelector('[data-lume-bundle-qty]');
+    if (!summary || !title || !price || !compare || !bundle) return;
+
+    function formatQuickBundleMoney(cents) {
+      var rounded = Math.round(Number(cents) || 0);
+
+      if (window.theme && theme.Currency && typeof theme.Currency.formatMoney === 'function') {
+        return theme.Currency.formatMoney(rounded, theme.moneyFormat || {{ shop.money_format | json }});
+      }
+
+      if (window.Currency && typeof Currency.formatMoney === 'function') {
+        return Currency.formatMoney(rounded, {{ shop.money_format | json }});
+      }
+
+      return new Intl.NumberFormat('en-AU', {
+        style: 'currency',
+        currency: {{ cart.currency.iso_code | default: shop.currency | json }}
+      }).format(rounded / 100);
+    }
+
+    function getVariants() {
+      var variantsScript = bundle.querySelector('[data-lume-variants]');
+
+      try {
+        return JSON.parse(variantsScript ? variantsScript.textContent : '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function refreshAddButtonPrice() {
+      if (typeof window.updateAddToCartPriceFromCurrentState !== 'function') return;
+
+      window.setTimeout(function () {
+        window.updateAddToCartPriceFromCurrentState(root.querySelector('[type="submit"]') || root);
+      }, 0);
+    }
+
+    function setSummary() {
+      var qty = parseInt(bundle.dataset.lumeSelectedQty || '1', 10);
+      var total = parseInt(bundle.dataset.lumeSelectedTotal || '0', 10);
+      var variantId = bundle.dataset.lumeSelectedVariantId || '';
+      var variants = getVariants();
+      var variant = variants.find(function (item) {
+        return String(item.id) === String(variantId);
+      }) || variants[0];
+
+      if (!qty || qty < 2 || !total || !variant) {
+        summary.hidden = true;
+        refreshAddButtonPrice();
+        return;
+      }
+
+      var compareTotal = Number(variant.price || 0) * qty;
+      var saved = compareTotal - total;
+
+      if (saved <= 0) {
+        summary.hidden = true;
+        refreshAddButtonPrice();
+        return;
+      }
+
+      var discount = qty >= 3 ? {{ lume_quick_buy_3_discount | json }} : {{ lume_quick_buy_2_discount | json }};
+      title.textContent = 'Bundle pricing applied - ' + discount + '% off ' + qty;
+      price.textContent = formatQuickBundleMoney(total);
+      compare.textContent = formatQuickBundleMoney(compareTotal);
+      summary.hidden = false;
+      refreshAddButtonPrice();
+    }
+
+    document.addEventListener('lume:bundle-qty:change', function (event) {
+      if (!event.detail || event.detail.block !== bundle) return;
+      setSummary();
+    });
+
+    root.addEventListener('input', function () {
+      window.setTimeout(setSummary, 80);
+      window.setTimeout(setSummary, 220);
+    });
+
+    root.addEventListener('change', function () {
+      window.setTimeout(setSummary, 80);
+      window.setTimeout(setSummary, 220);
+    });
+
+    window.setTimeout(setSummary, 180);
+  })();
+</script>
+<script src="{{ 'lume-bundle-qty.js' | asset_url }}" defer="defer"></script>
 <div class="hide"><span class="prvQty" {%- for variant in product.variants -%}data-v{{ variant.id }}="{{ variant.inventory_quantity }}" data-management-v{{ variant.id }}="{{ variant.inventory_management }}" data-policy-v{{ variant.id }}="{{ variant.inventory_policy }}"{%- endfor -%}></span></div>
 {% schema %}
   {
