@@ -1,0 +1,270 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-custom-text-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding-top: {{ block.settings.padding_top_desktop }}px;
+    padding-bottom: {{ block.settings.padding_bottom_desktop }}px;
+    text-align: {{ block.settings.text_align }};
+  }
+
+  .ai-custom-text__content-{{ ai_gen_id }} {
+    position: relative;
+    display: inline-block;
+    color: {{ block.settings.text_color }};
+    font-weight: {{ block.settings.font_weight }};
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    font-size: {{ block.settings.font_size_desktop }}px;
+    text-decoration: none;
+
+    {% if block.settings.font_family == 'ft1' %}
+      font-family: {{ settings.font1.family }}, {{ settings.font1.fallback_families }};
+    {% elsif block.settings.font_family == 'ft2' %}
+      font-family: {{ settings.font2.family }}, {{ settings.font2.fallback_families }};
+    {% elsif block.settings.font_family == 'ft3' %}
+      font-family: {{ settings.font3.family }}, {{ settings.font3.fallback_families }};
+    {% endif %}
+  }
+
+  {% if block.settings.enable_bold %}
+    .ai-custom-text__content-{{ ai_gen_id }} {
+      font-weight: 700;
+    }
+  {% endif %}
+
+  /* Animated Underline */
+  {% if block.settings.enable_underline %}
+  .ai-custom-text__content-{{ ai_gen_id }}::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    bottom: -{{ block.settings.underline_offset }}px;
+    width: {{ block.settings.underline_width }}%;
+    height: {{ block.settings.underline_thickness }}px;
+    background-color: {{ block.settings.underline_color }};
+    transition: transform 0.4s ease;
+  }
+
+  .ai-custom-text__content-{{ ai_gen_id }}:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+  {% endif %}
+
+  @media screen and (max-width: 749px) {
+    .ai-custom-text-{{ ai_gen_id }} {
+      padding-top: {{ block.settings.padding_top_mobile }}px;
+      padding-bottom: {{ block.settings.padding_bottom_mobile }}px;
+    }
+
+    .ai-custom-text__content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-custom-text-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-custom-text__content-{{ ai_gen_id }}">
+    {{ block.settings.text }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom text",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Add your custom text here</p>"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop padding top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop padding bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Mobile Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile padding top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile padding bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font",
+      "options": [
+        { "value": "ft1", "label": "Font 1" },
+        { "value": "ft2", "label": "Font 2" },
+        { "value": "ft3", "label": "Font 3" }
+      ],
+      "default": "ft1"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Desktop size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Mobile size",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bold",
+      "label": "Bold text",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Underline Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_underline",
+      "label": "Enable Underline",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "underline_color",
+      "label": "Underline Colour",
+      "default": "#222222"
+    },
+    {
+      "type": "range",
+      "id": "underline_thickness",
+      "label": "Underline Thickness",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "underline_offset",
+      "label": "Gap from text",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "underline_width",
+      "label": "Underline Length (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Colour",
+      "default": "#222222"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom text"
+    }
+  ]
+}
+{% endschema %}

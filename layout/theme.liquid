@@ -1,0 +1,1365 @@
+<!doctype html>
+{%- liquid
+    assign is_rtl = false
+    assign list_rtl = 'ar,dv,ha,he,ku,fa,ur,ug' | split: ','
+    if list_rtl contains request.locale.iso_code or settings.rtl
+        assign is_rtl = true
+    endif
+-%}
+<html class="no-js" lang="{{ shop.locale }}" {% if is_rtl %}dir="rtl"{% endif %}>
+  <head>
+  {%- capture head_data -%}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="{{ settings.theme_clr }}">
+    <meta name="theme-color" media="screen and (max-width: 1024px)" content="#ffffff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <link rel="preconnect" href="{{ shop.permanent_domain }}" crossorigin>
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- unless settings.font1.system? and settings.font2.system? and settings.font3.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {%- if settings.favicon != blank -%}<link rel="shortcut icon" href="{{ settings.favicon | image_url: width:'32' }}" type="image/png">{%- endif -%}
+    {%- if settings.favicon_retina != blank -%}<link rel="apple-touch-icon-precomposed" type="image/png" sizes="152x152" href="{{ settings.favicon_retina | image_url: width:'152' }}">{%- endif -%}
+
+	<title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+	{%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+	{%- render 'social-meta-tags' -%}
+
+    {%- render 'head-css', is_rtl:is_rtl -%}
+      {%- if request.design_mode -%}<script src="{{ 'jquery.min.js' | asset_url }}" defer></script>{%- endif -%}
+      <script>
+		var theme = {
+            shopCurrency:{{ shop.currency | json }},moneyFormat:{% if settings.curCode %}{{ shop.money_with_currency_format | json }}{% else %}{{ shop.money_format | json }}{% endif %},
+            {%- if settings.mlcurrency and settings.curOpt == 'script' -%}
+              mlcurrency:true,autocurrency:{{ settings.auto_currencies }},currencyFormat:"{% if settings.curCode %}money_with_currency_format{% else %}money_format{% endif %}",money_currency_format:{{ shop.money_with_currency_format | strip_html | json }},
+            {%- endif -%}
+            animation:{{settings.animef }},animationMobile:{{settings.animefm }},wladd:{{ 'products.wishlist.add_to_wishlist' | t | json }},wlremove:{{ 'products.wishlist.remove' | t | json }},isrtl:{{is_rtl}},
+        };
+		document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+        var alpha = "abcdefghijklmnopqRstuvwxyz".split(""), thm = alpha[17]+alpha[4]+alpha[21]+alpha[14]+alpha[13]+alpha[4], shpeml = '{{shop.email}}', dmn = window.location.hostname;
+        window.shopUrl = '{{ request.origin }}';
+        window.routes = { cart_add_url:'{{ routes.cart_add_url }}', cart_change_url:'{{ routes.cart_change_url }}', cart_update_url:'{{ routes.cart_update_url }}', cart_url:'{{ routes.cart_url }}', predictive_search_url:'{{ routes.predictive_search_url }}' };
+        window.cartStrings = { error: `{{ 'cart.general.error' | t }}`, quantityError: `{{ 'cart.general.quantity_error_html' | t: quantity: '[quantity]' }}`,discount_already: `{{ 'cart.general.discount_already_applied' | t }}`,discount_error: `{{ 'cart.general.discount_code_error' | t }}`,discount_ship: `{{ 'cart.general.shipping_discount_error' | t }}` };
+        window.variantStrings = {addToCart: `{{ 'products.product.add_to_cart' | t }}`,preOrder: `{{ 'products.product.pre_order' | t }}`,soldOut: `{{ 'products.product.sold_out' | t }}`,unavailable: `{{ 'products.product.unavailable' | t }}`,unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,};
+    </script>
+  {%- endcapture -%}
+  {{ head_data | strip_newlines | remove: "  " | remove: "	" }}
+  {%- render 'sls-cart-opener' -%}
+  {{ content_for_header }}
+
+{%- if request.page_type == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.studiolume.com.au/#organization",
+      "name": "Studio Lume Supplies",
+      "alternateName": [
+        "Studio Lume",
+        "Studio Lume Supplies Australia"
+      ],
+      "url": "https://www.studiolume.com.au/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://www.studiolume.com.au/#logo",
+        "url": "https://cdn.shopify.com/s/files/1/0637/8795/8356/files/RAW_LOGO_1.png?v=1775136279",
+        "contentUrl": "https://cdn.shopify.com/s/files/1/0637/8795/8356/files/RAW_LOGO_1.png?v=1775136279"
+      },
+      "description": "Studio Lume Supplies is an Australian online lash supply brand offering professional lash trays, adhesives, liquids, tweezers and lash supplies for trained lash artists across Australia and New Zealand.",
+      "email": "info@studiolume.com.au",
+      "areaServed": [
+        "AU",
+        "NZ"
+      ],
+      "sameAs": [
+        "https://www.instagram.com/studiolumesupplies/"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "info@studiolume.com.au",
+        "contactType": "customer support",
+        "areaServed": [
+          "AU",
+          "NZ"
+        ],
+        "availableLanguage": "en"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.studiolume.com.au/#website",
+      "url": "https://www.studiolume.com.au/",
+      "name": "Studio Lume Supplies",
+      "publisher": {
+        "@id": "https://www.studiolume.com.au/#organization"
+      }
+    }
+  ]
+}
+</script>
+{%- endif -%}
+
+</head>
+{%- capture snowonpage -%}{% if settings.sn-index %}index,{% endif %}{% if settings.sn-product %}product,{% endif %}{% if settings.sn-collection %}collection,{% endif %}{% if settings.sn-blog %}article,blog,{% endif %}{% if settings.sn-cart %}cart,{% endif %}{% if settings.sn-page %}page{% endif %}{%- endcapture -%}
+<body class="template-{{ request.page_type }}{% if is_rtl %} rtl{% endif %}{% if settings.bodyimg != blank %} lazyload{% endif %}{% if settings.snow_effect and snowonpage contains request.page_type %} falling-snow {{settings.snow_style}}{% endif %}"
+	{%- if settings.bodyimg != blank %} data-bgset="{{ settings.bodyimg | image_url: width: settings.bodyimg.width | image_tag: widths: '400,600,800,1000,1400,1600,2000,2400,3000' | split: 'srcset="' | last | split: '"' | first }}" data-sizes="auto" data-parent-fit="cover"{%- endif -%}>
+
+    {% if additional_checkout_buttons %}
+      <div style="display:none !important;">{{ content_for_additional_checkout_buttons }}</div>
+    {% endif %}
+
+    <a class="skip-to-content-link button hidden_txt" href="#PageContainer">{{ "accessibility.skip_to_content" | t }}</a>
+    {%- liquid
+      assign sls_hidden_page_h1 = false
+      if request.page_type == 'page'
+        case template.suffix
+          when 'faqs', 'ambassador-page', 'lume-ambassador-t-c', 'safety-compliance', 'wishlist'
+            assign sls_hidden_page_h1 = true
+        endcase
+      endif
+    -%}
+    {%- if request.page_type == 'index' -%}<h1 class="hidden_txt">Studio Lume Supplies</h1>{%- endif -%}
+    {%- if sls_hidden_page_h1 -%}<h1 class="hidden_txt">{{ page.title }}</h1>{%- endif -%}
+    {%- if is_rtl -%}
+        {%- if request.page_type == 'collection' or request.page_type == 'search' -%}<link rel="stylesheet" href="{{ 'collectionRtl.css' | asset_url }}" type="text/css" media="all">{%- endif -%}
+        {%- if request.page_type == 'blog' or request.page_type == 'article' or request.page_type == 'page' or template.directory == 'customers' -%}<link rel="stylesheet" href="{{ 'pagesRtl.css' | asset_url }}" type="text/css" media="all">{%- endif -%}
+    {%- else -%}
+        {%- if request.page_type == 'collection' or request.page_type == 'search' -%}
+          <link rel="stylesheet" href="{{ 'collection.css' | asset_url }}" type="text/css" media="all">
+        {%- endif -%}
+        {%- if request.page_type == 'blog' or request.page_type == 'article' or request.page_type == 'page' or template.directory == 'customers' -%}
+          <link rel="stylesheet" href="{{ 'pages.css' | asset_url }}" type="text/css" media="all">
+        {%- endif -%}
+    {%- endif -%}
+
+    {%- if request.page_type == 'product' and product -%}
+      <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const REZ_SELECTOR = ".rez-button-wrapper";
+  const REZ_BUTTON_SELECTOR = ".rez-stock-notification-button";
+  const REZ_BUTTON_TEXT = "Notify Me When It’s Back";
+  const BUTTONS_SELECTOR = ".product-form__buttons";
+  const variantAvailability = {
+    {%- for variant in product.variants -%}
+      "{{ variant.id }}": {{ variant.available | json }}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  };
+
+  let bodyObserver = null;
+  let formObserver = null;
+  let syncTimer = null;
+
+  function getRezWrap() {
+    return document.querySelector(REZ_SELECTOR);
+  }
+
+  function getBuyButtons() {
+    return document.querySelector(BUTTONS_SELECTOR);
+  }
+
+  function getBuyRow(buyButtons) {
+    if (!buyButtons) return null;
+    return buyButtons.querySelector(".fl.gap.mb15") || buyButtons.querySelector(".fl.gap");
+  }
+
+  function getSelectedVariantId() {
+    const formInput = document.querySelector('form[action*="/cart/add"] input[name="id"], form[action*="/cart/add"] select[name="id"]');
+    if (formInput && formInput.value) return String(formInput.value);
+
+    const variantInput = document.querySelector(".product-variant-id");
+    return variantInput && variantInput.value ? String(variantInput.value) : "";
+  }
+
+  function syncRezInputs(rezWrap, variantId) {
+    if (!rezWrap || !variantId) return;
+
+    rezWrap.setAttribute("data-sls-variant-id", variantId);
+
+    const rezScopes = [rezWrap].concat(Array.from(document.querySelectorAll(".rez-notify-modal-content")));
+
+    rezScopes.forEach(function (scope) {
+      const variantFields = scope.querySelectorAll(
+        'input[name="id"], input[name="variant"], input[name="variant_id"], input[name="variantId"], select[name="id"], select[name="variant"], select[name="variant_id"], select[name="variantId"], .rez-notify-variant-select'
+      );
+
+      variantFields.forEach(function (field) {
+        if (!("value" in field)) return;
+
+        if (field.tagName === "SELECT") {
+          const matchingOption = Array.from(field.options || []).find(function (option) {
+            return String(option.value) === variantId;
+          });
+          if (!matchingOption) return;
+        }
+
+        if (String(field.value) !== variantId) {
+          field.value = variantId;
+          field.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    });
+  }
+
+  function syncRezButtonText(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    const buttons = Array.from(scope.querySelectorAll(REZ_BUTTON_SELECTOR));
+
+    if (scope.matches && scope.matches(REZ_BUTTON_SELECTOR)) {
+      buttons.unshift(scope);
+    }
+
+    buttons.forEach(function (button) {
+      if (button.textContent.trim() !== REZ_BUTTON_TEXT) {
+        button.textContent = REZ_BUTTON_TEXT;
+      }
+
+      button.setAttribute("aria-label", REZ_BUTTON_TEXT);
+    });
+  }
+
+  function setRezVisibility(rezWrap, isSoldOut) {
+    rezWrap.hidden = !isSoldOut;
+    rezWrap.classList.toggle("sls-rez-visible", isSoldOut);
+    rezWrap.classList.toggle("sls-rez-hidden", !isSoldOut);
+    syncRezButtonText(rezWrap);
+
+    if (isSoldOut) {
+      rezWrap.style.removeProperty("display");
+    } else {
+      rezWrap.style.display = "none";
+    }
+  }
+
+  function syncRezState(variant) {
+    const rezWrap = getRezWrap();
+    if (!rezWrap) return false;
+
+    if (variant === false) {
+      setRezVisibility(rezWrap, false);
+      return true;
+    }
+
+    const variantId = variant && variant.id ? String(variant.id) : getSelectedVariantId();
+    const isSoldOut = variantId && (variant && typeof variant.available === "boolean" ? !variant.available : variantAvailability[variantId] === false);
+
+    syncRezInputs(rezWrap, variantId);
+    syncRezButtonText(rezWrap);
+    setRezVisibility(rezWrap, Boolean(isSoldOut));
+
+    const buyButtons = getBuyButtons();
+    const buyRow = getBuyRow(buyButtons);
+    if (buyRow && buyRow.nextElementSibling !== rezWrap) {
+      buyRow.insertAdjacentElement("afterend", rezWrap);
+    }
+
+    return true;
+  }
+
+  function scheduleSync(variant, delay) {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(function () {
+      syncRezState(variant);
+    }, typeof delay === "number" ? delay : 50);
+  }
+
+  window.SLSRezNotifySync = function (variant) {
+    scheduleSync(variant, 0);
+    setTimeout(function () { syncRezState(variant); }, 120);
+    setTimeout(function () { syncRezState(variant); }, 350);
+  };
+
+  function watchProductForm() {
+    const buyButtons = getBuyButtons();
+    if (!buyButtons || formObserver) return;
+
+    formObserver = new MutationObserver(function () {
+      scheduleSync(null, 30);
+    });
+
+    formObserver.observe(buyButtons, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function watchForLateRez() {
+    syncRezState(null);
+    watchProductForm();
+
+    bodyObserver = new MutationObserver(function (mutations) {
+      const relevant = mutations.some(function (mutation) {
+        if (!mutation.target || mutation.target.nodeType !== 1) return false;
+
+        if (
+          mutation.target.matches &&
+          mutation.target.matches(REZ_SELECTOR + ", " + BUTTONS_SELECTOR)
+        ) {
+          return true;
+        }
+
+        if (
+          mutation.target.closest &&
+          mutation.target.closest(REZ_SELECTOR + ", " + BUTTONS_SELECTOR)
+        ) {
+          return true;
+        }
+
+        return mutation.addedNodes && mutation.addedNodes.length > 0;
+      });
+
+      if (relevant) {
+        scheduleSync(null, 30);
+        watchProductForm();
+      }
+    });
+
+    bodyObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  document.addEventListener("change", function (event) {
+    if (event.target && event.target.closest && event.target.closest("variant-selects, variant-radios, product-form")) {
+      scheduleSync(null, 60);
+    }
+  });
+
+  watchForLateRez();
+});
+</script>
+    {%- endif -%}
+
+    {%- sections 'header-group' -%}
+
+    <main id="PageContainer" class="main-content {{ template | split: '.' | first }}" id="MainContent" role="main">{{ content_for_layout }}</main>
+
+    {%- sections 'footer-group' -%}
+    {%- sections 'overlay-group' -%}
+    {%- unless request.page_type == 'cart' -%}
+      {%- if request.design_mode -%}
+        {%- render 'sls-cart-drawer', sls_cart_section_id: 'cart-drawer' -%}
+      {%- else -%}
+        {%- section 'cart-drawer' -%}
+      {%- endif -%}
+    {%- endunless -%}
+    <script>
+      window.__SLSCartAutoOpenOnAdd = {{ settings.sls_auto_open_on_add | json }};
+    </script>
+    {%- if settings.enable_age_varification -%}{% render 'age-check' %}{%- endif -%}
+    {%- render 'svg-icons' -%}
+    {%- render 'site-bottom', content_for_layout:content_for_layout, is_rtl:is_rtl -%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.__lumeSmileVisibilityGuardActive) return;
+  window.__lumeSmileVisibilityGuardActive = true;
+
+  const stickyCart = document.querySelector('.stickyCart');
+  const drawerWrap = document.querySelector('.ctdrawer');
+  const drawerEl = document.querySelector('cart-drawer, #CartDrawer');
+
+  let smileTargets = [];
+  let scheduled = false;
+  let rescanTimer = null;
+
+  function isCartOpen() {
+    return !!(
+      (drawerWrap && drawerWrap.classList.contains('active')) ||
+      (drawerEl && (
+        drawerEl.classList.contains('active') ||
+        drawerEl.hasAttribute('open') ||
+        drawerEl.getAttribute('aria-hidden') === 'false'
+      ))
+    );
+  }
+
+  function isBlockingOverlayOpen() {
+    return document.documentElement.classList.contains('actMbNav') ||
+      document.documentElement.classList.contains('actHmbNav') ||
+      document.documentElement.classList.contains('searchact');
+  }
+
+  function getStickyOffset() {
+    if (!stickyCart) return 0;
+
+    const style = window.getComputedStyle(stickyCart);
+    const rect = stickyCart.getBoundingClientRect();
+
+    const visible =
+      style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      parseFloat(style.opacity || '1') > 0 &&
+      rect.height > 0 &&
+      rect.bottom > 0 &&
+      rect.top < window.innerHeight;
+
+    return visible ? Math.ceil(rect.height) : 0;
+  }
+
+  function isLauncherButton(el) {
+    if (!el || el.nodeType !== 1) return false;
+
+    const aria = (el.getAttribute('aria-label') || '').toLowerCase();
+    const title = (el.getAttribute('title') || '').toLowerCase();
+    const id = (el.id || '').toLowerCase();
+    const cls = String(el.className || '').toLowerCase();
+
+    return (
+      aria.includes('open smile.io rewards program') ||
+      title.includes('smile') ||
+      id.includes('smile-launcher') ||
+      cls.includes('smile-launcher')
+    );
+  }
+
+  function isLauncherIframe(el) {
+    if (!el || el.nodeType !== 1 || el.tagName !== 'IFRAME') return false;
+
+    const src = (el.getAttribute('src') || '').toLowerCase();
+    const title = (el.getAttribute('title') || '').toLowerCase();
+
+    return src.includes('smile') || title.includes('smile');
+  }
+
+  function isFixedElement(el) {
+    try {
+      return window.getComputedStyle(el).position === 'fixed';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function collectSmileTargets() {
+    const found = new Set();
+
+    document.querySelectorAll('button, iframe').forEach(function (el) {
+      const isTarget =
+        (el.tagName === 'BUTTON' && isLauncherButton(el)) ||
+        (el.tagName === 'IFRAME' && isLauncherIframe(el));
+
+      if (!isTarget) return;
+      if (!isFixedElement(el)) return;
+
+      found.add(el);
+    });
+
+    smileTargets = Array.from(found);
+  }
+
+  function applyState() {
+    scheduled = false;
+
+    if (!smileTargets.length) return;
+
+    const cartOpen = isCartOpen() || isBlockingOverlayOpen();
+
+    smileTargets.forEach(function (el) {
+      el.style.transition = 'opacity 0.08s ease, visibility 0.08s ease';
+
+      if (cartOpen) {
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
+        el.style.pointerEvents = 'none';
+      } else {
+        el.style.opacity = '';
+        el.style.visibility = '';
+        el.style.pointerEvents = '';
+        el.style.transform = '';
+      }
+    });
+  }
+
+  function queueApply() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(applyState);
+  }
+
+  function rescanAndApply(delay) {
+    clearTimeout(rescanTimer);
+    rescanTimer = setTimeout(function () {
+      collectSmileTargets();
+      applyState();
+    }, typeof delay === 'number' ? delay : 120);
+  }
+
+  collectSmileTargets();
+  applyState();
+
+  if (stickyCart) {
+    new MutationObserver(function () {
+      queueApply();
+      setTimeout(queueApply, 120);
+    }).observe(stickyCart, {
+      attributes: true,
+      childList: true,
+      subtree: true
+    });
+  }
+
+  if (drawerWrap) {
+    new MutationObserver(queueApply).observe(drawerWrap, {
+      attributes: true,
+      attributeFilter: ['class', 'open', 'aria-hidden']
+    });
+  }
+
+  if (drawerEl) {
+    new MutationObserver(queueApply).observe(drawerEl, {
+      attributes: true,
+      attributeFilter: ['class', 'open', 'aria-hidden']
+    });
+  }
+
+  const pageObserver = new MutationObserver(function (mutations) {
+    const relevant = mutations.some(function (mutation) {
+      if (!mutation.addedNodes || !mutation.addedNodes.length) return false;
+
+      return Array.from(mutation.addedNodes).some(function (node) {
+        if (!node || node.nodeType !== 1) return false;
+
+        if (
+          (node.tagName === 'BUTTON' && isLauncherButton(node)) ||
+          (node.tagName === 'IFRAME' && isLauncherIframe(node))
+        ) {
+          return true;
+        }
+
+        if (node.querySelector) {
+          return !!node.querySelector('button[aria-label="Open Smile.io Rewards Program"], iframe[src*="smile"], iframe[src*="Smile"], iframe[title*="smile"], iframe[title*="Smile"]');
+        }
+
+        return false;
+      });
+    });
+
+    if (relevant) {
+      rescanAndApply(120);
+    }
+  });
+
+  pageObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  window.addEventListener('resize', function () {
+    queueApply();
+    setTimeout(queueApply, 120);
+  }, { passive: true });
+
+  window.addEventListener('scroll', queueApply, { passive: true });
+
+  rescanAndApply(800);
+});
+</script>
+
+
+<script>
+(function () {
+  const SMILE_Z_INDEX = '650';
+  const SMILE_SELECTORS = [
+    'button[aria-label*="Smile"]',
+    'button[aria-label*="smile"]',
+    'button[title*="Smile"]',
+    'button[title*="smile"]',
+    'iframe[src*="smile"]',
+    'iframe[src*="Smile"]',
+    'iframe[title*="Smile"]',
+    'iframe[title*="smile"]',
+    '[id*="smile"]',
+    '[id*="Smile"]',
+    '[class*="smile"]',
+    '[class*="Smile"]',
+    '[id*="sweettooth"]',
+    '[class*="sweettooth"]'
+  ].join(',');
+
+  let applyTimer = null;
+
+  function getElementSignature(el) {
+    return [
+      el.id || '',
+      String(el.className || ''),
+      el.getAttribute('aria-label') || '',
+      el.getAttribute('title') || '',
+      el.getAttribute('src') || ''
+    ].join(' ').toLowerCase();
+  }
+
+  function isSmileElement(el) {
+    if (!el || el.nodeType !== 1) return false;
+    const signature = getElementSignature(el);
+    return (
+      signature.includes('smile') ||
+      signature.includes('sweettooth') ||
+      signature.includes('open smile.io rewards program')
+    );
+  }
+
+  function isFixedLayer(el) {
+    try {
+      const position = window.getComputedStyle(el).position;
+      return position === 'fixed' || position === 'sticky';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isVisibleLayer(el) {
+    try {
+      const style = window.getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+
+      return (
+        style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        style.pointerEvents !== 'none' &&
+        parseFloat(style.opacity || '1') > 0 &&
+        rect.width > 0 &&
+        rect.height > 0 &&
+        rect.bottom > 0 &&
+        rect.right > 0 &&
+        rect.top < window.innerHeight &&
+        rect.left < window.innerWidth
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isOpenPanel(el) {
+    if (!isVisibleLayer(el)) return false;
+    const rect = el.getBoundingClientRect();
+    return rect.width >= 180 && rect.height >= 160;
+  }
+
+  function isBlockingOverlayOpen() {
+    return document.documentElement.classList.contains('actMbNav') ||
+      document.documentElement.classList.contains('actHmbNav') ||
+      document.documentElement.classList.contains('searchact');
+  }
+
+  function applySmileStacking() {
+    const targets = Array.from(document.querySelectorAll(SMILE_SELECTORS)).filter(function (el) {
+      return isSmileElement(el) && isFixedLayer(el);
+    });
+
+    let panelOpen = false;
+    const blocked = isBlockingOverlayOpen();
+
+    targets.forEach(function (el) {
+      el.style.setProperty('z-index', SMILE_Z_INDEX, 'important');
+      if (blocked) {
+        el.dataset.lumeSmileHidden = 'true';
+        el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
+      } else if (el.dataset.lumeSmileHidden === 'true') {
+        delete el.dataset.lumeSmileHidden;
+        el.style.removeProperty('opacity');
+        el.style.removeProperty('visibility');
+        el.style.removeProperty('pointer-events');
+      }
+      if (isOpenPanel(el)) panelOpen = true;
+    });
+
+    document.documentElement.classList.toggle('lume-smile-open', panelOpen);
+  }
+
+  function queueApply(delay) {
+    clearTimeout(applyTimer);
+    applyTimer = setTimeout(applySmileStacking, typeof delay === 'number' ? delay : 40);
+  }
+
+  function initSmileStackingGuard() {
+    applySmileStacking();
+    queueApply(400);
+
+    document.addEventListener('click', function () {
+      applySmileStacking();
+      queueApply(320);
+    }, true);
+
+    window.addEventListener('resize', function () {
+      queueApply(40);
+    }, { passive: true });
+
+    new MutationObserver(function (mutations) {
+      const relevant = mutations.some(function (mutation) {
+        if (mutation.type === 'attributes') {
+          return isSmileElement(mutation.target);
+        }
+
+        return Array.from(mutation.addedNodes || []).some(function (node) {
+          if (!node || node.nodeType !== 1) return false;
+          return isSmileElement(node) || !!(node.querySelector && node.querySelector(SMILE_SELECTORS));
+        });
+      });
+
+      if (relevant) queueApply(40);
+    }).observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'aria-hidden', 'hidden']
+    });
+
+    new MutationObserver(function () {
+      queueApply(20);
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSmileStackingGuard);
+  } else {
+    initSmileStackingGuard();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+(function () {
+  function styleHitsy(container) {
+    if (!container || !container.shadowRoot) return;
+    const root = container.shadowRoot;
+
+    if (root.getElementById('studio-lume-hitsy-style')) return;
+
+    const style = document.createElement('style');
+    style.id = 'studio-lume-hitsy-style';
+    style.textContent = `
+      :host {
+        display: block !important;
+      }
+
+      div[style*="max-width: 100%"] {
+        margin: 0 12px 14px 0 !important;
+        max-width: calc(100% - 12px) !important;
+        display: block !important;
+      }
+
+      .hitsy-card {
+        background: #f5f5f5 !important;
+        border: 1px solid #eee9e4 !important;
+        border-radius: 14px !important;
+        padding: 12px 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        box-shadow: none !important;
+      }
+
+      hitsy-text[configindex="0"] > div,
+      hitsy-text[texttype="before"] > div,
+      hitsy-text[texttype="after"] > div {
+        width: 100% !important;
+        text-align: center !important;
+        line-height: 1.35 !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        color: #222222 !important;
+        letter-spacing: 0 !important;
+        margin: 0 !important;
+      }
+
+      hitsy-text[texttype="after"] > div {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: #222222 !important;
+      }
+
+      hitsy-text b {
+        font-weight: 600 !important;
+        color: #222222 !important;
+      }
+
+      hitsy-progress {
+        display: block !important;
+        margin: 0 !important;
+      }
+
+      .hitsy-progress-background {
+        width: 100% !important;
+        position: relative !important;
+        display: flex !important;
+        height: 22px !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+
+      .hitsy-progress-background > div {
+        display: flex !important;
+        width: 100% !important;
+        height: 6px !important;
+        background: #cbc4bc !important;
+        border-radius: 999px !important;
+        overflow: visible !important;
+        position: relative !important;
+      }
+
+      .hitsy-progress-background > div > div {
+        height: 100% !important;
+        background: #aca39a !important;
+        border-radius: 999px !important;
+        transition: width 0.35s ease !important;
+      }
+
+      .hitsy-progress-icon {
+        position: absolute !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        height: 22px !important;
+        width: 22px !important;
+        min-width: 22px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+        box-sizing: border-box !important;
+        background: #ffffff !important;
+        border: 1px solid #cbc4bc !important;
+        box-shadow: 0 0 0 2px #f5f5f5 !important;
+        padding: 0 !important;
+      }
+
+      .hitsy-progress-icon svg {
+        width: 11px !important;
+        height: 11px !important;
+        display: block !important;
+        fill: #867e73 !important;
+        margin: 0 !important;
+      }
+
+      /* unlocked state */
+      .studio-lume-hitsy-unlocked .hitsy-card {
+        padding: 14px 16px !important;
+        gap: 0 !important;
+      }
+
+      .studio-lume-hitsy-unlocked hitsy-progress {
+        display: none !important;
+      }
+
+      .studio-lume-hitsy-unlocked hitsy-text[texttype="before"] > div {
+        font-size: 15px !important;
+        line-height: 1.35 !important;
+        font-weight: 600 !important;
+        color: #222222 !important;
+        text-align: center !important;
+      }
+
+      .studio-lume-hitsy-unlocked hitsy-text[texttype="after"] {
+        display: none !important;
+      }
+    `;
+    root.appendChild(style);
+
+    function isUnlockedText(text) {
+      if (!text) return false;
+      const t = text.replace(/\s+/g, ' ').trim().toLowerCase();
+      return t.includes('free express shipping') &&
+             (t.includes('unlocked') || t.includes('eligible') || t.includes('you\'ve unlocked'));
+    }
+
+    function applyInlineFixes() {
+      const hostWrap = root.querySelector('div[style*="max-width: 100%"]');
+      if (hostWrap) {
+        hostWrap.style.margin = '0 12px 14px 0';
+        hostWrap.style.maxWidth = 'calc(100% - 12px)';
+        hostWrap.style.display = 'block';
+      }
+
+      const card = root.querySelector('.hitsy-card');
+      if (card) {
+        card.style.backgroundColor = '#f5f5f5';
+        card.style.border = '1px solid #eee9e4';
+        card.style.borderRadius = '14px';
+        card.style.padding = '12px 16px';
+        card.style.gap = '8px';
+      }
+
+      root.querySelectorAll('hitsy-text > div').forEach(function (el) {
+        el.style.textAlign = 'center';
+        el.style.lineHeight = '1.35';
+        el.style.fontSize = '12px';
+        el.style.color = '#222222';
+        el.style.margin = '0';
+      });
+
+      const beforeText = root.querySelector('hitsy-text[texttype="before"] > div');
+      if (beforeText) beforeText.style.fontWeight = '400';
+
+      const afterText = root.querySelector('hitsy-text[texttype="after"] > div');
+      if (afterText) {
+        afterText.style.fontWeight = '600';
+        afterText.style.color = '#222222';
+      }
+
+      root.querySelectorAll('hitsy-text b').forEach(function (el) {
+        el.style.fontWeight = '600';
+        el.style.color = '#222222';
+      });
+
+      const progressBg = root.querySelector('.hitsy-progress-background');
+      if (progressBg) {
+        progressBg.style.height = '22px';
+        progressBg.style.alignItems = 'center';
+      }
+
+      const track = root.querySelector('.hitsy-progress-background > div');
+      if (track) {
+        track.style.height = '6px';
+        track.style.backgroundColor = '#cbc4bc';
+        track.style.borderRadius = '999px';
+        track.style.overflow = 'visible';
+        track.style.position = 'relative';
+      }
+
+      const fill = root.querySelector('.hitsy-progress-background > div > div');
+      if (fill) {
+        fill.style.backgroundColor = '#aca39a';
+        fill.style.borderRadius = '999px';
+        fill.style.transition = 'width 0.35s ease';
+      }
+
+      root.querySelectorAll('.hitsy-progress-icon').forEach(function (icon) {
+        icon.style.height = '22px';
+        icon.style.width = '22px';
+        icon.style.minWidth = '22px';
+        icon.style.display = 'flex';
+        icon.style.alignItems = 'center';
+        icon.style.justifyContent = 'center';
+        icon.style.borderRadius = '50%';
+        icon.style.background = '#ffffff';
+        icon.style.border = '1px solid #cbc4bc';
+        icon.style.boxSizing = 'border-box';
+        icon.style.top = '50%';
+        icon.style.transform = 'translate(-50%, -50%)';
+        icon.style.padding = '0';
+        icon.style.boxShadow = '0 0 0 2px #f5f5f5';
+      });
+
+      root.querySelectorAll('.hitsy-progress-icon svg').forEach(function (svg) {
+        svg.style.width = '11px';
+        svg.style.height = '11px';
+        svg.style.display = 'block';
+        svg.style.fill = '#867e73';
+        svg.style.margin = '0';
+      });
+
+      /* unlocked state toggle */
+      const beforeTextEl = root.querySelector('hitsy-text[texttype="before"] > div');
+      const hostStateTarget = hostWrap || root.host;
+      const unlocked = beforeTextEl && isUnlockedText(beforeTextEl.textContent);
+
+      if (hostStateTarget) {
+        hostStateTarget.classList.toggle('studio-lume-hitsy-unlocked', !!unlocked);
+      }
+
+      if (unlocked && beforeTextEl) {
+        beforeTextEl.style.fontSize = '15px';
+        beforeTextEl.style.fontWeight = '600';
+        beforeTextEl.style.lineHeight = '1.35';
+        beforeTextEl.style.textAlign = 'center';
+      }
+    }
+
+    applyInlineFixes();
+
+    const observer = new MutationObserver(function () {
+      applyInlineFixes();
+    });
+
+    observer.observe(root, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true
+    });
+  }
+
+  function initHitsyTheme() {
+    document.querySelectorAll('hitsy-container').forEach(styleHitsy);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHitsyTheme);
+  } else {
+    initHitsyTheme();
+  }
+
+  const pageObserver = new MutationObserver(function (mutations) {
+    const hasHitsyNode = mutations.some(function (mutation) {
+      return Array.from(mutation.addedNodes || []).some(function (node) {
+        if (!node || node.nodeType !== 1) return false;
+        return node.matches && node.matches('hitsy-container') ||
+          node.querySelector && node.querySelector('hitsy-container');
+      });
+    });
+
+    if (hasHitsyNode) initHitsyTheme();
+  });
+
+  pageObserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.__lumeSmileVisibilityGuardActive) return;
+  window.__lumeSmileVisibilityGuardActive = true;
+
+  const drawerWrap = document.querySelector('.ctdrawer');
+  const drawerEl = document.querySelector('cart-drawer, #CartDrawer');
+
+  let smileTargets = [];
+  let applyQueued = false;
+  let rescanTimer = null;
+
+  function isCartOpen() {
+    return !!(
+      (drawerWrap && drawerWrap.classList.contains('active')) ||
+      (drawerEl && (
+        drawerEl.classList.contains('active') ||
+        drawerEl.hasAttribute('open') ||
+        drawerEl.getAttribute('aria-hidden') === 'false'
+      ))
+    );
+  }
+
+  function isBlockingOverlayOpen() {
+    return document.documentElement.classList.contains('actMbNav') ||
+      document.documentElement.classList.contains('actHmbNav') ||
+      document.documentElement.classList.contains('searchact');
+  }
+
+  function isSmileLauncherButton(el) {
+    if (!el || el.nodeType !== 1 || el.tagName !== 'BUTTON') return false;
+
+    const aria = (el.getAttribute('aria-label') || '').toLowerCase();
+    const title = (el.getAttribute('title') || '').toLowerCase();
+    const id = (el.id || '').toLowerCase();
+    const cls = String(el.className || '').toLowerCase();
+
+    return (
+      aria.includes('open smile.io rewards program') ||
+      title.includes('smile') ||
+      id.includes('smile-launcher') ||
+      cls.includes('smile-launcher')
+    );
+  }
+
+  function isSmileLauncherIframe(el) {
+    if (!el || el.nodeType !== 1 || el.tagName !== 'IFRAME') return false;
+
+    const src = (el.getAttribute('src') || '').toLowerCase();
+    const title = (el.getAttribute('title') || '').toLowerCase();
+
+    return src.includes('smile') || title.includes('smile');
+  }
+
+  function isFixedElement(el) {
+    try {
+      return window.getComputedStyle(el).position === 'fixed';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function collectSmileTargets() {
+    const found = new Set();
+
+    document.querySelectorAll('button, iframe').forEach(function (el) {
+      const isTarget =
+        isSmileLauncherButton(el) ||
+        isSmileLauncherIframe(el);
+
+      if (!isTarget) return;
+      if (!isFixedElement(el)) return;
+
+      found.add(el);
+    });
+
+    smileTargets = Array.from(found);
+  }
+
+  function applySmileState() {
+    applyQueued = false;
+
+    if (!smileTargets.length) return;
+
+    const cartOpen = isCartOpen() || isBlockingOverlayOpen();
+
+    smileTargets.forEach(function (el) {
+      el.style.transition = 'opacity 0.08s ease, visibility 0.08s ease';
+
+      if (cartOpen) {
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
+        el.style.pointerEvents = 'none';
+      } else {
+        el.style.opacity = '';
+        el.style.visibility = '';
+        el.style.pointerEvents = '';
+      }
+    });
+  }
+
+  function queueApply() {
+    if (applyQueued) return;
+    applyQueued = true;
+    requestAnimationFrame(applySmileState);
+  }
+
+  function rescanAndApply(delay) {
+    clearTimeout(rescanTimer);
+    rescanTimer = setTimeout(function () {
+      collectSmileTargets();
+      applySmileState();
+    }, typeof delay === 'number' ? delay : 120);
+  }
+
+  collectSmileTargets();
+  applySmileState();
+
+  if (drawerWrap) {
+    new MutationObserver(queueApply).observe(drawerWrap, {
+      attributes: true,
+      attributeFilter: ['class', 'open', 'aria-hidden']
+    });
+  }
+
+  if (drawerEl) {
+    new MutationObserver(queueApply).observe(drawerEl, {
+      attributes: true,
+      attributeFilter: ['class', 'open', 'aria-hidden']
+    });
+  }
+
+  const pageObserver = new MutationObserver(function (mutations) {
+    const relevant = mutations.some(function (mutation) {
+      if (!mutation.addedNodes || !mutation.addedNodes.length) return false;
+
+      return Array.from(mutation.addedNodes).some(function (node) {
+        if (!node || node.nodeType !== 1) return false;
+
+        if (isSmileLauncherButton(node) || isSmileLauncherIframe(node)) {
+          return true;
+        }
+
+        if (node.querySelector) {
+          return !!node.querySelector('button[aria-label="Open Smile.io Rewards Program"], iframe[src*="smile"], iframe[src*="Smile"], iframe[title*="smile"], iframe[title*="Smile"]');
+        }
+
+        return false;
+      });
+    });
+
+    if (relevant) {
+      rescanAndApply(120);
+    }
+  });
+
+  pageObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  window.addEventListener('resize', queueApply, { passive: true });
+
+  rescanAndApply(800);
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if product %}
+<script>
+(function () {
+  var bundleBlock = document.getElementById('shopify-block-ARVFyZ2thQjkwT2Q1Z__aov_ai_bundle_offer_volume_NbeakY');
+  if (!bundleBlock) return;
+
+  var section = bundleBlock.closest('.shopify-section') || document;
+  var variantAvailability = {
+    {% for variant in product.variants %}
+      "{{ variant.id }}": {{ variant.available | json }}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+
+  function getProductForm() {
+    var forms = section.querySelectorAll('form[action*="/cart/add"]');
+    if (forms.length) return forms[0];
+
+    var productFormElement = section.querySelector('product-form form');
+    if (productFormElement) return productFormElement;
+
+    return null;
+  }
+
+  function getSelectedVariantId() {
+    var form = getProductForm();
+    if (!form) return null;
+
+    var variantInput = form.querySelector('input[name="id"], select[name="id"]');
+    if (!variantInput) return null;
+
+    return String(variantInput.value || '');
+  }
+
+  function updateBundleVisibility() {
+    var variantId = getSelectedVariantId();
+    if (!variantId) return;
+
+    var isAvailable = variantAvailability[variantId];
+
+    if (isAvailable === false) {
+      bundleBlock.classList.add('lume-bundle-hidden');
+    } else {
+      bundleBlock.classList.remove('lume-bundle-hidden');
+    }
+  }
+
+  function scheduleUpdate() {
+    updateBundleVisibility();
+    requestAnimationFrame(updateBundleVisibility);
+    setTimeout(updateBundleVisibility, 80);
+    setTimeout(updateBundleVisibility, 180);
+  }
+
+  scheduleUpdate();
+
+  section.addEventListener('change', function (e) {
+    if (
+      e.target.matches('input[name="id"]') ||
+      e.target.matches('select[name="id"]') ||
+      e.target.matches('input[name^="options"]') ||
+      e.target.matches('select[name^="options"]')
+    ) {
+      scheduleUpdate();
+    }
+  });
+
+  section.addEventListener('click', function (e) {
+    if (
+      e.target.closest('.swatchLbl') ||
+      e.target.closest('.swatch-element') ||
+      e.target.closest('.product-form__input') ||
+      e.target.closest('label[for]')
+    ) {
+      setTimeout(scheduleUpdate, 0);
+    }
+  });
+
+  document.addEventListener('variant:change', scheduleUpdate);
+  document.addEventListener('product:variant-change', scheduleUpdate);
+})();
+</script>
+{% endif %}
+
+
+
+
+
+
+
+
+</body>
+</html>

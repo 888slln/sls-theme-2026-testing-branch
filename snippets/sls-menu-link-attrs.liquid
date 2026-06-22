@@ -1,0 +1,10 @@
+{%- liquid
+  assign menu_link_color = blank
+  if title contains '[#'
+    assign menu_link_color_token = title | split: '[#' | last | split: ']' | first | strip | remove: ' '
+    if menu_link_color_token != blank
+      assign menu_link_color = menu_link_color_token | prepend: '#'
+    endif
+  endif
+-%}
+{%- if menu_link_color != blank -%} style="--lume-menu-link-color:{{ menu_link_color }}; color:{{ menu_link_color }} !important;" data-lume-menu-color="{{ menu_link_color }}"{%- endif -%}

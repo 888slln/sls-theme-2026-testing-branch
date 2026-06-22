@@ -1,0 +1,44 @@
+{%- liquid
+  assign points_rate = points_per_dollar | default: 6
+  assign points_label_text = points_label | default: 'Points'
+  assign current_variant = product.selected_or_first_available_variant
+  if current_variant == blank
+    assign current_variant = product.variants.first
+  endif
+  assign base_price_cents = current_variant.price | default: product.price | default: 0
+  assign calculated_points = base_price_cents | times: points_rate | divided_by: 100 | round
+  assign product_form_id = 'product-form-' | append: section.id
+-%}
+
+{{ 'lume-points-banner.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="lume-points-banner"
+  data-lume-points-banner
+  data-points-rate="{{ points_rate }}"
+  data-ppd="{{ points_rate }}"
+  data-points-label="{{ points_label_text | escape }}"
+  data-product-form-id="{{ product_form_id }}"
+  data-base-price-cents="{{ base_price_cents }}"
+  data-current-variant-id="{{ current_variant.id }}"
+>
+  <script type="application/json" data-lume-points-variants>
+    {{ product.variants | json }}
+  </script>
+
+  <span class="lume-points-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+      <path d="M20 12v9H4v-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M2 7h20v5H2V7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M12 7v14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M12 7h-3.4c-1.4 0-2.6-1.1-2.6-2.5S7.2 2 8.6 2c2.2 0 3.1 2.5 3.4 5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M12 7h3.4c1.4 0 2.6-1.1 2.6-2.5S16.8 2 15.4 2c-2.2 0-3.1 2.5-3.4 5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+  </span>
+
+  <span class="lume-points-text">
+    Earn <strong><span data-lume-points-value data-points>{{ calculated_points }}</span> Lume Points</strong> on this order
+  </span>
+</div>
+
+<script src="{{ 'lume-points-banner.js' | asset_url }}" defer="defer"></script>

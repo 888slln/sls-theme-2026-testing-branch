@@ -1,0 +1,655 @@
+{% doc %}
+  @prompt
+    Custom inline text block with a label and accent text.
+    Restored to support existing homepage JSON references without changing the homepage layout.
+{% enddoc %}
+
+{% liquid
+  assign ai_gen_id = block.id | replace: '_', '' | downcase
+  assign label_font = block.settings.label_font_family
+
+  assign label_plain = block.settings.label_text | strip_html | strip
+  assign accent_plain = block.settings.accent_text | strip_html | strip
+
+  assign desktop_text_align = 'center'
+  if block.settings.text_alignment == 'flex-start'
+    assign desktop_text_align = 'left'
+  elsif block.settings.text_alignment == 'flex-end'
+    assign desktop_text_align = 'right'
+  endif
+
+  assign mobile_text_align = 'center'
+  if block.settings.mobile_text_alignment == 'flex-start'
+    assign mobile_text_align = 'left'
+  elsif block.settings.mobile_text_alignment == 'flex-end'
+    assign mobile_text_align = 'right'
+  endif
+%}
+
+{% style %}
+  {{ label_font | font_face: font_display: 'swap' }}
+
+  {% if block.settings.custom_font_source == 'upload' and block.settings.custom_font_file != blank %}
+    @font-face {
+      font-family: 'SLSInlineAccent{{ ai_gen_id }}';
+      src: url({{ block.settings.custom_font_file | json }}) format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+  {% endif %}
+
+  {% if block.settings.custom_font_source == 'url' and block.settings.custom_font_url != blank %}
+    @import url({{ block.settings.custom_font_url | json }});
+  {% endif %}
+
+  .sls-inline-heading-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: {{ block.settings.outer_margin_top_desktop }}px;
+    margin-bottom: {{ block.settings.outer_margin_bottom_desktop }}px;
+    padding: {{ block.settings.spacing_top_desktop }}px {{ block.settings.side_padding_desktop }}px {{ block.settings.spacing_bottom_desktop }}px;
+    background: {{ block.settings.background_color }};
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }} *,
+  .sls-inline-heading-{{ ai_gen_id }} *::before,
+  .sls-inline-heading-{{ ai_gen_id }} *::after {
+    box-sizing: border-box;
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__inner {
+    width: 100%;
+    max-width: {{ block.settings.max_width_desktop }}px;
+    margin: 0 auto;
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__line {
+    display: flex;
+    align-items: {{ block.settings.vertical_alignment }};
+    justify-content: {{ block.settings.text_alignment }};
+    flex-wrap: {% if block.settings.keep_one_line_desktop %}nowrap{% else %}wrap{% endif %};
+    gap: {{ block.settings.gap_desktop }}px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    text-align: {{ desktop_text_align }};
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__part {
+    display: inline;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__part :where(p, h1, h2, h3, h4, h5, h6, span, strong, b, em, i, a) {
+    display: inline;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__part :where(br) {
+    {% if block.settings.remove_line_breaks %}
+      display: none;
+    {% endif %}
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__label {
+    color: {{ block.settings.label_color }};
+    font-family: {{ label_font.family }}, {{ label_font.fallback_families }};
+    font-size: {{ block.settings.label_font_size_desktop }}px;
+    font-weight: {{ block.settings.label_font_weight }};
+    font-style: {{ label_font.style }};
+    line-height: {{ block.settings.label_line_height }};
+    letter-spacing: {{ block.settings.label_letter_spacing }}px;
+    white-space: {% if block.settings.keep_one_line_desktop %}nowrap{% else %}normal{% endif %};
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__label :where(strong, b) {
+    font-weight: {{ block.settings.label_bold_weight }} !important;
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__accent {
+    display: inline-block;
+    color: {{ block.settings.accent_color }};
+    font-size: {{ block.settings.accent_font_size_desktop }}px;
+    font-weight: {{ block.settings.accent_font_weight }};
+    line-height: {{ block.settings.accent_line_height }};
+    letter-spacing: {{ block.settings.accent_letter_spacing }}px;
+    transform: translateY({{ block.settings.accent_vertical_offset_desktop }}px);
+    white-space: {% if block.settings.keep_one_line_desktop %}nowrap{% else %}normal{% endif %};
+    {% if block.settings.custom_font_source == 'upload' and block.settings.custom_font_file != blank %}
+      font-family: 'SLSInlineAccent{{ ai_gen_id }}', cursive;
+    {% elsif block.settings.custom_font_source == 'url' and block.settings.custom_font_family_name != blank %}
+      font-family: {{ block.settings.custom_font_family_name | json }}, cursive;
+    {% else %}
+      font-family: {{ block.settings.system_font_family }};
+    {% endif %}
+  }
+
+  .sls-inline-heading-{{ ai_gen_id }}__accent :where(strong, b) {
+    font-weight: {{ block.settings.accent_bold_weight }} !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    .sls-inline-heading-{{ ai_gen_id }} {
+      margin-top: {{ block.settings.outer_margin_top_mobile }}px;
+      margin-bottom: {{ block.settings.outer_margin_bottom_mobile }}px;
+      padding: {{ block.settings.spacing_top_mobile }}px {{ block.settings.side_padding_mobile }}px {{ block.settings.spacing_bottom_mobile }}px;
+    }
+
+    .sls-inline-heading-{{ ai_gen_id }}__inner {
+      max-width: {{ block.settings.max_width_mobile }}px;
+    }
+
+    .sls-inline-heading-{{ ai_gen_id }}__line {
+      justify-content: {{ block.settings.mobile_text_alignment }};
+      flex-wrap: {% if block.settings.keep_one_line_mobile %}nowrap{% else %}wrap{% endif %};
+      gap: {{ block.settings.gap_mobile }}px;
+      text-align: {{ mobile_text_align }};
+    }
+
+    .sls-inline-heading-{{ ai_gen_id }}__label {
+      font-size: {{ block.settings.label_font_size_mobile }}px;
+      white-space: {% if block.settings.keep_one_line_mobile %}nowrap{% else %}normal{% endif %};
+    }
+
+    .sls-inline-heading-{{ ai_gen_id }}__accent {
+      font-size: {{ block.settings.accent_font_size_mobile }}px;
+      transform: translateY({{ block.settings.accent_vertical_offset_mobile }}px);
+      white-space: {% if block.settings.keep_one_line_mobile %}nowrap{% else %}normal{% endif %};
+    }
+  }
+{% endstyle %}
+
+{% if label_plain != blank or accent_plain != blank %}
+  <div class="sls-inline-heading-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+    <div class="sls-inline-heading-{{ ai_gen_id }}__inner">
+      <div class="sls-inline-heading-{{ ai_gen_id }}__line">
+        {% if label_plain != blank %}
+          <div class="sls-inline-heading-{{ ai_gen_id }}__part sls-inline-heading-{{ ai_gen_id }}__label">
+            {{ block.settings.label_text }}
+          </div>
+        {% endif %}
+
+        {% if accent_plain != blank %}
+          <div class="sls-inline-heading-{{ ai_gen_id }}__part sls-inline-heading-{{ ai_gen_id }}__accent">
+            {{ block.settings.accent_text }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Custom inline text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "<p><em>Shop by</em></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "accent_text",
+      "label": "Accent text",
+      "default": "<p>Category</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_line_breaks",
+      "label": "Remove line breaks inside rich text",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Label style"
+    },
+    {
+      "type": "font_picker",
+      "id": "label_font_family",
+      "label": "Label font",
+      "default": "poppins_n4"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_desktop",
+      "label": "Label font size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "label": "Label font size mobile",
+      "min": 10,
+      "max": 70,
+      "step": 1,
+      "unit": "px",
+      "default": 19
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight",
+      "label": "Label font weight",
+      "options": [
+        { "value": "100", "label": "Thin 100" },
+        { "value": "200", "label": "Extra light 200" },
+        { "value": "300", "label": "Light 300" },
+        { "value": "400", "label": "Regular 400" },
+        { "value": "500", "label": "Medium 500" },
+        { "value": "600", "label": "Semi bold 600" },
+        { "value": "700", "label": "Bold 700" },
+        { "value": "800", "label": "Extra bold 800" },
+        { "value": "900", "label": "Black 900" }
+      ],
+      "default": "100"
+    },
+    {
+      "type": "select",
+      "id": "label_bold_weight",
+      "label": "Label bold rich text weight",
+      "options": [
+        { "value": "400", "label": "Regular 400" },
+        { "value": "500", "label": "Medium 500" },
+        { "value": "600", "label": "Semi bold 600" },
+        { "value": "700", "label": "Bold 700" },
+        { "value": "800", "label": "Extra bold 800" },
+        { "value": "900", "label": "Black 900" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "label_line_height",
+      "label": "Label line height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.1
+    },
+    {
+      "type": "range",
+      "id": "label_letter_spacing",
+      "label": "Label letter spacing",
+      "min": -5,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": -1
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#222222"
+    },
+    {
+      "type": "header",
+      "content": "Accent font"
+    },
+    {
+      "type": "select",
+      "id": "custom_font_source",
+      "label": "Accent font source",
+      "options": [
+        { "value": "system", "label": "Built-in font" },
+        { "value": "url", "label": "Google/custom font URL" },
+        { "value": "upload", "label": "Uploaded .woff2 file URL" }
+      ],
+      "default": "system"
+    },
+    {
+      "type": "select",
+      "id": "system_font_family",
+      "label": "Built-in accent font",
+      "options": [
+        { "value": "cursive", "label": "Browser cursive" },
+        { "value": "'Brush Script MT', cursive", "label": "Brush Script" },
+        { "value": "'Lucida Handwriting', cursive", "label": "Lucida Handwriting" },
+        { "value": "'Segoe Script', cursive", "label": "Segoe Script" },
+        { "value": "'Snell Roundhand', cursive", "label": "Snell Roundhand" }
+      ],
+      "default": "'Segoe Script', cursive"
+    },
+    {
+      "type": "url",
+      "id": "custom_font_url",
+      "label": "Google/custom font URL"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_family_name",
+      "label": "Font family name from URL",
+      "default": "Dancing Script"
+    },
+    {
+      "type": "url",
+      "id": "custom_font_file",
+      "label": "Uploaded .woff2 font file URL"
+    },
+    {
+      "type": "header",
+      "content": "Accent style"
+    },
+    {
+      "type": "range",
+      "id": "accent_font_size_desktop",
+      "label": "Accent font size",
+      "min": 15,
+      "max": 115,
+      "step": 1,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "accent_font_size_mobile",
+      "label": "Accent font size mobile",
+      "min": 15,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "select",
+      "id": "accent_font_weight",
+      "label": "Accent font weight",
+      "options": [
+        { "value": "100", "label": "Thin 100" },
+        { "value": "200", "label": "Extra light 200" },
+        { "value": "300", "label": "Light 300" },
+        { "value": "400", "label": "Regular 400" },
+        { "value": "500", "label": "Medium 500" },
+        { "value": "600", "label": "Semi bold 600" },
+        { "value": "700", "label": "Bold 700" },
+        { "value": "800", "label": "Extra bold 800" },
+        { "value": "900", "label": "Black 900" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "accent_bold_weight",
+      "label": "Accent bold rich text weight",
+      "options": [
+        { "value": "400", "label": "Regular 400" },
+        { "value": "500", "label": "Medium 500" },
+        { "value": "600", "label": "Semi bold 600" },
+        { "value": "700", "label": "Bold 700" },
+        { "value": "800", "label": "Extra bold 800" },
+        { "value": "900", "label": "Black 900" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "accent_line_height",
+      "label": "Accent line height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "accent_letter_spacing",
+      "label": "Accent letter spacing",
+      "min": -8,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "accent_vertical_offset_desktop",
+      "label": "Accent vertical nudge",
+      "min": -30,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "accent_vertical_offset_mobile",
+      "label": "Accent vertical nudge mobile",
+      "min": -25,
+      "max": 25,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#867e73"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Desktop alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_alignment",
+      "label": "Mobile alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "baseline", "label": "Baseline" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "keep_one_line_desktop",
+      "label": "Keep on one line desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "keep_one_line_mobile",
+      "label": "Keep on one line mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "label": "Gap between text",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap between text mobile",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "max_width_desktop",
+      "label": "Max width desktop",
+      "min": 300,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "max_width_mobile",
+      "label": "Max width mobile",
+      "min": 250,
+      "max": 750,
+      "step": 5,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "side_padding_desktop",
+      "label": "Side padding desktop",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "side_padding_mobile",
+      "label": "Side padding mobile",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top_desktop",
+      "label": "Inner top spacing desktop",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom_desktop",
+      "label": "Inner bottom spacing desktop",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "spacing_top_mobile",
+      "label": "Inner top spacing mobile",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom_mobile",
+      "label": "Inner bottom spacing mobile",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "outer_margin_top_desktop",
+      "label": "Outer top margin desktop",
+      "min": -150,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "outer_margin_bottom_desktop",
+      "label": "Outer bottom margin desktop",
+      "min": -150,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "outer_margin_top_mobile",
+      "label": "Outer top margin mobile",
+      "min": -100,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "outer_margin_bottom_mobile",
+      "label": "Outer bottom margin mobile",
+      "min": -100,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom inline text"
+    }
+  ]
+}
+{% endschema %}

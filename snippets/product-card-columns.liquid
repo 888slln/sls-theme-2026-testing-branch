@@ -1,0 +1,73 @@
+{%- liquid
+    assign product_url = product.url | within: collection
+    if settings.clurl
+        assign product_url = product.url
+    endif
+-%}
+{%- if ctrecom == 'ctrecom' -%}
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign product_form_id = 'sls-cart-rec-' | append: product.id
+    assign sls_show_rec_variant_picker = settings.sls_recommend_show_variant_selector
+    assign sls_rec_has_variant_picker = false
+    if sls_show_rec_variant_picker and product.has_only_default_variant == false
+      assign sls_rec_has_variant_picker = true
+    endif
+  -%}
+  <div class="pr_list sls-cart-rec-card{% if sls_rec_has_variant_picker %} sls-cart-rec-card--with-variant{% else %} sls-cart-rec-card--no-variant{% endif %} fl f-aic" data-sls-product-id="{{ product.id }}">
+    <div class="pr_list_img sls-cart-rec-card__image">
+      <a class="sls-cart-rec-image-link" href="{{ product_url }}" aria-label="{{ product.title }}">
+        {%- if product.featured_image -%}
+          {{ product.featured_image | image_url: width: 240 | image_tag: loading:'lazy', width:88, height:88, class:'imgFt', sizes:'88px', widths:"120,180,240" }}
+        {%- endif -%}
+      </a>
+    </div>
+    <div class="fl1 pr_list_detail sls-cart-rec-card__detail">
+      <a href="{{ product_url }}" class="pr_list_ttl sls-cart-rec-card__title">{{ product.title }}</a>
+      <div class="sls-cart-rec-card__bottom">
+        {%- unless settings.hide-price -%}<div class="pr_list_meta sls-cart-rec-card__price">{% render 'product-price', product: product, force_currency_code: sls_show_cart_currency %}</div>{%- endunless -%}
+        <product-form class="sls-cart-rec-card__form">
+          {%- assign sls_rec_form_classes = 'form sls-cart-rec-card__form-grid' -%}
+          {%- unless sls_rec_has_variant_picker -%}
+            {%- assign sls_rec_form_classes = sls_rec_form_classes | append: ' sls-cart-rec-card__form--no-variant' -%}
+          {%- endunless -%}
+          {%- form 'product', product, id: product_form_id, class: sls_rec_form_classes, novalidate: 'novalidate', data-type: 'add-to-cart-form', data-sls-product-id: product.id -%}
+            {%- if sls_rec_has_variant_picker -%}
+              <label for="{{ product_form_id }}-variant" class="hidden_txt">Variant</label>
+              <select id="{{ product_form_id }}-variant" name="id" class="sls-cart-rec-card__variant-select">
+                {%- for variant in product.variants -%}
+                  <option value="{{ variant.id }}" {% if variant.id == current_variant.id %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} - Sold out{% endunless %}</option>
+                {%- endfor -%}
+              </select>
+            {%- else -%}
+              <input type="hidden" name="id" value="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
+            {%- endif -%}
+            <button type="submit" name="add" class="btn sls-cart-rec-card__add" {% unless current_variant.available %}disabled{% endunless %}>
+              <span class="txt">{% if current_variant.available %}Add{% else %}Sold out{% endif %}</span>
+              <div class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+            </button>
+          {%- endform -%}
+        </product-form>
+      </div>
+    </div>
+  </div>
+{%- else -%}
+<div class="pr_list fl f-aic brad of_hidden" style="--rounded:{{ section_st.brad }}px">
+  <div class="pr_list_img">    
+    <a class="grid_img" href="{{ product_url }}" aria-label="{{ product.title }}">
+        {{ product.featured_image | image_url: width: product.featured_image.width | image_tag: loading:'lazy', width:product.featured_image.width, height:product.featured_image.height, class:'imgFt', sizes:'80px', widths:"100,200,320" }}
+    </a>
+  </div>
+  <div class="fl1 pr_list_detail">
+    <a href="{{ product_url }}" class="pr_list_ttl mb5">{{ product.title }}</a>
+    {% if settings.show_vendor %}<div class="pr_list_vendor mb5">{{ product.vendor }}</div>{% endif %}   	
+    {%- unless settings.hide-price -%}<div class="pr_list_meta mb10">{% render 'product-price', product: product %}</div>{%- endunless -%}        
+    {% if settings.show_product_review %}<div class="pr_review mb5">{% render 'ratings', product: product %}</div>{% endif %}
+    {%- if showbtn -%}
+      <product-card>
+        <button type="button" data-url="{{ product.url | split: "?" | first }}?section_id=quick-view" class="btn btn-sm btn-options pr quick-view {{ ctrecom }}"><span class="txt">{{ 'products.product.quick_shop' | t}}</span><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></button>
+      </product-card>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}

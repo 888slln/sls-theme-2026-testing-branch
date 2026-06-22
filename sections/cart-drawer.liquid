@@ -1,0 +1,969 @@
+{%- liquid
+  assign giftpr = all_products[settings.gift_product]
+  assign giftprc = giftpr.selected_or_first_available_variant.price | money
+  assign gift_id = giftpr.selected_or_first_available_variant.id
+  assign is_gift = true
+
+  assign discount_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title'
+  assign sls_product_discount_codes = '' | split: ','
+  for item in cart.items
+    for allocation in item.line_level_discount_allocations
+      if allocation.discount_application.type == 'discount_code'
+        assign discount_codes = item.line_level_discount_allocations | slice: forloop.index0 | map: 'discount_application' | map: 'title' | concat: discount_codes
+        assign sls_product_discount_codes = item.line_level_discount_allocations | slice: forloop.index0 | map: 'discount_application' | map: 'title' | concat: sls_product_discount_codes
+      endif
+    endfor
+  endfor
+  assign discount_codes = discount_codes | uniq
+  assign sls_product_discount_codes = sls_product_discount_codes | uniq
+  assign sls_product_discount_label = 'Product discount'
+  if sls_product_discount_codes.size > 0
+    assign sls_product_discount_label = sls_product_discount_codes | join: ', '
+  elsif discount_codes.size > 0
+    assign sls_product_discount_label = discount_codes | first
+  endif
+
+  assign sls_rewards_rate = settings.sls_points_per_dollar | default: 5
+  assign sls_rewards_label = settings.sls_points_label | default: 'points'
+  assign sls_rewards_label = sls_rewards_label | strip
+  if sls_rewards_label == blank
+    assign sls_rewards_label = 'points'
+  endif
+  assign sls_active_currency_code = localization.country.currency.iso_code | default: cart.currency.iso_code | default: cart.currency | default: shop.currency | upcase
+  assign sls_show_cart_currency = true
+  if sls_active_currency_code == 'AUD'
+    assign sls_show_cart_currency = false
+  endif
+  assign sls_total_points = cart.total_price | times: sls_rewards_rate | divided_by: 100
+  assign sls_drawer_width = settings.sls_drawer_width | default: 430
+  assign sls_card_radius = settings.sls_card_radius | default: 24
+  assign sls_button_radius = settings.sls_button_radius | default: settings.btn_rad | default: 50
+  assign sls_image_radius = settings.sls_image_radius | default: 4
+  assign sls_image_border = settings.sls_image_border_width | default: 0
+  assign sls_loader_size = settings.sls_loader_size | default: 24
+  assign sls_loader_gap = settings.sls_loader_gap | default: 8
+  assign sls_countdown_seconds = settings.sls_countdown_seconds | default: 9300
+  assign sls_text_case = settings.sls_text_case | default: 'none'
+  assign sls_item_title_size = settings.sls_item_title_size | default: 13
+  assign sls_item_variant_size = settings.sls_item_variant_size | default: 11
+  assign sls_item_price_size = settings.sls_item_price_size | default: 12
+  assign sls_item_sale_price_size = settings.sls_item_sale_price_size | default: 12
+  assign sls_item_points_size = settings.sls_item_points_size | default: 11
+  assign sls_item_discount_code_size = settings.sls_item_discount_code_size | default: 11
+  assign sls_item_each_price_size = settings.sls_item_each_price_size | default: 11
+  assign sls_tool_text_size = settings.sls_tool_text_size | default: 12
+  assign sls_checkout_text_size = settings.sls_checkout_text_size | default: 12
+  assign sls_shipping_message_size = settings.sls_shipping_message_size | default: 13
+  assign sls_shipping_message_spacing = settings.sls_shipping_message_spacing | default: 7
+  assign sls_shipping_label_size = settings.sls_shipping_label_size | default: 11
+  assign sls_rec_heading_size = settings.sls_rec_heading_size | default: 12
+  assign sls_rec_title_size = settings.sls_rec_title_size | default: 13
+  assign sls_rec_subtitle_size = settings.sls_rec_subtitle_size | default: 11
+  assign sls_rec_price_size = settings.sls_rec_price_size | default: 12
+  assign sls_rec_variant_size = settings.sls_rec_variant_size | default: 11
+  assign sls_rec_add_size = settings.sls_rec_add_size | default: 11
+  assign sls_rec_autoplay_ms = settings.sls_recommend_autoplay_ms | default: 3200
+  assign sls_rec_surface_style = settings.sls_rec_surface_style | default: 'card'
+  assign sls_rewards_bar_style = settings.sls_rewards_bar_style | default: 'minimalist'
+  assign sls_rewards_bar_content = settings.sls_rewards_bar_content_style | default: 'split'
+  assign sls_rewards_bar_height = settings.sls_rewards_bar_height | default: 36
+  assign sls_rewards_bar_font_size = settings.sls_rewards_bar_font_size | default: 11
+  assign sls_item_surface = settings.sls_item_surface | default: 'card'
+  assign sls_marquee_text_case = settings.sls_marquee_text_case | default: 'uppercase'
+  assign sls_shipping_text_case = settings.sls_shipping_text_case | default: 'uppercase'
+  unless sls_shipping_text_case == 'uppercase' or sls_shipping_text_case == 'none' or sls_shipping_text_case == 'capitalize' or sls_shipping_text_case == 'lowercase'
+    assign sls_shipping_text_case = 'uppercase'
+  endunless
+  assign sls_show_each_price = settings.sls_show_each_price
+  assign sls_text_case_upper = 'uppercase'
+  if sls_text_case != 'none'
+    assign sls_text_case_upper = sls_text_case
+  endif
+  capture sls_cart_font
+    if settings.sls_cart_font != blank
+      echo settings.sls_cart_font.family | append: ', ' | append: settings.sls_cart_font.fallback_families
+    else
+      echo 'inherit'
+    endif
+  endcapture
+  assign sls_show_marquee = settings.sls_show_marquee
+  assign sls_show_shipping_progress = settings.sls_show_shipping
+  assign sls_show_countdown = settings.sls_show_countdown
+  assign sls_show_gift_goal = settings.sls_show_gift_goal
+  assign sls_show_rewards = settings.sls_show_rewards
+  assign sls_show_rewards_bar = settings.sls_show_rewards_bar | default: true, allow_false: true
+  assign sls_show_recommendations = settings.sls_show_recommendations
+  assign sls_show_coupon = settings.sls_show_coupon
+  assign sls_show_order_note = settings.sls_show_order_note
+  assign sls_show_flexible_payments = settings.sls_show_flexible_payments
+  assign sls_show_discount_rows = settings.sls_show_discount_rows | default: false
+  assign sls_show_split_payment_note = settings.sls_show_split_payment_note | default: true
+  assign sls_split_payment_provider = settings.sls_split_payment_provider | default: 'Afterpay' | strip
+  assign sls_split_payment_learn_more_label = settings.sls_split_payment_learn_more_label | default: 'Learn more' | strip
+  assign sls_split_payment_learn_more_url = settings.sls_split_payment_learn_more_url
+  if sls_split_payment_provider == blank
+    assign sls_split_payment_provider = 'Afterpay'
+  endif
+  if sls_split_payment_learn_more_label == blank
+    assign sls_split_payment_learn_more_label = 'Learn more'
+  endif
+  if cart == empty
+    assign sls_show_marquee = settings.sls_empty_show_marquee
+    assign sls_show_shipping_progress = settings.sls_empty_show_shipping
+    assign sls_show_countdown = settings.sls_empty_show_countdown
+    assign sls_show_gift_goal = settings.sls_empty_show_gift_goal
+    assign sls_show_rewards = settings.sls_empty_show_rewards
+    assign sls_show_rewards_bar = settings.sls_empty_show_rewards_bar | default: false, allow_false: true
+    assign sls_show_recommendations = settings.sls_empty_show_recommendations
+    assign sls_show_coupon = settings.sls_empty_show_coupon
+    assign sls_show_order_note = settings.sls_empty_show_order_note
+  endif
+
+  assign sls_bg = settings.sls_drawer_bg | default: '#FAF9F7'
+  assign sls_card_bg = settings.sls_card_bg | default: '#FFFFFF'
+  assign sls_soft_bg = settings.sls_soft_bg | default: '#F5F5F5'
+  assign sls_accent = settings.sls_accent | default: '#867E73'
+  assign sls_accent_hover = settings.sls_accent_hover | default: '#746C62'
+  assign sls_mid = settings.sls_mid | default: '#ACA39A'
+  assign sls_text = settings.sls_drawer_text | default: '#222222'
+  assign sls_muted = settings.sls_muted | default: '#222222'
+  assign sls_border = settings.sls_drawer_border | default: '#EEE9E4'
+  assign sls_sheet_overlay = settings.sls_sheet_overlay | default: 'rgba(44,41,38,0.25)'
+  assign sls_rec_card_bg = settings.sls_rec_card_bg | default: '#ffffff'
+  assign sls_rec_card_border = settings.sls_rec_card_border | default: '#eee9e4'
+  assign sls_rec_image_bg = settings.sls_rec_image_bg | default: '#ffffff'
+  assign sls_rec_image_border = settings.sls_rec_image_border | default: sls_border
+  assign sls_rec_variant_bg = settings.sls_rec_variant_bg | default: '#ffffff'
+  assign sls_rec_variant_border = settings.sls_rec_variant_border | default: '#eee9e4'
+  assign sls_button_hover_bg = settings.sls_button_hover_bg | default: sls_accent_hover
+  assign sls_button_hover_text = settings.sls_button_hover_text | default: '#ffffff'
+  assign sls_marquee_text_color = settings.sls_marquee_text_color | default: sls_accent
+  assign sls_marquee_bg_color = settings.sls_marquee_bg_color | default: sls_soft_bg
+  assign sls_marquee_separator_color = settings.sls_marquee_separator_color | default: '#CBC4BC'
+  assign sls_topbar_bg_color = settings.sls_topbar_bg_color | default: sls_card_bg
+  assign sls_shipping_message_color = settings.sls_shipping_message_color | default: sls_text
+  assign sls_shipping_labels_color = settings.sls_shipping_labels_color | default: sls_accent
+  assign sls_shipping_progress_track_color = settings.sls_shipping_progress_track_color | default: sls_soft_bg
+  assign sls_shipping_progress_fill_color = settings.sls_shipping_progress_fill_color | default: sls_accent
+  assign sls_shipping_unlocked_color = settings.sls_shipping_unlocked_color | default: sls_shipping_progress_fill_color
+  assign sls_countdown_bg_color = settings.sls_countdown_bg_color | default: sls_accent
+  assign sls_countdown_text_color = settings.sls_countdown_text_color | default: '#ffffff'
+  assign sls_gift_progress_track_color = settings.sls_gift_progress_track_color | default: sls_soft_bg
+  assign sls_gift_progress_fill_color = settings.sls_gift_progress_fill_color | default: sls_mid
+  assign sls_header_bg_color = settings.sls_header_bg_color | default: sls_card_bg
+  assign sls_header_text_color = settings.sls_header_text_color | default: sls_text
+  assign sls_footer_bg_color = settings.sls_footer_bg_color | default: sls_card_bg
+  assign sls_footer_text_color = settings.sls_footer_text_color | default: sls_text
+  assign sls_footer_border_color = settings.sls_footer_border_color | default: sls_border
+  assign sls_item_title_color = settings.sls_item_title_color | default: sls_text
+  assign sls_item_variant_color = settings.sls_item_variant_color | default: sls_muted
+  assign sls_item_points_color = settings.sls_item_points_color | default: sls_accent
+  assign sls_item_price_color = settings.sls_item_price_color | default: sls_text
+  assign sls_item_remove_color = settings.sls_item_remove_color | default: sls_accent
+  assign sls_rewards_bar_bg = settings.sls_rewards_bar_bg | default: sls_soft_bg
+  assign sls_rewards_bar_text = settings.sls_rewards_bar_text | default: sls_footer_text_color
+  assign sls_rewards_bar_value = settings.sls_rewards_bar_value | default: sls_accent
+  assign sls_rec_add_bg = settings.sls_rec_add_bg | default: sls_accent
+  assign sls_rec_add_text = settings.sls_rec_add_text | default: '#ffffff'
+  assign sls_rec_add_hover_bg = settings.sls_rec_add_hover_bg | default: sls_button_hover_bg
+  assign sls_rec_add_hover_text = settings.sls_rec_add_hover_text | default: sls_button_hover_text
+  assign sls_empty_primary_label = settings.sls_empty_primary_label | strip
+  assign sls_empty_primary_link = settings.sls_empty_primary_link | default: routes.all_products_collection_url
+  assign sls_empty_secondary_label = settings.sls_empty_secondary_label | strip
+  assign sls_empty_secondary_link = settings.sls_empty_secondary_link | default: routes.all_products_collection_url
+
+  assign sls_au_standard_goal = settings.sls_ship_au_standard | default: 150 | times: 100
+  assign sls_au_express_goal = settings.sls_ship_au_express | default: 250 | times: 100
+  assign sls_au_gift_goal = settings.sls_ship_au_gift | default: 180 | times: 100
+  assign sls_nz_standard_goal = settings.sls_ship_nz_standard | default: 200 | times: 100
+  assign sls_nz_express_goal = settings.sls_ship_nz_express | default: 300 | times: 100
+  assign sls_nz_gift_goal = settings.sls_ship_nz_gift | default: 260 | times: 100
+  assign sls_country_code = localization.country.iso_code | default: 'AU' | upcase
+  if sls_country_code == 'NZ'
+    assign sls_standard_goal = sls_nz_standard_goal
+    assign sls_express_goal = sls_nz_express_goal
+    assign sls_gift_goal = sls_nz_gift_goal
+  else
+    assign sls_standard_goal = sls_au_standard_goal
+    assign sls_express_goal = sls_au_express_goal
+    assign sls_gift_goal = sls_au_gift_goal
+  endif
+  if sls_standard_goal <= 0
+    if sls_country_code == 'NZ'
+      assign sls_standard_goal = 20000
+    else
+      assign sls_standard_goal = 15000
+    endif
+  endif
+  if sls_express_goal <= sls_standard_goal
+    if sls_country_code == 'NZ'
+      assign sls_express_goal = 30000
+    else
+      assign sls_express_goal = 25000
+    endif
+    if sls_express_goal <= sls_standard_goal
+      assign sls_express_goal = sls_standard_goal | plus: 100
+    endif
+  endif
+  if sls_gift_goal <= 0
+    if sls_country_code == 'NZ'
+      assign sls_gift_goal = 26000
+    else
+      assign sls_gift_goal = 18000
+    endif
+  endif
+
+  assign sls_marquee_text_1 = settings.sls_marquee_text_1 | strip
+  assign sls_marquee_text_2 = settings.sls_marquee_text_2 | strip
+  assign sls_marquee_text_3 = settings.sls_marquee_text_3 | strip
+  assign sls_marquee_text_4 = settings.sls_marquee_text_4 | strip
+  assign sls_marquee_divider_icon = settings.sls_marquee_divider_icon | default: 'dot'
+  assign sls_marquee_divider_char = '•'
+  if sls_marquee_divider_icon == 'star'
+    assign sls_marquee_divider_char = '★'
+  elsif sls_marquee_divider_icon == 'heart'
+    assign sls_marquee_divider_char = '♥'
+  elsif sls_marquee_divider_icon == 'sparkle'
+    assign sls_marquee_divider_char = '✦'
+  elsif sls_marquee_divider_icon == 'diamond'
+    assign sls_marquee_divider_char = '◆'
+  elsif sls_marquee_divider_icon == 'none'
+    assign sls_marquee_divider_char = ''
+  endif
+  if sls_marquee_text_1 == blank
+    capture sls_marquee_text_1
+      if sls_show_cart_currency
+        echo sls_standard_goal | money_with_currency | append: '+ free shipping'
+      else
+        echo sls_standard_goal | money_without_trailing_zeros | append: '+ free shipping'
+      endif
+    endcapture
+  endif
+  if sls_marquee_text_2 == blank
+    capture sls_marquee_text_2
+      if sls_show_cart_currency
+        echo sls_express_goal | money_with_currency | append: '+ free express'
+      else
+        echo sls_express_goal | money_without_trailing_zeros | append: '+ free express'
+      endif
+    endcapture
+  endif
+  if sls_marquee_text_3 == blank
+    assign sls_marquee_text_3 = 'Rewards points on every order'
+  endif
+  if sls_marquee_text_4 == blank
+    assign sls_marquee_text_4 = 'Studio-ready lash essentials'
+  endif
+
+  assign sls_ship_goal = sls_standard_goal
+  assign sls_ship_remaining = 0
+  if cart.total_price >= sls_standard_goal and cart.total_price < sls_express_goal
+    assign sls_ship_goal = sls_express_goal
+  endif
+
+  if cart.total_price < sls_express_goal
+    assign sls_ship_remaining = sls_ship_goal | minus: cart.total_price
+  endif
+  assign sls_ship_total_progress = cart.total_price | times: 100 | divided_by: sls_express_goal
+  if sls_ship_total_progress > 100
+    assign sls_ship_total_progress = 100
+  endif
+  assign sls_ship_standard_marker = sls_standard_goal | times: 100 | divided_by: sls_express_goal
+  if sls_ship_standard_marker > 100
+    assign sls_ship_standard_marker = 100
+  endif
+  if sls_ship_standard_marker < 0
+    assign sls_ship_standard_marker = 0
+  endif
+  if sls_show_cart_currency
+    assign sls_ship_remaining_money = sls_ship_remaining | money_with_currency
+    assign sls_standard_goal_money = sls_standard_goal | money_with_currency
+    assign sls_express_goal_money = sls_express_goal | money_with_currency
+  else
+    assign sls_ship_remaining_money = sls_ship_remaining | money
+    assign sls_standard_goal_money = sls_standard_goal | money
+    assign sls_express_goal_money = sls_express_goal | money
+  endif
+  capture sls_shipping_standard_remaining_default
+    echo '<strong>[amount]</strong> AWAY FROM <strong>FREE SHIPPING</strong>'
+  endcapture
+  capture sls_shipping_express_remaining_default
+    echo '<strong>[amount]</strong> AWAY FROM <strong>FREE EXPRESS SHIPPING</strong>'
+  endcapture
+  capture sls_shipping_express_unlocked_default
+    echo 'YOU GOT IT BABE. <strong>FREE EXPRESS SHIPPING</strong> IS YOURS.'
+  endcapture
+  assign sls_shipping_standard_remaining_message = settings.sls_shipping_standard_remaining_message | default: sls_shipping_standard_remaining_default
+  assign sls_shipping_express_remaining_message = settings.sls_shipping_express_remaining_message | default: sls_shipping_express_remaining_default
+  assign sls_shipping_express_unlocked_message = settings.sls_shipping_express_unlocked_message | default: sls_shipping_express_unlocked_default
+  assign sls_shipping_ready_message = settings.sls_shipping_ready_message | default: 'Your cart is ready'
+  if cart.total_price >= sls_express_goal
+    assign sls_shipping_message_html = sls_shipping_express_unlocked_message
+  elsif cart.total_price >= sls_standard_goal
+    assign sls_shipping_message_html = sls_shipping_express_remaining_message | replace: '[amount]', sls_ship_remaining_money
+  else
+    assign sls_shipping_message_html = sls_shipping_standard_remaining_message | replace: '[amount]', sls_ship_remaining_money
+  endif
+
+  assign sls_cart_level_discount_total = 0
+  for discount in cart.cart_level_discount_applications
+    assign sls_cart_level_discount_total = sls_cart_level_discount_total | plus: discount.total_allocated_amount
+  endfor
+  assign sls_product_discount_total = cart.total_discount | minus: sls_cart_level_discount_total
+  assign sls_compare_total = 0
+  for item in cart.items
+    assign sls_line_compare_total = item.original_line_price
+    assign sls_line_compare_price = item.variant.compare_at_price | default: 0
+    if sls_line_compare_price == 0
+      for product_variant in item.product.variants
+        if product_variant.id == item.variant.id
+          assign sls_line_compare_price = product_variant.compare_at_price | default: 0
+          break
+        endif
+      endfor
+    endif
+    if sls_line_compare_price > item.original_price
+      assign sls_line_compare_total_from_variant = sls_line_compare_price | times: item.quantity
+      if sls_line_compare_total_from_variant > sls_line_compare_total
+        assign sls_line_compare_total = sls_line_compare_total_from_variant
+      endif
+    endif
+    assign sls_compare_total = sls_compare_total | plus: sls_line_compare_total
+  endfor
+  if sls_compare_total < cart.original_total_price
+    assign sls_compare_total = cart.original_total_price
+  endif
+  if sls_compare_total < cart.total_price
+    assign sls_compare_total = cart.total_price
+  endif
+  assign sls_compare_savings_total = sls_compare_total | minus: cart.original_total_price
+  assign sls_gift_remaining = sls_gift_goal | minus: cart.total_price
+  assign sls_gift_progress = cart.total_price | times: 100 | divided_by: sls_gift_goal
+  assign sls_split_payment_amount = cart.total_price | divided_by: 4.0 | round
+  if sls_show_cart_currency
+    assign sls_gift_remaining_money = sls_gift_remaining | money_with_currency
+    assign sls_split_payment_money = sls_split_payment_amount | money_with_currency
+  else
+    assign sls_gift_remaining_money = sls_gift_remaining | money
+    assign sls_split_payment_money = sls_split_payment_amount | money
+  endif
+  if sls_gift_progress > 100
+    assign sls_gift_progress = 100
+  endif
+-%}
+{%- if settings.sls_cart_font != blank -%}
+  <style>{{ settings.sls_cart_font | font_face: font_display: 'swap' }}</style>
+{%- endif -%}
+{%- capture cart_drawer -%}
+<cart-drawer class="ctdrawer pf w_100 h_100 fl f-jce sls-native-cart{% if cart == empty %} is-empty{% endif %}" data-id="{{ section.id }}" data-sls-points-rate="{{ sls_rewards_rate }}" data-sls-points-label="{{ sls_rewards_label | escape }}" data-sls-show-marquee="{{ sls_show_marquee }}" data-sls-show-shipping="{{ sls_show_shipping_progress }}" data-sls-show-countdown="{{ sls_show_countdown }}" data-sls-show-gift-goal="{{ sls_show_gift_goal }}" data-sls-show-rewards="{{ sls_show_rewards }}" data-sls-show-rewards-bar="{{ sls_show_rewards_bar }}" data-sls-show-recommendations="{{ sls_show_recommendations }}" data-sls-show-coupon="{{ sls_show_coupon }}" data-sls-show-order-note="{{ sls_show_order_note }}" data-sls-marquee-divider="{{ sls_marquee_divider_icon }}" data-sls-item-surface="{{ sls_item_surface }}" data-sls-rec-surface="{{ sls_rec_surface_style }}" data-sls-rewards-style="{{ sls_rewards_bar_style }}" data-sls-rewards-content="{{ sls_rewards_bar_content }}" data-sls-show-each-price="{{ sls_show_each_price }}" aria-hidden="true" style="--sls-cart-font:{{ sls_cart_font }};--sls-cart-width:{{ sls_drawer_width }}px;--sls-cart-card-radius:{{ sls_card_radius }}px;--sls-cart-button-radius:{{ sls_button_radius }}px;--sls-cart-image-radius:{{ sls_image_radius }}px;--sls-cart-image-border-width:{{ sls_image_border }}px;--sls-cart-loader-size:{{ sls_loader_size }}px;--sls-cart-loader-gap:{{ sls_loader_gap }}px;--sls-cart-bg:{{ sls_bg }};--sls-cart-card-bg:{{ sls_card_bg }};--sls-cart-soft-bg:{{ sls_soft_bg }};--sls-marquee-bg:{{ sls_marquee_bg_color }};--sls-marquee-sep:{{ sls_marquee_separator_color }};--sls-topbar-bg:{{ sls_topbar_bg_color }};--sls-shipping-message:{{ sls_shipping_message_color }};--sls-shipping-labels:{{ sls_shipping_labels_color }};--sls-shipping-unlocked:{{ sls_shipping_unlocked_color }};--sls-progress-track:{{ sls_shipping_progress_track_color }};--sls-progress-fill:{{ sls_shipping_progress_fill_color }};--sls-countdown-bg:{{ sls_countdown_bg_color }};--sls-countdown-text:{{ sls_countdown_text_color }};--sls-gift-track:{{ sls_gift_progress_track_color }};--sls-gift-fill:{{ sls_gift_progress_fill_color }};--sls-cart-accent:{{ sls_accent }};--sls-cart-accent-hover:{{ sls_accent_hover }};--sls-cart-mid:{{ sls_mid }};--sls-cart-text:{{ sls_text }};--sls-cart-muted:{{ sls_muted }};--sls-cart-border:{{ sls_border }};--sls-header-bg:{{ sls_header_bg_color }};--sls-header-text:{{ sls_header_text_color }};--sls-footer-bg:{{ sls_footer_bg_color }};--sls-footer-text:{{ sls_footer_text_color }};--sls-footer-border:{{ sls_footer_border_color }};--sls-item-title:{{ sls_item_title_color }};--sls-item-variant:{{ sls_item_variant_color }};--sls-item-points:{{ sls_item_points_color }};--sls-item-price:{{ sls_item_price_color }};--sls-item-remove:{{ sls_item_remove_color }};--sls-item-title-size:{{ sls_item_title_size }}px;--sls-item-variant-size:{{ sls_item_variant_size }}px;--sls-item-price-size:{{ sls_item_price_size }}px;--sls-item-sale-price-size:{{ sls_item_sale_price_size }}px;--sls-item-points-size:{{ sls_item_points_size }}px;--sls-item-discount-size:{{ sls_item_discount_code_size }}px;--sls-item-each-size:{{ sls_item_each_price_size }}px;--sls-tool-text-size:{{ sls_tool_text_size }}px;--sls-checkout-text-size:{{ sls_checkout_text_size }}px;--sls-shipping-message-size:{{ sls_shipping_message_size }}px;--sls-shipping-message-spacing:{{ sls_shipping_message_spacing | times: 0.01 }}em;--sls-shipping-label-size:{{ sls_shipping_label_size }}px;--sls-shipping-case:{{ sls_shipping_text_case }};--sls-cart-sheet-overlay:{{ sls_sheet_overlay }};--sls-cart-text-case:{{ sls_text_case }};--sls-cart-text-case-upper:{{ sls_text_case_upper }};--sls-marquee-case:{{ sls_marquee_text_case }};--sls-marquee-text:{{ sls_marquee_text_color }};--sls-sale-color:{{ settings.sls_sale_color | default: '#C44A4A' }};--sls-btn-hover-bg:{{ sls_button_hover_bg }};--sls-btn-hover-text:{{ sls_button_hover_text }};--sls-rec-card-bg:{{ sls_rec_card_bg }};--sls-rec-card-border:{{ sls_rec_card_border }};--sls-rec-image-bg:{{ sls_rec_image_bg }};--sls-rec-image-border:{{ sls_rec_image_border }};--sls-rec-variant-bg:{{ sls_rec_variant_bg }};--sls-rec-variant-border:{{ sls_rec_variant_border }};--sls-rec-add-bg:{{ sls_rec_add_bg }};--sls-rec-add-text:{{ sls_rec_add_text }};--sls-rec-add-hover-bg:{{ sls_rec_add_hover_bg }};--sls-rec-add-hover-text:{{ sls_rec_add_hover_text }};--sls-rec-heading-size:{{ sls_rec_heading_size }}px;--sls-rec-title-size:{{ sls_rec_title_size }}px;--sls-rec-subtitle-size:{{ sls_rec_subtitle_size }}px;--sls-rec-price-size:{{ sls_rec_price_size }}px;--sls-rec-variant-size:{{ sls_rec_variant_size }}px;--sls-rec-add-size:{{ sls_rec_add_size }}px;--sls-rec-autoplay-ms:{{ sls_rec_autoplay_ms }}ms;--sls-rewards-height:{{ sls_rewards_bar_height }}px;--sls-rewards-font-size:{{ sls_rewards_bar_font_size }}px;--sls-rewards-bar-bg:{{ sls_rewards_bar_bg }};--sls-rewards-bar-text:{{ sls_rewards_bar_text }};--sls-rewards-bar-value:{{ sls_rewards_bar_value }};">
+  <div id="CartDrawer-Overlay" class="pf w_100 h_100 sls-cart-overlay"></div>
+  <div id="CartDrawer" class="cart-drawer anim sls-cart-drawer{% if cart == empty %} is-empty{% endif %}">
+    <div class="drawer__inner block-cart ctScroll tl fl f-col sls-cart-shell{% if cart == empty %} is-empty{% endif %}" role="dialog" aria-modal="true" aria-label="{{ 'cart.general.title' | t }}" tabindex="-1">
+      <header class="sls-cart-header">
+        <div class="sls-cart-header__title">
+          <span class="sls-cart-title-word">Cart</span>
+          <span class="sls-cart-count" data-cart-render="item_count">{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</span>
+          <span class="sls-cart-count-mobile" aria-hidden="true">(<span data-cart-render="item_count_mobile">{{ cart.item_count }}</span>)</span>
+        </div>
+        <button type="button" class="sls-cart-close drawer__close" onclick="var d=this.closest('cart-drawer');if(d&&typeof d.close==='function'){d.close();}else if(d){d.classList.remove('active','poptop');document.documentElement.classList.remove('of_hidden');}" title="{{ 'cart.button.close' | t }}" aria-label="{{ 'cart.button.close' | t }}">
+          <svg class="at-icon"><use xlink:href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      {%- if cart == empty -%}
+        <div class="drawer-empty sls-cart-empty fl1 fl f-col f-aic f-jcc tc">
+          <div class="sls-cart-empty__icon"><svg class="at-icon"><use xlink:href="#icon-cart"></use></svg></div>
+          <p class="sls-cart-empty__title">{{ 'cart.general.empty' | t }}</p>
+          {%- if sls_empty_primary_label != blank or sls_empty_secondary_label != blank -%}
+            <div class="sls-cart-empty__actions">
+              {%- if sls_empty_primary_label != blank -%}<a href="{{ sls_empty_primary_link }}" class="sls-cart-empty__btn">{{ sls_empty_primary_label }}</a>{%- endif -%}
+              {%- if sls_empty_secondary_label != blank -%}<a href="{{ sls_empty_secondary_link }}" class="sls-cart-empty__btn sls-cart-empty__btn--secondary">{{ sls_empty_secondary_label }}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if shop.customer_accounts_enabled and customer == nil -%}
+            <div class="h5 fwm">{{ 'cart.login.title' | t }}</div>
+            <p>{{ 'cart.login.paragraph_html' | t: link: routes.account_login_url }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <cart-drawer-items class="sls-cart-main fl1{% if cart == empty and sls_show_gift_goal == false and sls_show_recommendations == false and sls_show_marquee == false and sls_show_shipping_progress == false and sls_show_countdown == false %} hide{% endif %}">
+        {%- if sls_show_marquee or sls_show_shipping_progress or sls_show_countdown -%}
+          <div class="sls-cart-topbar">
+            {%- if sls_show_marquee -%}
+              <div class="sls-cart-marquee" aria-hidden="true">
+                <div class="sls-cart-marquee__track">
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_1 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_2 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_3 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_4 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_1 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_2 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_3 | escape }}</span>
+                  {%- if sls_marquee_divider_char != blank -%}<span class="sls-cart-marquee__sep" aria-hidden="true">{{ sls_marquee_divider_char }}</span>{%- endif -%}
+                  <span class="sls-cart-marquee__text">{{ sls_marquee_text_4 | escape }}</span>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if sls_show_shipping_progress or sls_show_countdown -%}
+              <div class="sls-cart-progress">
+                <div class="sls-cart-progress__row">
+                  <p>
+                    {% if sls_show_shipping_progress %}
+                      {{ sls_shipping_message_html }}
+                    {% else %}
+                      {{ sls_shipping_ready_message }}
+                    {% endif %}
+                  </p>
+                  {%- if sls_show_countdown -%}
+                    <span class="cartCountdown sls-cart-countdown" data-countdown="{{ sls_countdown_seconds }}"><svg class="at-icon" viewBox="0 0 24 24"><path d="M10 2h4M12 14l3-3M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/></svg><span id="cartTime" data-sls-countdown-time>02:35:00</span></span>
+                  {%- endif -%}
+                </div>
+                {%- if sls_show_shipping_progress -%}
+                  <div class="sls-cart-progress__bar sls-cart-progress__bar--tiered">
+                    <span style="width:{{ sls_ship_total_progress }}%;"></span>
+                    <i class="sls-cart-progress__marker sls-cart-progress__marker--standard{% if cart.total_price >= sls_standard_goal %} is-unlocked{% endif %}" style="left:{{ sls_ship_standard_marker }}%;" aria-hidden="true"></i>
+                    <i class="sls-cart-progress__marker sls-cart-progress__marker--end sls-cart-progress__marker--express{% if cart.total_price >= sls_express_goal %} is-unlocked{% endif %}" style="left:100%;" aria-hidden="true"></i>
+                  </div>
+                  <div class="sls-cart-progress__labels sls-cart-progress__labels--tiers">
+                    {% unless cart.total_price >= sls_express_goal %}
+                      <span class="sls-cart-progress__tier{% if cart.total_price >= sls_standard_goal %} is-unlocked{% endif %}" data-sls-tier="standard" aria-label="{% if cart.total_price >= sls_standard_goal %}Free shipping unlocked{% else %}Free shipping {{ sls_standard_goal_money }}{% endif %}">
+                        <span class="sls-cart-progress__tier-label">Free shipping</span>
+                        <span class="sls-cart-progress__tier-amount">{% if cart.total_price >= sls_standard_goal %}Unlocked{% else %}{{ sls_standard_goal_money }}{% endif %}</span>
+                      </span>
+                    {% endunless %}
+                    <span class="sls-cart-progress__tier{% if cart.total_price >= sls_express_goal %} is-unlocked{% endif %}" data-sls-tier="express">
+                      <span class="sls-cart-progress__tier-label">Free express</span>
+                      <span class="sls-cart-progress__tier-amount">{{ sls_express_goal_money }}</span>
+                    </span>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if sls_show_gift_goal -%}
+        <section class="sls-cart-gift-goal" aria-label="Free gift goal">
+          <div class="sls-cart-gift-goal__row">
+            <span class="sls-cart-gift-goal__icon">
+              <svg class="at-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8H4v-8"/><path d="M2 8h20v4H2z"/><path d="M12 8v12"/><path d="M12 8H8.5a2 2 0 1 1 0-4C11 4 12 8 12 8Z"/><path d="M12 8h3.5a2 2 0 1 0 0-4C13 4 12 8 12 8Z"/></svg>
+            </span>
+            <div class="sls-cart-gift-goal__copy">
+              <p>{% if sls_gift_remaining > 0 %}{{ sls_gift_remaining_money }} away from a free gift{% else %}Free gift unlocked{% endif %}</p>
+              <span>Order value booster</span>
+            </div>
+            {%- if settings.giftwrap and settings.gift_product != blank and is_gift -%}
+              <a href="#giftWrap" class="sls-cart-gift-goal__add cftBtn">Add</a>
+            {%- else -%}
+              <button type="button" class="sls-cart-gift-goal__add" disabled>Add</button>
+            {%- endif -%}
+          </div>
+          <div class="sls-cart-gift-goal__bar"><span style="width:{{ sls_gift_progress }}%;"></span></div>
+        </section>
+        {%- endif -%}
+
+        <form action="{{ routes.cart_url }}" id="CartDrawer-Form" class="cart__contents cart-drawer__form" method="post">
+          <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
+            {%- if cart != empty -%}
+              <div class="drawer__cart-items-wrapper">
+                <ul class="mini_plist cart-items sls-cart-items">
+                  {%- for item in cart.items -%}
+                    {% if item.id == gift_id %}{% assign is_gift = false %}{% endif %}
+                    {%- liquid
+                      assign sls_item_points = item.final_line_price | times: sls_rewards_rate | divided_by: 100
+                      assign sls_item_compare_line_price = 0
+                      assign sls_item_compare_price = item.variant.compare_at_price | default: 0
+                      if sls_item_compare_price == 0
+                        for product_variant in item.product.variants
+                          if product_variant.id == item.variant.id
+                            assign sls_item_compare_price = product_variant.compare_at_price | default: 0
+                            break
+                          endif
+                        endfor
+                      endif
+                      if sls_item_compare_price > item.final_price
+                        assign sls_item_compare_line_price = sls_item_compare_price | times: item.quantity
+                      endif
+                      assign sls_item_regular_line_price = item.original_line_price
+                      if sls_item_compare_line_price > sls_item_regular_line_price
+                        assign sls_item_regular_line_price = sls_item_compare_line_price
+                      endif
+                      if sls_show_cart_currency
+                        assign sls_item_regular_line_price_money = sls_item_regular_line_price | money_with_currency
+                        assign sls_item_final_line_price = item.final_line_price | money_with_currency
+                        assign sls_item_final_price = item.final_price | money_with_currency
+                        assign sls_item_unit_price = item.variant.unit_price | money_with_currency
+                        assign sls_item_variant_price = item.variant.price | money_with_currency
+                      else
+                        assign sls_item_regular_line_price_money = sls_item_regular_line_price | money
+                        assign sls_item_final_line_price = item.final_line_price | money
+                        assign sls_item_final_price = item.final_price | money
+                        assign sls_item_unit_price = item.variant.unit_price | money
+                        assign sls_item_variant_price = item.variant.price | money
+                      endif
+                      assign has_qty_rules = false
+                      if item.variant.quantity_rule.increment > 1 or item.variant.quantity_rule.min > 1 or item.variant.quantity_rule.max != null
+                        assign has_qty_rules = true
+                      endif
+                      assign has_vol_pricing = false
+                      if item.variant.quantity_price_breaks.size > 0
+                        assign has_vol_pricing = true
+                      endif
+                    -%}
+                    <li id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item sls-cart-item" role="row" data-product-id="{{ item.product.id }}" data-line-key="{{ item.key | escape }}">
+                      <div class="sls-cart-item__image" role="cell" headers="CartDrawer-ColumnProductImage">
+                        {% if item.image %}
+                          <a href="{{ item.url }}" class="cart-item__link sls-cart-image-link" tabindex="-1">
+                            {{ item.image | image_url: width: 320 | image_tag: loading:'lazy', width:112, height:112, class:'imgFt', sizes:'112px', widths:"150,220,320" }}
+                          </a>
+                        {% endif %}
+                      </div>
+                      <div class="sls-cart-item__body pr_details fl1 tl">
+                        <div class="sls-cart-item__top">
+                          <div class="sls-cart-item__copy">
+                            <a href="{{ item.url }}" class="pr_name sls-cart-item__title">{{ item.product.title | escape }}</a>
+                            <div class="cart-item__details sls-cart-item__details" role="cell" headers="CartDrawer-ColumnProduct">
+                              {%- if item.product.has_only_default_variant == false or item.properties.size != 0 or item.selling_plan_allocation != nil -%}
+                                {%- if item.product.has_only_default_variant == false -%}
+                                  <div class="sls-cart-item__variant">
+                                    {%- for option in item.options_with_values -%}
+                                      <span class="pr_vr">{{ option.value }}</span>{% unless forloop.last %}<span> / </span>{% endunless %}
+                                    {%- endfor -%}
+                                  </div>
+                                {%- endif -%}
+                                {%- for property in item.properties -%}
+                                  {%- assign property_first_char = property.first | slice: 0 -%}
+                                  {%- if property.last != blank and property_first_char != '_' -%}
+                                    <div class="pr_vr sls-cart-item__variant">
+                                      {{ property.first }}:
+                                      {% if property.last contains '/uploads/' %}
+                                        <a href="{{ property.last }}" class="link" target="_blank" aria-describedby="a11y-new-window-message">{{ property.last | split: '/' | last }}</a>
+                                      {% else %}
+                                        {{ property.last }}
+                                      {% endif %}
+                                    </div>
+                                  {%- endif -%}
+                                {%- endfor -%}
+                                {%- if item.selling_plan_allocation.selling_plan != blank -%}
+                                  <div class="pr_vr sls-cart-item__variant">{{ item.selling_plan_allocation.selling_plan.name }}</div>
+                                {%- endif -%}
+                              {%- endif -%}
+                            </div>
+                            {%- if sls_show_rewards and sls_rewards_rate > 0 -%}<p class="sls-cart-item__points" data-sls-points-price="{{ item.final_line_price }}">+{{ sls_item_points }} {{ sls_rewards_label }}</p>{%- endif -%}
+                            {%- if item.discounts.size > 0 -%}
+                              <ul class="discounts sls-cart-item__discounts" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                                {%- for discount in item.discounts -%}
+                                  <li class="discounts__discount fl f-aic gap" style="--gap:3px;">{% render 'icon-tag' %} {{ discount.title }}</li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                          <div class="cart-item__totals sls-cart-item__price sls-cart-item__price--top" role="cell" headers="CartDrawer-ColumnTotal">
+                            <div class="loading__spinner loading-overlay hidden"><svg style="--icns:12px;" class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+                            <div class="ctitempr">
+                              {%- if sls_item_regular_line_price > item.final_line_price -%}
+                                <div class="cart-item__discounted-prices">
+                                  <s class="cart-item__old-price price price--end">{{ sls_item_regular_line_price_money }}</s>
+                                  <span class="price price--end">{{ sls_item_final_line_price }}</span>
+                                </div>
+                              {%- else -%}
+                                <span class="price price--end">{{ sls_item_final_line_price }}</span>
+                              {%- endif -%}
+                              {%- if sls_show_each_price and item.quantity > 1 -%}<span class="sls-cart-item__each">{{ sls_item_final_price }} each</span>{%- endif -%}
+                              {%- if item.variant.available and item.unit_price_measurement -%}
+                                <div class="unit-price caption">{{ sls_item_unit_price }}<span aria-hidden="true">/</span>{%- if item.variant.unit_price_measurement.reference_value != 1 -%}{{ item.variant.unit_price_measurement.reference_value }}{%- endif -%}{{ item.variant.unit_price_measurement.reference_unit }}</div>
+                              {%- endif -%}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="sls-cart-item__bottom">
+                          <div class="sls-cart-item__controls">
+                          <div class="cquantity cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}" role="cell" headers="CartDrawer-ColumnQuantity">
+                            <quantity-popover>
+                              <div class="cart-item__quantity-wrapper quantity-popover-wrapper fl f-aic">
+                                <div class="quantity-popover-container{% if has_qty_rules or has_vol_pricing %} quantity-popover-container--hover{% endif %}">
+                                  <label class="hidden_txt" for="Drawer-quantity-{{ item.index | plus: 1 }}">{{ 'products.product.quantity.label' | t }}</label>
+                                  <quantity-input class="quantity cart-quantity qtyField sls-cart-quantity lume-qty-enhanced{% if item.id == gift_id %} hide{% endif %}">
+                                    <button type="button" class="qtyBtn linkQty minus" name="minus" aria-label="{{ 'general.quantity.minus' | t }}"><svg class="at-icon"><use xlink:href="#icon-minus"></use></svg></button>
+                                    <input class="quantity__input pr_input qty" type="number" data-quantity-variant-id="{{ item.variant.id }}" data-line-key="{{ item.key | escape }}" name="updates[]" value="{{ item.quantity }}" data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}" min="{{ item.variant.quantity_rule.min }}" {% if item.variant.quantity_rule.max != null %}max="{{ item.variant.quantity_rule.max }}"{% endif %} step="{{ item.variant.quantity_rule.increment }}" aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}" id="Drawer-quantity-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
+                                    <button type="button" class="qtyBtn linkQty plus" name="plus" aria-label="{{ 'general.quantity.plus' | t }}"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></button>
+                                  </quantity-input>
+                                </div>
+                              </div>
+                              {%- if has_qty_rules or has_vol_pricing -%}
+                                <button type="button" class="quantity-popover__info-button quantity-popover__info-button--icon-with-label button button--tertiary" aria-expanded="false">
+                                  {{ 'icon-error.svg' | inline_asset_content }} <span>{%- if has_vol_pricing -%}{{ 'products.product.volume_pricing.note' | t }}{%- elsif has_qty_rules -%}{{ 'products.product.quantity.note' | t }}{%- endif -%}</span>
+                                </button>
+                              {%- endif -%}
+                              {%- if has_vol_pricing or has_qty_rules -%}
+                                <div class="cart-items__info global-settings-popup quantity-popover__info" tabindex="-1" hidden>
+                                  {%- if has_qty_rules == false -%}<span class="volume-pricing-label caption">{{- 'products.product.volume_pricing.title' | t -}}</span>{%- endif -%}
+                                  <div class="quantity__rules caption no-js-hidden">
+                                    {%- if item.variant.quantity_rule.increment > 1 -%}<span class="divider">{{- 'products.product.quantity.multiples_of' | t: quantity: item.variant.quantity_rule.increment -}}</span>{%- endif -%}
+                                    {%- if item.variant.quantity_rule.min > 1 -%}<span class="divider">{{- 'products.product.quantity.minimum_of' | t: quantity: item.variant.quantity_rule.min -}}</span>{%- endif -%}
+                                    {%- if item.variant.quantity_rule.max != null -%}<span class="divider">{{- 'products.product.quantity.maximum_of' | t: quantity: item.variant.quantity_rule.max -}}</span>{%- endif -%}
+                                  </div>
+                                  <button class="button-close button button--tertiary" type="button" aria-label="{{ 'accessibility.close' | t }}"><svg class="at-icon"><use xlink:href="#icon-close"></use></svg></button>
+                                  {%- if item.variant.quantity_price_breaks.size > 0 -%}
+                                    <volume-pricing class="parent-display">
+                                      <ul class="list-unstyled">
+                                        <li><span>{{ item.variant.quantity_rule.min }}+</span><span>{{ sls_item_variant_price }}/ea</span></li>
+                                        {%- for price_break in item.variant.quantity_price_breaks -%}
+                                          {%- liquid
+                                            if sls_show_cart_currency
+                                              assign sls_price_break_money = price_break.price | money_with_currency
+                                            else
+                                              assign sls_price_break_money = price_break.price | money
+                                            endif
+                                          -%}
+                                          <li><span>{{- price_break.minimum_quantity -}} <span aria-hidden="true">+</span></span><span>{{ sls_price_break_money }}/ea</span></li>
+                                        {%- endfor -%}
+                                      </ul>
+                                    </volume-pricing>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                              <div id="CartDrawer-LineItemError-{{ item.index | plus: 1 }}" class="cart-item__error ermsg" role="alert">
+                                <small class="cart-item__error-text ctItem-error order1"></small> {{ 'icon-error.svg' | inline_asset_content }}
+                              </div>
+                            </quantity-popover>
+                          </div>
+                          </div>
+                          <cart-remove-button id="CartDrawer-Remove-{{ item.index | plus: 1 }}" class="sls-cart-remove sls-cart-remove--inline sls-cart-remove--right" data-index="{{ item.index | plus: 1 }}" data-line-key="{{ item.key | escape }}">
+                            <button type="button" class="btnNone remove cart-remove-button" aria-label="{{ 'cart.button.remove' | t: title: item.title }}" data-variant-id="{{ item.variant.id }}" data-line-key="{{ item.key | escape }}">
+                              <svg class="at-icon"><use xlink:href="#icon-close"></use></svg>
+                            </button>
+                          </cart-remove-button>
+                        </div>
+                      </div>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+            <p id="CartDrawer-LiveRegionText" class="hidden_txt" role="status"></p>
+            <p id="CartDrawer-LineItemStatus" class="hidden_txt" aria-hidden="true" role="status">{{ 'general.pagination.loading' | t }}</p>
+          </div>
+          <div id="CartDrawer-CartErrors" class="ermsg hide" role="alert"></div>
+        </form>
+
+        {% if sls_show_recommendations %}{% render 'cart-recommendations', cartItems: cart.items, rec_heading: settings.sls_recommend_heading, rec_source: settings.sls_recommend_source, rec_limit: settings.sls_recommend_limit, rec_autoplay_ms: settings.sls_recommend_autoplay_ms, rec_hide_mobile: settings.sls_recommend_hide_mobile, sls_show_cart_currency: sls_show_cart_currency %}{% endif %}
+      </cart-drawer-items>
+
+      <div class="drawer__footer sls-cart-footer{% if cart == empty %} hide{% endif %}">
+        {%- liquid
+          assign sls_show_gift_tool = false
+          if settings.giftwrap and settings.gift_product != blank and is_gift
+            assign sls_show_gift_tool = true
+          endif
+        -%}
+        {%- if sls_show_coupon or sls_show_order_note or sls_show_gift_tool -%}
+        <div class="sls-cart-footer__controls">
+          <cart-option class="cartFt sls-cart-tools">
+            {%- if sls_show_coupon -%}
+              <a href="#cartCoupon" class="cftBtn sls-cart-tool pr">{% render 'icon-tag' %}<span>{% if discount_codes.size > 1 %}{{ discount_codes.size }} Codes{% elsif discount_codes.size == 1 %}{{ discount_codes.first }}{% else %}Coupon{% endif %}</span></a>
+            {%- endif -%}
+            {%- if sls_show_order_note -%}
+              <a href="#cartNote" class="cftBtn sls-cart-tool pr">
+                <svg class="at-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+                <span>{% if cart.note != blank %}Note Added{% else %}Order Note{% endif %}</span>
+              </a>
+            {%- endif -%}
+            {%- if settings.giftwrap and settings.gift_product != blank and is_gift -%}
+              <a href="#giftWrap" class="cftBtn sls-cart-tool pr">
+                <svg class="at-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8H4v-8"/><path d="M2 8h20v4H2z"/><path d="M12 8v12"/><path d="M12 8H8.5a2 2 0 1 1 0-4C11 4 12 8 12 8Z"/><path d="M12 8h3.5a2 2 0 1 0 0-4C13 4 12 8 12 8Z"/></svg>
+                <span>Gift wrap</span>
+              </a>
+            {%- endif -%}
+          </cart-option>
+        </div>
+        {%- endif -%}
+        <div class="sls-cart-footer__totals">
+          <div class="cart_btns sls-cart-summary">
+            {%- if sls_show_discount_rows -%}
+              {%- if sls_compare_savings_total > 0 -%}
+                <div class="sls-cart-summary__row sls-cart-summary__discount">
+                  <span class="sls-cart-summary__discount-label">{% render 'icon-tag' %} Sale</span>
+                  <span>-{% if sls_show_cart_currency %}{{ sls_compare_savings_total | money_with_currency }}{% else %}{{ sls_compare_savings_total | money }}{% endif %}</span>
+                </div>
+              {%- endif -%}
+              {%- if sls_product_discount_total > 0 -%}
+                <div class="sls-cart-summary__row sls-cart-summary__discount">
+                  <span class="sls-cart-summary__discount-label">{% render 'icon-tag' %} {{ sls_product_discount_label }}</span>
+                  <span>-{% if sls_show_cart_currency %}{{ sls_product_discount_total | money_with_currency }}{% else %}{{ sls_product_discount_total | money }}{% endif %}</span>
+                </div>
+              {%- endif -%}
+              {%- if cart.cart_level_discount_applications.size > 0 -%}
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <div class="sls-cart-summary__row sls-cart-summary__discount">
+                    <span class="sls-cart-summary__discount-label">{% render 'icon-tag' %} {{ discount.title }}</span>
+                    <span>-{% if sls_show_cart_currency %}{{ discount.total_allocated_amount | money_with_currency }}{% else %}{{ discount.total_allocated_amount | money }}{% endif %}</span>
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endif -%}
+            <div class="sls-cart-summary__row sls-cart-summary__total" role="status">
+              <span>Total price</span>
+              <span class="sls-cart-summary__total-value{% if sls_compare_total > cart.total_price %} is-discounted{% endif %}">
+                <span class="sls-cart-summary__total-current">{{ cart.total_price | money_with_currency }}</span>
+                {%- if sls_compare_total > cart.total_price -%}
+                  <s class="sls-cart-summary__total-compare">{{ sls_compare_total | money_with_currency }}</s>
+                {%- endif -%}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cart__ctas sls-cart-ctas sls-cart-footer__checkout">
+          <noscript><button type="submit" class="cart__update-button button button--secondary" form="CartDrawer-Form">{{ 'cart.button.update' | t }}</button></noscript>
+          {%- if settings.terms_checkbox -%}
+            <p class="cart_term">
+              <label for="cartTerms" class="fl f-aic">
+                <input type="checkbox" name="tearm" id="cartTerms" class="checkbox custCheck" value="tearm" required />
+                <span class="checkbox"></span><span>{{ settings.terms_text }}</span>
+              </label>
+            </p>
+          {%- endif -%}
+          {%- if sls_show_rewards_bar and sls_rewards_rate > 0 -%}
+            <p class="sls-cart-rewards">
+              <span class="sls-cart-rewards__line">Earn <strong class="sls-cart-rewards__value" data-sls-points-price="{{ cart.total_price }}">+{{ sls_total_points }} {{ sls_rewards_label }}</strong> on this order</span>
+            </p>
+          {%- endif -%}
+          <button type="submit" id="CartDrawer-Checkout" class="sls-cart-checkout cartCheckout" name="checkout" form="CartDrawer-Form"{% if cart == empty or settings.terms_checkbox %} disabled{% endif %}>
+            <svg class="at-icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <span>Checkout &middot; {{ cart.total_price | money_with_currency }}</span>
+          </button>
+          {%- if sls_show_flexible_payments and cart != empty and additional_checkout_buttons -%}
+            <div class="sls-cart-flex-payments">
+              <div class="additional-checkout-buttons sls-cart-flex-payments__buttons">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+            </div>
+          {%- endif -%}
+          {%- if sls_show_split_payment_note and cart != empty and cart.total_price > 0 -%}
+            <p class="sls-cart-split-payment-note afterpay-paragraph">
+              <span class="afterpay-main-text">or 4 payments of <strong>{{ sls_split_payment_money }}</strong> with</span>
+              <span class="afterpay-logo-link">
+                <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="98" height="36" class="compact-badge-logo afterpay-logo" aria-hidden="true" viewBox="0 0 100 21">
+                  <path class="afterpay-logo-badge-background" fill="#b2fce4" d="M89.85 20.92h-78.9a10.42 10.42 0 110-20.82h78.89a10.42 10.42 0 010 20.83v-.01z"></path>
+                  <g class="afterpay-logo-badge-lockup">
+                    <path d="M85.05 6.37L82.88 5.1l-2.2-1.27a2.2 2.2 0 00-3.3 1.9v.29c0 .16.08.3.22.38l1.03.58c.28.16.63-.04.63-.37v-.67c0-.34.36-.54.65-.38l2.02 1.16 2 1.15c.3.16.3.58 0 .75l-2 1.15-2.02 1.16a.43.43 0 01-.65-.38v-.33a2.2 2.2 0 00-3.28-1.9l-2.2 1.26-2.19 1.25a2.2 2.2 0 000 3.8l2.18 1.25 2.2 1.27a2.2 2.2 0 003.3-1.9v-.3c0-.15-.09-.3-.23-.37L78.02 14a.43.43 0 00-.64.37v.67c0 .34-.36.54-.65.38l-2-1.16-2-1.15a.43.43 0 010-.75l2-1.15 2-1.16c.3-.16.65.05.65.38v.33a2.2 2.2 0 003.3 1.9l2.2-1.26 2.17-1.25a2.2 2.2 0 000-3.8z"></path>
+                    <path d="M70.77 6.78l-5.1 10.53h-2.12l1.91-3.93-3-6.6h2.17l1.93 4.42 2.1-4.42h2.11z"></path>
+                    <path d="M19.8 10.5c0-1.24-.92-2.12-2.04-2.12s-2.03.9-2.03 2.14c0 1.23.91 2.14 2.03 2.14s2.03-.88 2.03-2.14m.02 3.74v-.97a3 3 0 01-2.36 1.09c-2.05 0-3.6-1.65-3.6-3.86 0-2.2 1.61-3.87 3.65-3.87.95 0 1.76.42 2.31 1.08v-.95h1.84v7.48h-1.84z"></path>
+                    <path d="M30.6 12.6c-.65 0-.84-.24-.84-.87V8.4h1.2V6.78h-1.2V4.96h-1.88v1.82h-2.43v-.74c0-.63.24-.87.9-.87h.42V3.72h-.9c-1.56 0-2.3.5-2.3 2.07v1h-1.04V8.4h1.04v5.85h1.88V8.4h2.43v3.66c0 1.53.6 2.19 2.11 2.19h.97V12.6h-.37z"></path>
+                    <path d="M37.35 9.85c-.13-.97-.93-1.56-1.86-1.56-.92 0-1.7.57-1.88 1.56h3.74zM33.6 11c.13 1.1.93 1.74 1.93 1.74.8 0 1.4-.37 1.76-.97h1.94c-.45 1.58-1.87 2.6-3.74 2.6a3.68 3.68 0 01-3.85-3.85 3.78 3.78 0 013.9-3.9 3.74 3.74 0 013.8 4.38H33.6z"></path>
+                    <path d="M51.35 10.5c0-1.2-.9-2.12-2.03-2.12-1.12 0-2.03.9-2.03 2.14 0 1.23.9 2.14 2.03 2.14 1.12 0 2.03-.93 2.03-2.14m-5.92 6.79V6.78h1.84v.97a2.97 2.97 0 012.36-1.1c2.02 0 3.6 1.65 3.6 3.85s-1.6 3.87-3.65 3.87a2.9 2.9 0 01-2.26-1v3.93h-1.9.01z"></path>
+                    <path d="M59.86 10.5c0-1.24-.9-2.12-2.03-2.12-1.12 0-2.04.9-2.04 2.14 0 1.23.92 2.14 2.04 2.14s2.03-.88 2.03-2.14m.02 3.74v-.97a3 3 0 01-2.36 1.09c-2.05 0-3.6-1.65-3.6-3.86 0-2.2 1.61-3.87 3.64-3.87.96 0 1.76.42 2.32 1.08v-.95h1.84v7.48h-1.84z"></path>
+                    <path d="M42.11 7.5s.47-.86 1.62-.86c.5 0 .8.17.8.17v1.9s-.69-.42-1.32-.33c-.64.09-1.04.67-1.04 1.45v4.42h-1.9V6.78h1.84v.73z"></path>
+                  </g>
+                </svg>
+              {%- if sls_split_payment_learn_more_url != blank -%}
+                <a href="{{ sls_split_payment_learn_more_url }}" target="_blank" rel="noopener" class="afterpay-link sls-cart-split-payment-note__learn">{{ sls_split_payment_learn_more_label }}</a>
+              {%- endif -%}
+              </span>
+            </p>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if sls_show_order_note -%}
+        <div id="cartNote" class="anim cftDraw pa sls-cart-sheet">
+          <cart-note class="cart__note field sls-cart-sheet__panel">
+            <div class="sls-cart-sheet__header">
+              <div class="sls-cart-sheet__title"><svg class="at-icon" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 12h6"/><path d="M9 16h4"/></svg> Order note</div>
+              <button type="button" class="sls-cart-sheet__close saveBtn" aria-label="{{ 'cart.button.close' | t }}"><svg class="at-icon"><use xlink:href="#icon-close"></use></svg></button>
+            </div>
+            <label for="CartDrawer-Note" class="hidden_txt">{{ 'cart.general.note' | t }}</label>
+            <textarea id="CartDrawer-Note" class="w_100" name="note" placeholder="Add a note for your order...">{{ cart.note }}</textarea>
+            <button type="button" class="btn sls-cart-sheet__primary saveBtn">Save note</button>
+          </cart-note>
+        </div>
+      {%- endif -%}
+
+      {% if sls_show_coupon %}
+        <div id="cartCoupon" class="anim cftDraw pa sls-cart-sheet">
+          <cart-discount id="cartDiscount" class="cart__discount sls-cart-sheet__panel fl f-col gap" data-id="{{ section.id }}" style="--gap:10px;">
+            <form on:submit="/applyDiscount" onsubmit="return false;" class="cart-discount__form">
+              <div class="sls-cart-sheet__header">
+                <div class="sls-cart-sheet__title">{% render 'icon-tag' %} Coupon code</div>
+                <button type="button" class="sls-cart-sheet__close saveBtn" aria-label="{{ 'cart.button.close' | t }}"><svg class="at-icon"><use xlink:href="#icon-close"></use></svg></button>
+              </div>
+              <label for="cart-discount" class="hidden_txt">{{ settings.cpnttl }}</label>
+              <input id="cart-discount" class="fl1 input w_100 stopEv cart-discount-input" name="discount" placeholder="{{ 'cart.general.discount_code' | t }}">
+              <div class="sls-cart-sheet__actions">
+                <button type="button" class="btn btn2 saveBtn">Close</button>
+                <button type="submit" class="btn cart-discount__button">
+                  <span class="txt">{{ 'cart.button.apply' | t }}</span>
+                  <div class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+                </button>
+              </div>
+            </form>
+            <div class="cart-discount__error fs12 ermsg hidden" role="alert" ref="cartDiscountError"></div>
+            <ul class="cart-discount__codes fl f-wrap gap">
+              {% for discount in discount_codes %}
+                <li class="discount-code fl f-aic" data-discount-code="{{ discount }}" aria-label="{{ 'cart.general.discount_applied' | t: code: discount }}">
+                  <svg class="at-icon mr5"><use xlink:href="#icon-tag"></use></svg> {{ discount }}
+                  <button type="button" on:click="/removeDiscount" class="cart-discount-remove btnLink" aria-label="{{ 'cart.general.remove_discount' | t: code: discount }}">
+                    <svg class="at-icon remove ml10" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>
+                    <svg class="at-icon at-spin ml10"><use xlink:href="#icon-loading"></use></svg>
+                  </button>
+                </li>
+              {% endfor %}
+            </ul>
+          </cart-discount>
+        </div>
+      {%- endif -%}
+
+      {%- if settings.giftwrap and settings.gift_product != blank -%}
+        <div id="giftWrap" class="anim cftDraw pa sls-cart-sheet">
+          <product-form class="product-form tc sls-cart-sheet__panel">
+            {%- form 'product', giftpr, id: "gift_card", class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+              <input type="hidden" id="ProductSelect" name="id" value="{{ giftpr.selected_or_first_available_variant.id }}" class="hide" />
+              <input type="hidden" id="quantity" name="quantity" value="1" class="hide" />
+              <div class="sls-cart-sheet__title">{{ settings.gfwrtxt | replace: "$", giftprc }}</div>
+              <div class="sls-cart-sheet__actions">
+                <button type="button" class="btn btn2 saveBtn">{{ 'cart.button.cancel' | t }}</button>
+                <button type="submit" name="add" id="Addgift" class="btn">
+                  <span class="txt">{{ 'cart.button.gift_wrap' | t }}</span>
+                  <div class="loading__spinner hidden"><svg class="at-icon at-spin"><use xlink:href="#icon-loading"></use></svg></div>
+                </button>
+              </div>
+            {%- endform -%}
+          </product-form>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</cart-drawer>
+{%- endcapture -%}
+{{ cart_drawer | strip_newlines | remove: "  " | remove: "	" }}
+<script type="application/json" id="SlsCartControls">
+{
+  "pointsPerDollar": {{ sls_rewards_rate | json }},
+  "pointsLabel": {{ sls_rewards_label | json }},
+  "behavior": {
+    "autoOpenOnAdd": {{ settings.sls_auto_open_on_add | json }}
+  },
+  "show": {
+    "marquee": {{ settings.sls_show_marquee | json }},
+    "shipping": {{ settings.sls_show_shipping | json }},
+    "countdown": {{ settings.sls_show_countdown | json }},
+    "giftGoal": {{ settings.sls_show_gift_goal | json }},
+    "rewards": {{ settings.sls_show_rewards | json }},
+    "rewardsBar": {{ settings.sls_show_rewards_bar | default: true, allow_false: true | json }},
+    "recommendations": {{ settings.sls_show_recommendations | json }},
+    "coupon": {{ settings.sls_show_coupon | json }},
+    "orderNote": {{ settings.sls_show_order_note | json }},
+    "flexiblePayments": {{ settings.sls_show_flexible_payments | json }}
+  },
+  "emptyShow": {
+    "marquee": {{ settings.sls_empty_show_marquee | json }},
+    "shipping": {{ settings.sls_empty_show_shipping | json }},
+    "countdown": {{ settings.sls_empty_show_countdown | json }},
+    "giftGoal": {{ settings.sls_empty_show_gift_goal | json }},
+    "rewards": {{ settings.sls_empty_show_rewards | json }},
+    "rewardsBar": {{ settings.sls_empty_show_rewards_bar | default: false, allow_false: true | json }},
+    "recommendations": {{ settings.sls_empty_show_recommendations | json }},
+    "coupon": {{ settings.sls_empty_show_coupon | json }},
+    "orderNote": {{ settings.sls_empty_show_order_note | json }}
+  },
+  "layout": {
+    "font": {{ sls_cart_font | json }},
+    "drawerWidth": {{ sls_drawer_width | json }},
+    "cardRadius": {{ sls_card_radius | json }},
+    "buttonRadius": {{ sls_button_radius | json }},
+    "imageRadius": {{ sls_image_radius | json }},
+    "imageBorder": {{ sls_image_border | json }},
+    "itemSurface": {{ settings.sls_item_surface | default: 'card' | json }},
+    "recommendSurface": {{ settings.sls_rec_surface_style | default: 'card' | json }},
+    "rewardsBarStyle": {{ settings.sls_rewards_bar_style | default: 'minimalist' | json }},
+    "rewardsBarContent": {{ settings.sls_rewards_bar_content_style | default: 'split' | json }},
+    "rewardsBarHeight": {{ settings.sls_rewards_bar_height | default: 36 | json }},
+    "loaderSize": {{ sls_loader_size | json }},
+    "loaderGap": {{ sls_loader_gap | json }}
+  },
+  "typography": {
+    "textCase": {{ sls_text_case | json }},
+    "marqueeTextCase": {{ settings.sls_marquee_text_case | default: 'uppercase' | json }},
+    "shippingTextCase": {{ sls_shipping_text_case | json }},
+    "shippingMessageSpacing": {{ sls_shipping_message_spacing | json }},
+    "recommendHeadingSize": {{ sls_rec_heading_size | json }},
+    "recommendTitleSize": {{ sls_rec_title_size | json }},
+    "recommendSubtitleSize": {{ sls_rec_subtitle_size | json }},
+    "recommendPriceSize": {{ sls_rec_price_size | json }},
+    "recommendVariantSize": {{ sls_rec_variant_size | json }},
+    "recommendAddSize": {{ sls_rec_add_size | json }},
+    "rewardsBarFontSize": {{ settings.sls_rewards_bar_font_size | default: 11 | json }}
+  },
+  "colors": {
+    "drawerBg": {{ sls_bg | json }},
+    "cardBg": {{ sls_card_bg | json }},
+    "softBg": {{ sls_soft_bg | json }},
+    "marqueeBg": {{ settings.sls_marquee_bg_color | default: sls_soft_bg | json }},
+    "marqueeSeparator": {{ settings.sls_marquee_separator_color | default: '#CBC4BC' | json }},
+    "topbarBg": {{ settings.sls_topbar_bg_color | default: sls_card_bg | json }},
+    "shippingMessage": {{ settings.sls_shipping_message_color | default: sls_text | json }},
+    "shippingLabels": {{ settings.sls_shipping_labels_color | default: sls_accent | json }},
+    "shippingUnlocked": {{ settings.sls_shipping_unlocked_color | default: settings.sls_shipping_progress_fill_color | default: sls_accent | json }},
+    "progressTrack": {{ settings.sls_shipping_progress_track_color | default: sls_soft_bg | json }},
+    "progressFill": {{ settings.sls_shipping_progress_fill_color | default: sls_accent | json }},
+    "countdownBg": {{ settings.sls_countdown_bg_color | default: sls_accent | json }},
+    "countdownText": {{ settings.sls_countdown_text_color | default: '#FFFFFF' | json }},
+    "giftTrack": {{ settings.sls_gift_progress_track_color | default: sls_soft_bg | json }},
+    "giftFill": {{ settings.sls_gift_progress_fill_color | default: sls_mid | json }},
+    "accent": {{ sls_accent | json }},
+    "accentHover": {{ sls_accent_hover | json }},
+    "buttonHoverBg": {{ settings.sls_button_hover_bg | default: sls_accent_hover | json }},
+    "buttonHoverText": {{ settings.sls_button_hover_text | default: '#FFFFFF' | json }},
+    "mid": {{ sls_mid | json }},
+    "marqueeText": {{ settings.sls_marquee_text_color | default: sls_accent | json }},
+    "text": {{ sls_text | json }},
+    "muted": {{ sls_muted | json }},
+    "headerBg": {{ settings.sls_header_bg_color | default: sls_card_bg | json }},
+    "headerText": {{ settings.sls_header_text_color | default: sls_text | json }},
+    "footerBg": {{ settings.sls_footer_bg_color | default: sls_card_bg | json }},
+    "footerText": {{ settings.sls_footer_text_color | default: sls_text | json }},
+    "footerBorder": {{ settings.sls_footer_border_color | default: sls_border | json }},
+    "itemTitle": {{ settings.sls_item_title_color | default: sls_text | json }},
+    "itemVariant": {{ settings.sls_item_variant_color | default: sls_muted | json }},
+    "itemPoints": {{ settings.sls_item_points_color | default: sls_accent | json }},
+    "itemPrice": {{ settings.sls_item_price_color | default: sls_text | json }},
+    "itemRemove": {{ settings.sls_item_remove_color | default: sls_accent | json }},
+    "sale": {{ settings.sls_sale_color | default: '#C44A4A' | json }},
+    "recCardBg": {{ settings.sls_rec_card_bg | default: '#FFFFFF' | json }},
+    "recCardBorder": {{ settings.sls_rec_card_border | default: '#EEE9E4' | json }},
+    "recImageBg": {{ settings.sls_rec_image_bg | default: '#FFFFFF' | json }},
+    "recImageBorder": {{ settings.sls_rec_image_border | default: sls_border | json }},
+    "recVariantBg": {{ settings.sls_rec_variant_bg | default: '#FFFFFF' | json }},
+    "recVariantBorder": {{ settings.sls_rec_variant_border | default: '#EEE9E4' | json }},
+    "recAddBg": {{ settings.sls_rec_add_bg | default: sls_accent | json }},
+    "recAddText": {{ settings.sls_rec_add_text | default: '#FFFFFF' | json }},
+    "recAddHoverBg": {{ settings.sls_rec_add_hover_bg | default: settings.sls_button_hover_bg | default: sls_accent_hover | json }},
+    "recAddHoverText": {{ settings.sls_rec_add_hover_text | default: settings.sls_button_hover_text | default: '#FFFFFF' | json }},
+    "rewardsBarBg": {{ settings.sls_rewards_bar_bg | default: sls_soft_bg | json }},
+    "rewardsBarText": {{ settings.sls_rewards_bar_text | default: sls_text | json }},
+    "rewardsBarValue": {{ settings.sls_rewards_bar_value | default: sls_accent | json }},
+    "border": {{ sls_border | json }},
+    "sheetOverlay": {{ sls_sheet_overlay | json }}
+  },
+  "emptyButtons": {
+    "primaryLabel": {{ sls_empty_primary_label | json }},
+    "primaryLink": {{ sls_empty_primary_link | json }},
+    "secondaryLabel": {{ sls_empty_secondary_label | json }},
+    "secondaryLink": {{ sls_empty_secondary_link | json }}
+  }
+}
+</script>
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "settings": []
+}
+{% endschema %}

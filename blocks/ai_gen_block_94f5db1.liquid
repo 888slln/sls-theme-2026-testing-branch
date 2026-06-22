@@ -1,0 +1,406 @@
+{% doc %}
+  @prompt
+    Build a full “Ambassador Program” landing page for a lash supply brand (Studio Lume Supplies). The brand aesthetic is luxury-minimal, beige + white, clean spacing, soft shadows, refined typography. Tone is approachable premium (polished but not corporate).
+
+    PAGE GOAL:
+    Make it instantly clear there are 2 tiers:
+    1) LUME Collective = entry level
+    2) LUME Elite = most exclusive
+    Elite includes everything in Collective + extra benefits and exclusivity.
+    Keep hierarchy obvious and skimmable.
+
+    LAYOUT / SECTIONS (in this order):
+
+    1) HERO (top)
+    - Left aligned on desktop, centered on mobile
+    - Heading: “LUME Ambassador Program”
+    - Subheading: “Choose your tier, enjoy perks, earn rewards, and get featured by Studio Lume Supplies.”
+    - Small trust line under subheading (small caps): “For certified lash artists & beauty professionals”
+    - Primary button: “Apply Now” (scrolls to application section)
+    - Secondary text link: “Compare tiers” (scrolls to tier comparison)
+
+    2) QUICK SUMMARY STRIP (thin, elegant)
+    - 3 short icon items (simple line icons):
+      - “Perks & Discounts”
+      - “Referral Rewards”
+      - “Featured Content”
+    Keep it subtle, not loud.
+
+    3) TIER COMPARISON (main focus)
+    - Two cards side-by-side (stack on mobile)
+    - Make Elite visually higher: slightly lifted card, “Most Exclusive” badge in top-right.
+    - Card style: white background, soft shadow, thin border, rounded corners.
+    - Each card includes:
+      A) Tier name
+      B) One-line description (not long)
+      C) “Best for…” micro-line (small text)
+      D) Benefits list (check icons)
+      E) Commitment list (small dot icons or subtle icons)
+      F) Tier button
+
+    TIER 1: LUME Collective (Entry level)
+    - Description: “Entry level perks + community.”
+    - Best for: “Artists who want to trial + post casually.”
+    Benefits (checks):
+    - “15% off storewide (personal use)”
+    - “Early access to sales”
+    - “Surprise order extras”
+    - “Ambassador-only promos”
+    - “Birthday reward”
+    - “Eligible to upgrade to Elite”
+    Commitment (subtle bullets):
+    - “Add @studiolumesupplies to your Instagram bio”
+    - “Tag us when using our products”
+    - “No exclusivity required”
+    Button: “Apply for Collective”
+
+    TIER 2: LUME Elite (Most Exclusive)
+    - Badge: “Most Exclusive”
+    - Description: “Priority perks + brand representation.”
+    - Best for: “Consistent creators who want more.”
+    Benefits (checks) – FIRST LINE MUST BE:
+    - “Everything in LUME Collective”
+    Then:
+    - “20% off storewide (personal use)”
+    - “Referral code to share (followers/clients)”
+    - “Reward: every 10 referrals = 30% off code”
+    - “Early access to launches + sales”
+    - “Priority reposting”
+    - “Birthday reward”
+    Commitment (subtle bullets):
+    - “Add @studiolumesupplies to your Instagram bio”
+    - “Tag us in all professional content using our products”
+    - “Exclusive representation: you may buy other brands, but don’t promote them”
+    Button: “Apply for Elite”
+
+    Add a small helper note under the tier cards:
+    “Not sure where you fit? Start in Collective — upgrade opportunities available.”
+
+    4) HOW IT WORKS (simple 3 steps)
+    - Three clean steps with numbers:
+      1. “Apply”
+      2. “Get approved + receive your perks”
+      3. “Post, share, and earn rewards”
+    Keep copy short.
+
+    5) FAQ (accordion style, minimal)
+    Include 6 FAQs:
+    - “How do I apply?”
+    - “How long does approval take?”
+    - “Can I upgrade from Collective to Elite?”
+    - “Do I need to post a minimum amount?”
+    - “Can I be an ambassador if I use other brands?”
+    - “How do referral rewards work?”
+
+    6) FINAL CTA (application)
+    - Heading: “Ready to join?”
+    - Short line: “Apply below — we review applications regularly.”
+    - Two buttons side-by-side:
+      - “Apply for Collective”
+      - “Apply for Elite”
+    Buttons link to separate application forms or the same form with a dropdown.
+
+    DESIGN RULES:
+    - Use plenty of whitespace.
+    - Use beige accents, black/charcoal text, and soft grey dividers.
+    - No loud gradients, no neon, no clutter.
+    - Typography: elegant sans-serif, clear hierarchy (H1 big, H2 medium, body readable).
+    - Mobile first: cards stack, buttons full width, clean spacing.
+    - Use subtle icons only (thin line style).
+    - Keep the page feeling “beauty clinic / luxury minimal”.
+
+    OUTPUT:
+    Generate the blocks/sections for this page with appropriate headings, text, and buttons, matching the structure above.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-ambassador-cta-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px {{ block.settings.horizontal_padding }}px;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-ambassador-cta__container-{{ ai_gen_id }} {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .ai-ambassador-cta__heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .ai-ambassador-cta__subtext-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    margin: 0 0 32px;
+  }
+
+  .ai-ambassador-cta__buttons-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .ai-ambassador-cta__btn-{{ ai_gen_id }} {
+    padding: 14px 32px;
+    background-color: {{ block.settings.button_bg }};
+    color: {{ block.settings.button_text }};
+    border: 1px solid {{ block.settings.button_bg }};
+    border-radius: {{ block.settings.button_radius }}px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .ai-ambassador-cta__btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg }};
+    color: {{ block.settings.button_hover_text }};
+    border-color: {{ block.settings.button_hover_bg }};
+  }
+
+  .ai-ambassador-cta__btn--secondary-{{ ai_gen_id }} {
+    background-color: {{ block.settings.button_secondary_bg }};
+    color: {{ block.settings.button_secondary_text }};
+    border-color: {{ block.settings.button_secondary_border }};
+  }
+
+  .ai-ambassador-cta__btn--secondary-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_secondary_hover_bg }};
+    color: {{ block.settings.button_secondary_hover_text }};
+    border-color: {{ block.settings.button_secondary_hover_bg }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-ambassador-cta__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+
+    .ai-ambassador-cta__buttons-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+
+    .ai-ambassador-cta__btn-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-ambassador-cta-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ambassador-cta__container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-ambassador-cta__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    {% if block.settings.subtext != blank %}
+      <p class="ai-ambassador-cta__subtext-{{ ai_gen_id }}">{{ block.settings.subtext }}</p>
+    {% endif %}
+
+    <div class="ai-ambassador-cta__buttons-{{ ai_gen_id }}">
+      {% if block.settings.button_1_text != blank %}
+        <a href="{{ block.settings.button_1_link }}" class="ai-ambassador-cta__btn-{{ ai_gen_id }}">
+          {{ block.settings.button_1_text }}
+        </a>
+      {% endif %}
+
+      {% if block.settings.button_2_text != blank %}
+        <a href="{{ block.settings.button_2_link }}" class="ai-ambassador-cta__btn-{{ ai_gen_id }} ai-ambassador-cta__btn--secondary-{{ ai_gen_id }}">
+          {{ block.settings.button_2_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ambassador final CTA",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to join?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Apply below — we review applications regularly."
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Button 1 text",
+      "default": "Apply for Collective"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 link"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Button 2 text",
+      "default": "Apply for Elite"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Vertical padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "label": "Horizontal padding",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FAF9F7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Hover background",
+      "default": "#aca39a"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Hover text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_bg",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_border",
+      "label": "Border",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_bg",
+      "label": "Hover background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_text",
+      "label": "Hover text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ambassador final CTA"
+    }
+  ]
+}
+{% endschema %}

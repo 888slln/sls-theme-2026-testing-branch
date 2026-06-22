@@ -1,0 +1,42 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "login",
+      "settings": {
+        "cl": "#222222",
+        "bd": "#eee9e4",
+        "fbg": "#f5f5f5",
+        "lgbtn": "btn1",
+        "lgbtnsz": "btn-sm",
+        "cabtn": "btn4",
+        "cabtnsz": "btn-md",
+        "sst": 40,
+        "ssb": 100,
+        "sstm": 15,
+        "ssbm": 15,
+        "bg": ""
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main"
+  ]
+}

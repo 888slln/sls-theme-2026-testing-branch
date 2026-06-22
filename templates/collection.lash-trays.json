@@ -1,0 +1,386 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "blocks": {
+        "bc_9H67hE": {
+          "type": "bc",
+          "settings": {
+            "hidemb": true,
+            "fs": 11,
+            "fsm": 12,
+            "cl": "#ffffff",
+            "mb": 30,
+            "mbm": 20
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h1",
+            "tff": "ft1",
+            "fs": 20,
+            "fsm": 20,
+            "fw": "400",
+            "tuu": true,
+            "cl": "#ffffff",
+            "mb": 5,
+            "mbm": 5
+          }
+        },
+        "text_X4RCn9": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Banner short description",
+            "hidemb": true,
+            "fs": 14,
+            "fsm": 14,
+            "lh": 1.5,
+            "cl": "#222222",
+            "mb": 20,
+            "mbm": 5
+          }
+        },
+        "countdown_b8Amfb": {
+          "type": "countdown",
+          "disabled": true,
+          "settings": {
+            "date": "12/12/2025",
+            "bg": "#222222",
+            "cl": "#eee9e4",
+            "bdr": "#222222",
+            "fs": 18,
+            "fsl": 12,
+            "radius": 5,
+            "mb": 20,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": [
+        "bc_9H67hE",
+        "title",
+        "text_X4RCn9",
+        "countdown_b8Amfb"
+      ],
+      "settings": {
+        "hit": 150,
+        "hitt": 100,
+        "hitm": 50,
+        "bg": "#aca39a",
+        "bgg": "",
+        "image": "{{ collection.metafields.custom.banner_image.value }}",
+        "mb_image": "{{ collection.metafields.custom.banner_image_mobile.value }}",
+        "overlay": "#222222",
+        "overlay_op": 0.5,
+        "cntwd": 1300,
+        "text-align": true
+      }
+    },
+    "round_banners_hBRxmV": {
+      "type": "round-banners",
+      "blocks": {
+        "collection_XYtjBi": {
+          "type": "collection",
+          "settings": {
+            "collection": "lash-trays",
+            "image": "shopify://shop_images/Untitled_design_56.png",
+            "title": "Premade Collection",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_MNC74f": {
+          "type": "collection",
+          "settings": {
+            "collection": "lash-trays",
+            "image": "shopify://shop_images/Untitled_design_56.png",
+            "title": "XL Premade Collection",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_6R3nKe": {
+          "type": "collection",
+          "settings": {
+            "collection": "adhesive-liquids",
+            "image": "shopify://shop_images/Untitled_design_55.png",
+            "title": "The Artistry Collection",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_nDrJjj": {
+          "type": "collection",
+          "settings": {
+            "collection": "tweezers",
+            "image": "shopify://shop_images/Untitled_design_57.png",
+            "title": "Promade Collection",
+            "btntxt": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_XYtjBi",
+        "collection_MNC74f",
+        "collection_6R3nKe",
+        "collection_nDrJjj"
+      ],
+      "custom_css": [
+        "@media (min-width: 1024px) {.swiper-wrapper {display: flex; justify-content: center; }}"
+      ],
+      "name": "Round Collections",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "gspace": 40,
+        "gspacem": 20,
+        "grid": 7,
+        "gridtb": 3,
+        "gridmb": 3,
+        "count": false,
+        "zoom": true,
+        "ft": "ft1",
+        "fs": 14,
+        "fsm": 13,
+        "fw": "400",
+        "cl": "#222222",
+        "btnd": "btn1",
+        "btn-size": "btn-sm",
+        "carousel": true,
+        "loop": false,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "scrollbarm": false,
+        "sw": false,
+        "npd": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 30,
+        "ssb": 15,
+        "sstm": 15,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "devider_cxF3Ey": {
+      "type": "devider",
+      "name": "Devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#f5f5f5",
+        "sw": true,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "disabled": true,
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "sub-collections": {
+      "type": "sub-collections",
+      "disabled": true,
+      "settings": {
+        "collection": [
+          "premade-trays",
+          "xl-trays",
+          "handmade-trays",
+          "promade-trays"
+        ],
+        "style": "3",
+        "ratio": "100",
+        "gspace": 45,
+        "gspacem": 20,
+        "grid": 8,
+        "gridtb": 5,
+        "gridmb": 3,
+        "count": false,
+        "zoom": true,
+        "irad": 100,
+        "btn-style": "btn1",
+        "btn-size": "btn-sm",
+        "ft": "ft1",
+        "fs": 14,
+        "fsm": 12,
+        "fw": "400",
+        "cl": "#ffffff",
+        "tbg": "#222222",
+        "tbg_op": 0.3,
+        "drad": 100,
+        "tbp": 18,
+        "carousel": true,
+        "loop": false,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "sw": false,
+        "npd": false,
+        "bg": "rgba(0,0,0,0)",
+        "bgg": "",
+        "overlay": "#aca39a",
+        "overlay_op": 0.4,
+        "headings_cl": "#ffffff",
+        "sst": 40,
+        "ssb": 20,
+        "sstm": 20,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "collection": {
+      "type": "main-collection",
+      "blocks": {
+        "b1cf9b1d-3efd-4bb6-9db0-423fe4896457": {
+          "type": "categories",
+          "disabled": true,
+          "settings": {
+            "title": "Categories",
+            "side_categories": ""
+          }
+        },
+        "fe1f3e3a-2385-4c5b-b338-ed0c295ba47a": {
+          "type": "filter_by",
+          "settings": {
+            "title": "",
+            "flpcnt": true
+          }
+        },
+        "c48c56f1-0620-4109-aef0-490223599f1d": {
+          "type": "image_bnr",
+          "disabled": true,
+          "settings": {
+            "overlay": "#023f7c",
+            "overlay_op": 0.3,
+            "prehead": "MOST AWAITED SALE",
+            "pfs": "body",
+            "title": "Get Flat 70% OFF",
+            "fs": "h2",
+            "tff": "ft3",
+            "cl": "#ffffff",
+            "btn_txt": "Shop Collection",
+            "btn-style": "btn5",
+            "link": "shopify://collections/women",
+            "rad": 10
+          }
+        },
+        "products_P9y6t8": {
+          "type": "products",
+          "disabled": true,
+          "settings": {
+            "title": "Popular Products",
+            "sd_prod": "best-sellers",
+            "num_pr": "3",
+            "btn_txt": ""
+          }
+        }
+      },
+      "block_order": [
+        "b1cf9b1d-3efd-4bb6-9db0-423fe4896457",
+        "fe1f3e3a-2385-4c5b-b338-ed0c295ba47a",
+        "c48c56f1-0620-4109-aef0-490223599f1d",
+        "products_P9y6t8"
+      ],
+      "settings": {
+        "clttl": false,
+        "climg": false,
+        "des_pos": "1",
+        "talign": false,
+        "pcount": true,
+        "gridicn": true,
+        "sortby": true,
+        "grid": 3,
+        "gridtb": 3,
+        "gridmb": 2,
+        "prpp": 12,
+        "pagination": "infinite",
+        "filters": true,
+        "sbpos": "left",
+        "tbg": true,
+        "filter_bg": "#ffffff",
+        "flbdr": "#f5f5f5",
+        "flshadow": false,
+        "sbg": true,
+        "sidebar_bg": "#ffffff",
+        "sidebar_bdr": "#eee9e4",
+        "tff": "ft1",
+        "ttl_fs": 16,
+        "bx_ttlw": "fwm",
+        "bx_tcase": "ttn",
+        "ttl_cl": "#222222",
+        "dis_botbdr": true,
+        "flbtmbdr": "#eee9e4",
+        "tglico": false,
+        "opt_fs": 13,
+        "optcase": "ttn",
+        "opt_cl": "#222222",
+        "opt_cl_hov": "#89ceb5",
+        "swatch_size": 12,
+        "swatch_rounded": 0,
+        "filter_bdr": "#aca39a",
+        "act_filter_cl": "#ffffff",
+        "act_filter_bg": "#aca39a",
+        "bar": "#eee9e4",
+        "bara": "#222222",
+        "flcolumn": "Brand, Size, XL",
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0.9,
+        "sst": 40,
+        "ssb": 0,
+        "sstm": 20,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "round_banners_hBRxmV",
+    "devider_cxF3Ey",
+    "breadcrumb",
+    "sub-collections",
+    "collection"
+  ]
+}

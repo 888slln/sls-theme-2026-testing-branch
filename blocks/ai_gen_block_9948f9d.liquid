@@ -1,0 +1,1286 @@
+{% doc %}
+  @prompt
+    make a brand ambassador application page that has 2 tiers to choose from elite (tier 1) collective (tier 2) and has the benefits list and requirements, i want it to look professional and luxury spaced style.
+
+    make the apply buttons open a popup that give a contact page to send a email to apply with details needed to fill out, for the popup can you let me change what questions are asked, also can you add some colour to the tiers
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-ambassador-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: 80px 40px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-ambassador-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-ambassador-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .ai-ambassador-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .ai-ambassador-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .ai-ambassador-tiers-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border: 2px solid {{ block.settings.card_border }};
+    border-radius: {{ block.settings.card_radius }}px;
+    padding: 50px 40px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:first-child {
+    border-color: {{ block.settings.elite_accent_color }};
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:last-child {
+    border-color: {{ block.settings.collective_accent_color }};
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .ai-ambassador-tier-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: -15px;
+    left: 40px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:first-child .ai-ambassador-tier-badge-{{ ai_gen_id }} {
+    background-color: {{ block.settings.elite_accent_color }};
+    color: {{ block.settings.elite_badge_text }};
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:last-child .ai-ambassador-tier-badge-{{ ai_gen_id }} {
+    background-color: {{ block.settings.collective_accent_color }};
+    color: {{ block.settings.collective_badge_text }};
+  }
+
+  .ai-ambassador-tier-name-{{ ai_gen_id }} {
+    font-size: {{ block.settings.tier_name_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .ai-ambassador-tier-desc-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.7;
+    margin: 0 0 30px;
+    line-height: 1.6;
+  }
+
+  .ai-ambassador-section-{{ ai_gen_id }} {
+    margin-bottom: 30px;
+  }
+
+  .ai-ambassador-section-title-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-ambassador-list-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ai-ambassador-list-item-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    margin-bottom: 12px;
+    padding-left: 24px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:first-child .ai-ambassador-list-item-{{ ai_gen_id }}::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: {{ block.settings.elite_accent_color }};
+    font-weight: 600;
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:last-child .ai-ambassador-list-item-{{ ai_gen_id }}::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: {{ block.settings.collective_accent_color }};
+    font-weight: 600;
+  }
+
+  .ai-ambassador-apply-btn-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 16px 32px;
+    color: {{ block.settings.button_text }};
+    border: 1px solid transparent;
+    border-radius: {{ block.settings.button_radius }}px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:first-child .ai-ambassador-apply-btn-{{ ai_gen_id }} {
+    background-color: {{ block.settings.elite_accent_color }};
+    border-color: {{ block.settings.elite_accent_color }};
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:first-child .ai-ambassador-apply-btn-{{ ai_gen_id }}:hover {
+    background-color: transparent;
+    color: {{ block.settings.elite_accent_color }};
+    border-color: {{ block.settings.elite_accent_color }};
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:last-child .ai-ambassador-apply-btn-{{ ai_gen_id }} {
+    background-color: {{ block.settings.collective_accent_color }};
+    border-color: {{ block.settings.collective_accent_color }};
+  }
+
+  .ai-ambassador-tier-{{ ai_gen_id }}:last-child .ai-ambassador-apply-btn-{{ ai_gen_id }}:hover {
+    background-color: transparent;
+    color: {{ block.settings.collective_accent_color }};
+    border-color: {{ block.settings.collective_accent_color }};
+  }
+
+  .ai-ambassador-popup-overlay-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .ai-ambassador-popup-overlay-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ai-ambassador-popup-{{ ai_gen_id }} {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background-color: {{ block.settings.popup_background }};
+    border-radius: {{ block.settings.card_radius }}px;
+    padding: 50px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .ai-ambassador-popup-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .ai-ambassador-popup-close-{{ ai_gen_id }} {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: {{ block.settings.text_color }};
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-ambassador-popup-close-{{ ai_gen_id }}:hover {
+    opacity: 1;
+  }
+
+  .ai-ambassador-popup-title-{{ ai_gen_id }} {
+    font-size: 28px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 10px;
+  }
+
+  .ai-ambassador-popup-tier-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+    margin: 0 0 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-ambassador-form-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-ambassador-form-group-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-ambassador-form-label-{{ ai_gen_id }} {
+    font-size: 13px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-ambassador-form-input-{{ ai_gen_id }},
+  .ai-ambassador-form-textarea-{{ ai_gen_id }} {
+    padding: 14px 16px;
+    border: 1px solid {{ block.settings.card_border }};
+    border-radius: 4px;
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    background-color: {{ block.settings.card_background }};
+    transition: border-color 0.3s ease;
+  }
+
+  .ai-ambassador-form-input-{{ ai_gen_id }}:focus,
+  .ai-ambassador-form-textarea-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.button_background }};
+  }
+
+  .ai-ambassador-form-textarea-{{ ai_gen_id }} {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .ai-ambassador-form-submit-{{ ai_gen_id }} {
+    padding: 16px 32px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text }};
+    border: 1px solid {{ block.settings.button_border }};
+    border-radius: {{ block.settings.button_radius }}px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+  }
+
+  .ai-ambassador-form-submit-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+    color: {{ block.settings.button_hover_text }};
+    border-color: {{ block.settings.button_hover_border }};
+  }
+
+  .ai-ambassador-form-success-{{ ai_gen_id }} {
+    padding: 16px;
+    background-color: #d4edda;
+    color: #155724;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .ai-ambassador-form-error-{{ ai_gen_id }} {
+    padding: 16px;
+    background-color: #f8d7da;
+    color: #c44a4a;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-ambassador-{{ ai_gen_id }} {
+      padding: 50px 20px;
+    }
+
+    .ai-ambassador-header-{{ ai_gen_id }} {
+      margin-bottom: 40px;
+    }
+
+    .ai-ambassador-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.7 }}px;
+    }
+
+    .ai-ambassador-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-ambassador-tiers-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .ai-ambassador-tier-{{ ai_gen_id }} {
+      padding: 40px 30px;
+    }
+
+    .ai-ambassador-tier-name-{{ ai_gen_id }} {
+      font-size: {{ block.settings.tier_name_size | times: 0.85 }}px;
+    }
+
+    .ai-ambassador-popup-{{ ai_gen_id }} {
+      padding: 40px 30px;
+    }
+
+    .ai-ambassador-popup-title-{{ ai_gen_id }} {
+      font-size: 24px;
+    }
+  }
+{% endstyle %}
+
+<ambassador-application-{{ ai_gen_id }} class="ai-ambassador-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ambassador-container-{{ ai_gen_id }}">
+    <div class="ai-ambassador-header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-ambassador-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.subtitle != blank %}
+        <p class="ai-ambassador-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-ambassador-tiers-{{ ai_gen_id }}">
+      <div class="ai-ambassador-tier-{{ ai_gen_id }}">
+        <div class="ai-ambassador-tier-badge-{{ ai_gen_id }}">{{ block.settings.elite_badge }}</div>
+        <h3 class="ai-ambassador-tier-name-{{ ai_gen_id }}">{{ block.settings.elite_name }}</h3>
+        <p class="ai-ambassador-tier-desc-{{ ai_gen_id }}">{{ block.settings.elite_description }}</p>
+
+        <div class="ai-ambassador-section-{{ ai_gen_id }}">
+          <h4 class="ai-ambassador-section-title-{{ ai_gen_id }}">Benefits</h4>
+          <ul class="ai-ambassador-list-{{ ai_gen_id }}">
+            {% if block.settings.elite_benefit_1 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_benefit_1 }}</li>
+            {% endif %}
+            {% if block.settings.elite_benefit_2 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_benefit_2 }}</li>
+            {% endif %}
+            {% if block.settings.elite_benefit_3 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_benefit_3 }}</li>
+            {% endif %}
+            {% if block.settings.elite_benefit_4 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_benefit_4 }}</li>
+            {% endif %}
+            {% if block.settings.elite_benefit_5 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_benefit_5 }}</li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="ai-ambassador-section-{{ ai_gen_id }}">
+          <h4 class="ai-ambassador-section-title-{{ ai_gen_id }}">Requirements</h4>
+          <ul class="ai-ambassador-list-{{ ai_gen_id }}">
+            {% if block.settings.elite_req_1 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_req_1 }}</li>
+            {% endif %}
+            {% if block.settings.elite_req_2 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_req_2 }}</li>
+            {% endif %}
+            {% if block.settings.elite_req_3 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_req_3 }}</li>
+            {% endif %}
+            {% if block.settings.elite_req_4 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.elite_req_4 }}</li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <button class="ai-ambassador-apply-btn-{{ ai_gen_id }}" data-tier="elite">
+          {{ block.settings.apply_button_text }}
+        </button>
+      </div>
+
+      <div class="ai-ambassador-tier-{{ ai_gen_id }}">
+        <div class="ai-ambassador-tier-badge-{{ ai_gen_id }}">{{ block.settings.collective_badge }}</div>
+        <h3 class="ai-ambassador-tier-name-{{ ai_gen_id }}">{{ block.settings.collective_name }}</h3>
+        <p class="ai-ambassador-tier-desc-{{ ai_gen_id }}">{{ block.settings.collective_description }}</p>
+
+        <div class="ai-ambassador-section-{{ ai_gen_id }}">
+          <h4 class="ai-ambassador-section-title-{{ ai_gen_id }}">Benefits</h4>
+          <ul class="ai-ambassador-list-{{ ai_gen_id }}">
+            {% if block.settings.collective_benefit_1 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_benefit_1 }}</li>
+            {% endif %}
+            {% if block.settings.collective_benefit_2 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_benefit_2 }}</li>
+            {% endif %}
+            {% if block.settings.collective_benefit_3 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_benefit_3 }}</li>
+            {% endif %}
+            {% if block.settings.collective_benefit_4 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_benefit_4 }}</li>
+            {% endif %}
+            {% if block.settings.collective_benefit_5 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_benefit_5 }}</li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="ai-ambassador-section-{{ ai_gen_id }}">
+          <h4 class="ai-ambassador-section-title-{{ ai_gen_id }}">Requirements</h4>
+          <ul class="ai-ambassador-list-{{ ai_gen_id }}">
+            {% if block.settings.collective_req_1 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_req_1 }}</li>
+            {% endif %}
+            {% if block.settings.collective_req_2 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_req_2 }}</li>
+            {% endif %}
+            {% if block.settings.collective_req_3 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_req_3 }}</li>
+            {% endif %}
+            {% if block.settings.collective_req_4 != blank %}
+              <li class="ai-ambassador-list-item-{{ ai_gen_id }}">{{ block.settings.collective_req_4 }}</li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <button class="ai-ambassador-apply-btn-{{ ai_gen_id }}" data-tier="collective">
+          {{ block.settings.apply_button_text }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-ambassador-popup-overlay-{{ ai_gen_id }}"></div>
+  <div class="ai-ambassador-popup-{{ ai_gen_id }}">
+    <button class="ai-ambassador-popup-close-{{ ai_gen_id }}" aria-label="Close">×</button>
+    <h3 class="ai-ambassador-popup-title-{{ ai_gen_id }}">{{ block.settings.popup_title }}</h3>
+    <p class="ai-ambassador-popup-tier-{{ ai_gen_id }}"></p>
+
+    {%- form 'contact' -%}
+      <input type="hidden" name="contact[ambassador_tier]" class="ai-ambassador-tier-input-{{ ai_gen_id }}">
+
+      <div class="ai-ambassador-form-{{ ai_gen_id }}">
+        {%- if form.posted_successfully? -%}
+          <div class="ai-ambassador-form-success-{{ ai_gen_id }}">
+            {{ block.settings.success_message }}
+          </div>
+        {%- endif -%}
+
+        {%- if form.errors -%}
+          <div class="ai-ambassador-form-error-{{ ai_gen_id }}">
+            {{ form.errors.messages.email }}
+          </div>
+        {%- endif -%}
+
+        {% if block.settings.question_1 != blank %}
+          <div class="ai-ambassador-form-group-{{ ai_gen_id }}">
+            <label class="ai-ambassador-form-label-{{ ai_gen_id }}" for="ai-ambassador-q1-{{ ai_gen_id }}">
+              {{ block.settings.question_1 }} {% if block.settings.question_1_required %}*{% endif %}
+            </label>
+            {% if block.settings.question_1_type == 'textarea' %}
+              <textarea
+                id="ai-ambassador-q1-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_1 }}]"
+                class="ai-ambassador-form-textarea-{{ ai_gen_id }}"
+                {% if block.settings.question_1_required %}required{% endif %}
+              ></textarea>
+            {% else %}
+              <input
+                type="{{ block.settings.question_1_type }}"
+                id="ai-ambassador-q1-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_1 }}]"
+                class="ai-ambassador-form-input-{{ ai_gen_id }}"
+                {% if block.settings.question_1_required %}required{% endif %}
+              >
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.question_2 != blank %}
+          <div class="ai-ambassador-form-group-{{ ai_gen_id }}">
+            <label class="ai-ambassador-form-label-{{ ai_gen_id }}" for="ai-ambassador-q2-{{ ai_gen_id }}">
+              {{ block.settings.question_2 }} {% if block.settings.question_2_required %}*{% endif %}
+            </label>
+            {% if block.settings.question_2_type == 'textarea' %}
+              <textarea
+                id="ai-ambassador-q2-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_2 }}]"
+                class="ai-ambassador-form-textarea-{{ ai_gen_id }}"
+                {% if block.settings.question_2_required %}required{% endif %}
+              ></textarea>
+            {% else %}
+              <input
+                type="{{ block.settings.question_2_type }}"
+                id="ai-ambassador-q2-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_2 }}]"
+                class="ai-ambassador-form-input-{{ ai_gen_id }}"
+                {% if block.settings.question_2_required %}required{% endif %}
+              >
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.question_3 != blank %}
+          <div class="ai-ambassador-form-group-{{ ai_gen_id }}">
+            <label class="ai-ambassador-form-label-{{ ai_gen_id }}" for="ai-ambassador-q3-{{ ai_gen_id }}">
+              {{ block.settings.question_3 }} {% if block.settings.question_3_required %}*{% endif %}
+            </label>
+            {% if block.settings.question_3_type == 'textarea' %}
+              <textarea
+                id="ai-ambassador-q3-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_3 }}]"
+                class="ai-ambassador-form-textarea-{{ ai_gen_id }}"
+                {% if block.settings.question_3_required %}required{% endif %}
+              ></textarea>
+            {% else %}
+              <input
+                type="{{ block.settings.question_3_type }}"
+                id="ai-ambassador-q3-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_3 }}]"
+                class="ai-ambassador-form-input-{{ ai_gen_id }}"
+                {% if block.settings.question_3_required %}required{% endif %}
+              >
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.question_4 != blank %}
+          <div class="ai-ambassador-form-group-{{ ai_gen_id }}">
+            <label class="ai-ambassador-form-label-{{ ai_gen_id }}" for="ai-ambassador-q4-{{ ai_gen_id }}">
+              {{ block.settings.question_4 }} {% if block.settings.question_4_required %}*{% endif %}
+            </label>
+            {% if block.settings.question_4_type == 'textarea' %}
+              <textarea
+                id="ai-ambassador-q4-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_4 }}]"
+                class="ai-ambassador-form-textarea-{{ ai_gen_id }}"
+                {% if block.settings.question_4_required %}required{% endif %}
+              ></textarea>
+            {% else %}
+              <input
+                type="{{ block.settings.question_4_type }}"
+                id="ai-ambassador-q4-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_4 }}]"
+                class="ai-ambassador-form-input-{{ ai_gen_id }}"
+                {% if block.settings.question_4_required %}required{% endif %}
+              >
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.question_5 != blank %}
+          <div class="ai-ambassador-form-group-{{ ai_gen_id }}">
+            <label class="ai-ambassador-form-label-{{ ai_gen_id }}" for="ai-ambassador-q5-{{ ai_gen_id }}">
+              {{ block.settings.question_5 }} {% if block.settings.question_5_required %}*{% endif %}
+            </label>
+            {% if block.settings.question_5_type == 'textarea' %}
+              <textarea
+                id="ai-ambassador-q5-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_5 }}]"
+                class="ai-ambassador-form-textarea-{{ ai_gen_id }}"
+                {% if block.settings.question_5_required %}required{% endif %}
+              ></textarea>
+            {% else %}
+              <input
+                type="{{ block.settings.question_5_type }}"
+                id="ai-ambassador-q5-{{ ai_gen_id }}"
+                name="contact[{{ block.settings.question_5 }}]"
+                class="ai-ambassador-form-input-{{ ai_gen_id }}"
+                {% if block.settings.question_5_required %}required{% endif %}
+              >
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <button type="submit" class="ai-ambassador-form-submit-{{ ai_gen_id }}">
+          {{ block.settings.submit_button_text }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</ambassador-application-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AmbassadorApplication{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.applyButtons = this.querySelectorAll('.ai-ambassador-apply-btn-{{ ai_gen_id }}');
+        this.popup = this.querySelector('.ai-ambassador-popup-{{ ai_gen_id }}');
+        this.overlay = this.querySelector('.ai-ambassador-popup-overlay-{{ ai_gen_id }}');
+        this.closeButton = this.querySelector('.ai-ambassador-popup-close-{{ ai_gen_id }}');
+        this.tierDisplay = this.querySelector('.ai-ambassador-popup-tier-{{ ai_gen_id }}');
+        this.tierInput = this.querySelector('.ai-ambassador-tier-input-{{ ai_gen_id }}');
+
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.applyButtons.forEach((button) => {
+          button.addEventListener('click', (e) => {
+            const tier = e.target.getAttribute('data-tier');
+            this.openPopup(tier);
+          });
+        });
+
+        this.closeButton.addEventListener('click', () => {
+          this.closePopup();
+        });
+
+        this.overlay.addEventListener('click', () => {
+          this.closePopup();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.popup.classList.contains('active')) {
+            this.closePopup();
+          }
+        });
+      }
+
+      openPopup(tier) {
+        const tierName = tier === 'elite' ? '{{ block.settings.elite_name }}' : '{{ block.settings.collective_name }}';
+        this.tierDisplay.textContent = 'Applying for: ' + tierName;
+        this.tierInput.value = tierName;
+
+        this.popup.classList.add('active');
+        this.overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      closePopup() {
+        this.popup.classList.remove('active');
+        this.overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    customElements.define('ambassador-application-{{ ai_gen_id }}', AmbassadorApplication{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ambassador application",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Join our program"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Become part of our exclusive community"
+    },
+    {
+      "type": "text",
+      "id": "apply_button_text",
+      "label": "Apply button text",
+      "default": "Apply Now"
+    },
+    {
+      "type": "header",
+      "content": "Elite tier"
+    },
+    {
+      "type": "text",
+      "id": "elite_badge",
+      "label": "Badge text",
+      "default": "Tier 1"
+    },
+    {
+      "type": "text",
+      "id": "elite_name",
+      "label": "Tier name",
+      "default": "Elite Ambassador"
+    },
+    {
+      "type": "textarea",
+      "id": "elite_description",
+      "label": "Description",
+      "default": "Our premium tier for established influencers"
+    },
+    {
+      "type": "text",
+      "id": "elite_benefit_1",
+      "label": "Benefit 1",
+      "default": "40% commission on all sales"
+    },
+    {
+      "type": "text",
+      "id": "elite_benefit_2",
+      "label": "Benefit 2",
+      "default": "Exclusive product launches"
+    },
+    {
+      "type": "text",
+      "id": "elite_benefit_3",
+      "label": "Benefit 3",
+      "default": "Monthly PR packages"
+    },
+    {
+      "type": "text",
+      "id": "elite_benefit_4",
+      "label": "Benefit 4",
+      "default": "Featured on our website"
+    },
+    {
+      "type": "text",
+      "id": "elite_benefit_5",
+      "label": "Benefit 5",
+      "default": "Dedicated account manager"
+    },
+    {
+      "type": "text",
+      "id": "elite_req_1",
+      "label": "Requirement 1",
+      "default": "50,000+ engaged followers"
+    },
+    {
+      "type": "text",
+      "id": "elite_req_2",
+      "label": "Requirement 2",
+      "default": "Professional content creation"
+    },
+    {
+      "type": "text",
+      "id": "elite_req_3",
+      "label": "Requirement 3",
+      "default": "Minimum 3% engagement rate"
+    },
+    {
+      "type": "text",
+      "id": "elite_req_4",
+      "label": "Requirement 4",
+      "default": "Aligned brand aesthetic"
+    },
+    {
+      "type": "header",
+      "content": "Collective tier"
+    },
+    {
+      "type": "text",
+      "id": "collective_badge",
+      "label": "Badge text",
+      "default": "Tier 2"
+    },
+    {
+      "type": "text",
+      "id": "collective_name",
+      "label": "Tier name",
+      "default": "Collective Ambassador"
+    },
+    {
+      "type": "textarea",
+      "id": "collective_description",
+      "label": "Description",
+      "default": "Perfect for growing influencers"
+    },
+    {
+      "type": "text",
+      "id": "collective_benefit_1",
+      "label": "Benefit 1",
+      "default": "25% commission on all sales"
+    },
+    {
+      "type": "text",
+      "id": "collective_benefit_2",
+      "label": "Benefit 2",
+      "default": "Quarterly product gifting"
+    },
+    {
+      "type": "text",
+      "id": "collective_benefit_3",
+      "label": "Benefit 3",
+      "default": "Exclusive discount code"
+    },
+    {
+      "type": "text",
+      "id": "collective_benefit_4",
+      "label": "Benefit 4",
+      "default": "Ambassador community access"
+    },
+    {
+      "type": "text",
+      "id": "collective_benefit_5",
+      "label": "Benefit 5",
+      "default": "Monthly performance bonuses"
+    },
+    {
+      "type": "text",
+      "id": "collective_req_1",
+      "label": "Requirement 1",
+      "default": "10,000+ engaged followers"
+    },
+    {
+      "type": "text",
+      "id": "collective_req_2",
+      "label": "Requirement 2",
+      "default": "Quality content creation"
+    },
+    {
+      "type": "text",
+      "id": "collective_req_3",
+      "label": "Requirement 3",
+      "default": "Active social media presence"
+    },
+    {
+      "type": "text",
+      "id": "collective_req_4",
+      "label": "Requirement 4",
+      "default": "Passion for our brand"
+    },
+    {
+      "type": "header",
+      "content": "Application form"
+    },
+    {
+      "type": "text",
+      "id": "popup_title",
+      "label": "Popup title",
+      "default": "Ambassador Application"
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit button text",
+      "default": "Submit Application"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you! We'll review your application."
+    },
+    {
+      "type": "header",
+      "content": "Question 1"
+    },
+    {
+      "type": "text",
+      "id": "question_1",
+      "label": "Question"
+    },
+    {
+      "type": "select",
+      "id": "question_1_type",
+      "label": "Field type",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "email",
+          "label": "Email"
+        },
+        {
+          "value": "tel",
+          "label": "Phone"
+        },
+        {
+          "value": "url",
+          "label": "URL"
+        },
+        {
+          "value": "textarea",
+          "label": "Textarea"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "question_1_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Question 2"
+    },
+    {
+      "type": "text",
+      "id": "question_2",
+      "label": "Question"
+    },
+    {
+      "type": "select",
+      "id": "question_2_type",
+      "label": "Field type",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "email",
+          "label": "Email"
+        },
+        {
+          "value": "tel",
+          "label": "Phone"
+        },
+        {
+          "value": "url",
+          "label": "URL"
+        },
+        {
+          "value": "textarea",
+          "label": "Textarea"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "question_2_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Question 3"
+    },
+    {
+      "type": "text",
+      "id": "question_3",
+      "label": "Question"
+    },
+    {
+      "type": "select",
+      "id": "question_3_type",
+      "label": "Field type",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "email",
+          "label": "Email"
+        },
+        {
+          "value": "tel",
+          "label": "Phone"
+        },
+        {
+          "value": "url",
+          "label": "URL"
+        },
+        {
+          "value": "textarea",
+          "label": "Textarea"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "question_3_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Question 4"
+    },
+    {
+      "type": "text",
+      "id": "question_4",
+      "label": "Question"
+    },
+    {
+      "type": "select",
+      "id": "question_4_type",
+      "label": "Field type",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "email",
+          "label": "Email"
+        },
+        {
+          "value": "tel",
+          "label": "Phone"
+        },
+        {
+          "value": "url",
+          "label": "URL"
+        },
+        {
+          "value": "textarea",
+          "label": "Textarea"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "question_4_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Question 5"
+    },
+    {
+      "type": "text",
+      "id": "question_5",
+      "label": "Question"
+    },
+    {
+      "type": "select",
+      "id": "question_5_type",
+      "label": "Field type",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "email",
+          "label": "Email"
+        },
+        {
+          "value": "tel",
+          "label": "Phone"
+        },
+        {
+          "value": "url",
+          "label": "URL"
+        },
+        {
+          "value": "textarea",
+          "label": "Textarea"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "checkbox",
+      "id": "question_5_required",
+      "label": "Required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "tier_name_size",
+      "label": "Tier name size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#faf9f7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card border",
+      "default": "#eee9e4"
+    },
+    {
+      "type": "color",
+      "id": "elite_accent_color",
+      "label": "Elite accent color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "elite_badge_text",
+      "label": "Elite badge text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "collective_accent_color",
+      "label": "Collective accent color",
+      "default": "#86BBBF"
+    },
+    {
+      "type": "color",
+      "id": "collective_badge_text",
+      "label": "Collective badge text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Submit button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Submit button border",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Submit button hover bg",
+      "default": "#86BBBF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Submit button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Submit button hover border",
+      "default": "#86BBBF"
+    },
+    {
+      "type": "color",
+      "id": "popup_background",
+      "label": "Popup background",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ambassador application"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,131 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "richtext_XfFagw": {
+      "type": "richtext",
+      "blocks": {
+        "text_wtcxNi": {
+          "type": "text",
+          "settings": {
+            "ttl": "<p>Frequently Asked Questions</p>",
+            "tff": "ft2",
+            "fs": 28,
+            "fsm": 20,
+            "fw": "700",
+            "lh": 1.2,
+            "cl": "#222222",
+            "mb": 10
+          }
+        },
+        "text_TMX9jP": {
+          "type": "text",
+          "settings": {
+            "ttl": "<p>Here are some answers to popular questions about our brand and products.</p>",
+            "tff": "ft1",
+            "fs": 14,
+            "fsm": 14,
+            "fw": "400",
+            "lh": 1.6,
+            "cl": "#222222",
+            "mb": 5
+          }
+        }
+      },
+      "block_order": [
+        "text_wtcxNi",
+        "text_TMX9jP"
+      ],
+      "disabled": true,
+      "settings": {
+        "maxwd": 800,
+        "lefta": false,
+        "sw": false,
+        "npd": false,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "ganim": false,
+        "animsp": 15,
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "sst": 50,
+        "ssb": 50,
+        "sstm": 25,
+        "ssbm": 25,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "disabled": true,
+          "settings": {
+            "htag": "h2",
+            "tff": "ft2",
+            "fts": 22,
+            "ftsm": 20,
+            "fw": "600",
+            "tuu": false,
+            "cl": "#222222",
+            "mb": 5,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": [
+        "title"
+      ],
+      "disabled": true,
+      "settings": {
+        "hit": 220,
+        "hitt": 220,
+        "hitm": 150,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "disabled": true,
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "hidettl": true,
+        "hide_hdft": false,
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    }
+  },
+  "order": [
+    "richtext_XfFagw",
+    "banner",
+    "breadcrumb",
+    "main"
+  ]
+}

@@ -1,0 +1,388 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "htag": "h1",
+            "tff": "ft2",
+            "fts": 22,
+            "ftsm": 20,
+            "fw": "600",
+            "tuu": false,
+            "cl": "#ffffff",
+            "mb": 5,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": [
+        "title"
+      ],
+      "disabled": true,
+      "settings": {
+        "hit": 200,
+        "hitt": 200,
+        "hitm": 150,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0.6,
+        "cntwd": 1600,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "sw": true,
+        "hidemb": false,
+        "tc": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "hidettl": true,
+        "hide_hdft": false,
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "hero_TUAqxi": {
+      "type": "hero",
+      "blocks": {
+        "custom_accent_text_kdPApQ": {
+          "type": "custom_accent_text",
+          "settings": {
+            "text_before": "<p><em>Become an</em></p>",
+            "accent_text": "Ambassador",
+            "text_after": "",
+            "remove_line_breaks": false,
+            "label_font_family": "poppins_n4",
+            "label_font_size_desktop": 31,
+            "label_font_size_mobile": 21,
+            "label_font_weight": "400",
+            "label_bold_weight": "700",
+            "label_line_height": 1.1,
+            "label_letter_spacing": 0,
+            "label_color": "#ffffff",
+            "custom_font_source": "upload",
+            "system_font_family": "'Segoe Script', cursive",
+            "custom_font_url": "",
+            "custom_font_family_name": "Dancing Script",
+            "custom_font_file": "https://cdn.shopify.com/s/files/1/0637/8795/8356/files/b5b10f8d-d11e-4021-bba8-d0f4a04fb58c6724.06d50e6c-ecc9-4f38-be76-b5212e4.woff2?v=1778927875",
+            "accent_font_size_desktop": 60,
+            "accent_font_size_mobile": 45,
+            "accent_font_weight": "400",
+            "accent_line_height": 1,
+            "accent_letter_spacing": 0,
+            "accent_vertical_offset_desktop": 0,
+            "accent_vertical_offset_mobile": 0,
+            "accent_color": "#ffffff",
+            "text_alignment": "center",
+            "mobile_text_alignment": "center",
+            "vertical_alignment": "baseline",
+            "keep_one_line_desktop": true,
+            "keep_one_line_mobile": true,
+            "gap_desktop": 40,
+            "gap_mobile": 6,
+            "max_width_desktop": 1200,
+            "max_width_mobile": 420,
+            "side_padding_desktop": 20,
+            "side_padding_mobile": 16,
+            "enable_background": false,
+            "background_color": "#ffffff",
+            "spacing_top_desktop": 0,
+            "spacing_bottom_desktop": 0,
+            "spacing_top_mobile": 0,
+            "spacing_bottom_mobile": 0,
+            "outer_margin_top_desktop": 0,
+            "outer_margin_bottom_desktop": 0,
+            "outer_margin_top_mobile": 0,
+            "outer_margin_bottom_mobile": 0
+          }
+        },
+        "button_HickHJ": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "title": "Apply Now",
+            "link": "",
+            "hidem": false,
+            "btn-style": "btn1",
+            "btn-size": "btn-sm",
+            "mb": 20,
+            "mbm": 20
+          }
+        }
+      },
+      "block_order": [
+        "custom_accent_text_kdPApQ",
+        "button_HickHJ"
+      ],
+      "name": "Hero Banner",
+      "settings": {
+        "hit": 300,
+        "hitt": 250,
+        "hitm": 200,
+        "image": "shopify://shop_images/ChatGPT_Image_May_31_2026_10_40_05_PM.png",
+        "overlay": "#000000",
+        "overlay_op": 0.3,
+        "blur": true,
+        "blur_percent": 10,
+        "ibrad": 0,
+        "parallax": true,
+        "ol_link": false,
+        "link": "",
+        "cntwd": 1400,
+        "cwd": 500,
+        "text-align": "tc f-jcc",
+        "text_align": "f-jcc-md f-aic-md",
+        "text_align_m": "f-jcc f-aic",
+        "tbg": "#ffffff",
+        "opt": 0,
+        "bpd": 60,
+        "bpdm": 30,
+        "brad": 5,
+        "sw": true,
+        "npd": true,
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "text_with_icons_fxNCNV": {
+      "type": "text-with-icons",
+      "blocks": {
+        "text_block_wKD9TM": {
+          "type": "text_block",
+          "settings": {
+            "icon": "star",
+            "title": "Choose your tier",
+            "text": "Choose your tier & submit your details.",
+            "url": "",
+            "newtab": false
+          }
+        },
+        "text_block_p73ndw": {
+          "type": "text_block",
+          "settings": {
+            "icon": "gift",
+            "title": "Unlock your perks",
+            "text": "Receive your code, rewards and tier access.",
+            "url": "",
+            "newtab": false
+          }
+        },
+        "text_block_96YBfE": {
+          "type": "text_block",
+          "settings": {
+            "icon": "heart",
+            "title": "Share the love",
+            "text": "Create content, tag us and grow with Lume.",
+            "url": "",
+            "newtab": false
+          }
+        }
+      },
+      "block_order": [
+        "text_block_wKD9TM",
+        "text_block_p73ndw",
+        "text_block_96YBfE"
+      ],
+      "name": "Text with Icons mobile",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "style": "stl5",
+        "col-gap": 20,
+        "row-gap": 10,
+        "stack-gap": 17,
+        "grid": 3,
+        "gridtb": 3,
+        "gridmb": 1,
+        "showicn": true,
+        "icns": 25,
+        "icnsm": 25,
+        "htag": "h1",
+        "tff": "ft1",
+        "tfs": 13,
+        "tfsm": 13,
+        "tfw": "500",
+        "fs": 12,
+        "fsm": 12,
+        "cl": "#60584d",
+        "icon_cl": "#60584d",
+        "box": false,
+        "boxbg": "#faf9f7",
+        "bdr": "#ffffff",
+        "brad": 5,
+        "autoplay": true,
+        "speed": 2,
+        "sw": false,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 20,
+        "ssb": 20,
+        "sstm": 20,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": true
+      }
+    },
+    "text_with_icons_dMbgyd": {
+      "type": "text-with-icons",
+      "blocks": {
+        "text_block_UTA6Ua": {
+          "type": "text_block",
+          "settings": {
+            "icon": "star",
+            "title": "Choose your tier",
+            "text": "Choose your tier & submit your details.",
+            "url": "",
+            "newtab": false
+          }
+        },
+        "text_block_meGRxV": {
+          "type": "text_block",
+          "settings": {
+            "icon": "gift",
+            "title": "Unlock your perks",
+            "text": "Receive your code, rewards and tier access.",
+            "url": "",
+            "newtab": false
+          }
+        },
+        "text_block_3fdgwr": {
+          "type": "text_block",
+          "settings": {
+            "icon": "heart",
+            "title": "Share the love",
+            "text": "Create content, tag us and grow with Lume.",
+            "url": "",
+            "newtab": false
+          }
+        }
+      },
+      "block_order": [
+        "text_block_UTA6Ua",
+        "text_block_meGRxV",
+        "text_block_3fdgwr"
+      ],
+      "name": "Text with Icons pc",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "style": "stl1",
+        "col-gap": 20,
+        "row-gap": 10,
+        "stack-gap": 24,
+        "grid": 3,
+        "gridtb": 3,
+        "gridmb": 1,
+        "showicn": true,
+        "icns": 25,
+        "icnsm": 25,
+        "htag": "h1",
+        "tff": "ft1",
+        "tfs": 13,
+        "tfsm": 13,
+        "tfw": "600",
+        "fs": 12,
+        "fsm": 12,
+        "cl": "#60584d",
+        "icon_cl": "#60584d",
+        "box": false,
+        "boxbg": "#faf9f7",
+        "bdr": "#ffffff",
+        "brad": 5,
+        "autoplay": true,
+        "speed": 5,
+        "sw": false,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 20,
+        "ssb": 20,
+        "sstm": 0,
+        "ssbm": 0,
+        "hidem": true,
+        "hided": false
+      }
+    },
+    "custom_block_masonry_8HRh8w": {
+      "type": "custom-block-masonry",
+      "blocks": {
+        "html_weynBz": {
+          "type": "html",
+          "name": "AMBASSADOR HTML",
+          "settings": {
+            "hidem": false,
+            "code": "<div class=\"lume-ambassador-wrap\">\n\n  <div class=\"lume-tier-intro\">\n    <h2>Choose Your Ambassador Tier</h2>\n    <p>Choose the ambassador tier that fits how you want to grow with Studio Lume Supplies.</p>\n\n    <div class=\"lume-tier-jump-wrap\">\n      <div class=\"lume-tier-jump\">\n        <a href=\"#lume-collective\">View Collective</a>\n        <a href=\"#lume-elite\">View Elite</a>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"lume-tier-grid\">\n\n    <!-- COLLECTIVE -->\n    <div class=\"lume-tier-card\" id=\"lume-collective\">\n      <div class=\"lume-tier-image\">\n        <img src=\"https://cdn.shopify.com/s/files/1/0637/8795/8356/files/IMG_8354.webp?v=1780068545\" alt=\"LUME Collective\" width=\"1200\" height=\"600\" loading=\"eager\" decoding=\"async\" fetchpriority=\"high\" sizes=\"(max-width: 749px) 100vw, 50vw\">\n      </div>\n\n      <div class=\"lume-tier-content\">\n        <h2>LUME Collective</h2>\n        <p class=\"lume-tier-subtitle\">For artists growing with Studio Lume.</p>\n\n        <div class=\"tier-block\">\n          <h3>\n            <span class=\"tier-heading-icon\" aria-hidden=\"true\">\n              <svg viewbox=\"0 0 24 24\" fill=\"none\">\n                <path d=\"M12 3.5l1.9 4.5 4.9.4-3.7 3.1 1.1 4.7L12 13.8 7.8 16.2l1.1-4.7-3.7-3.1 4.9-.4L12 3.5z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\"></path>\n              </svg>\n            </span>\n            What You Get\n          </h3>\n\n          <ul class=\"icon-list\">\n            <li>\n<strong>15% off storewide</strong> (personal use only)</li>\n            <li>\n<strong>Early access</strong> to sales</li>\n            <li><strong>Occasional surprise gifts</strong></li>\n            <li>Access to <strong>ambassador-only sales</strong>\n</li>\n            <li>Be part of the <strong>Studio Lume ambassador community</strong>\n</li>\n            <li>\n<strong>Want more perks?</strong> Join LUME Elite anytime</li>\n          </ul>\n        </div>\n\n        <div class=\"tier-block\">\n          <h3>\n            <span class=\"tier-heading-icon\" aria-hidden=\"true\">\n              <svg viewbox=\"0 0 24 24\" fill=\"none\">\n                <circle cx=\"12\" cy=\"12\" r=\"8.25\" stroke=\"currentColor\" stroke-width=\"1.5\"></circle>\n                <path d=\"M12 7.8v4.7l3 1.8\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n              </svg>\n            </span>\n            What We Need\n          </h3>\n\n          <ul class=\"icon-list muted-bullets\">\n            <li>Add <strong>@studiolumesupplies</strong> to your Instagram bio</li>\n            <li>Tag us when <strong>using our products</strong>\n</li>\n            <li>Be <strong>active and aligned</strong> with the Studio Lume brand</li>\n            <li><strong>No exclusivity required</strong></li>\n          </ul>\n        </div>\n\n        <div class=\"lume-tier-apply\">\n          <button class=\"lume-tier-button lume-collective-apply\" type=\"button\">\n            <span>Apply for Collective</span>\n          </button>\n        </div>\n      </div>\n    </div>\n\n    <!-- ELITE -->\n    <div class=\"lume-tier-card lume-elite-card\" id=\"lume-elite\">\n      <div class=\"lume-elite-badge\">Recommended</div>\n\n      <div class=\"lume-tier-image\">\n        <img src=\"https://cdn.shopify.com/s/files/1/0637/8795/8356/files/46aegrz346sdfg.jpg?v=1775142310&amp;width=1200\" alt=\"LUME Elite\" width=\"1200\" height=\"600\" loading=\"eager\" decoding=\"async\" fetchpriority=\"high\" sizes=\"(max-width: 749px) 100vw, 50vw\">\n      </div>\n\n      <div class=\"lume-tier-content\">\n        <h2>LUME Elite</h2>\n        <p class=\"lume-tier-subtitle\">For the icons building a lash empire.</p>\n\n        <div class=\"tier-block\">\n          <h3>\n            <span class=\"tier-heading-icon\" aria-hidden=\"true\">\n              <svg viewbox=\"0 0 24 24\" fill=\"none\">\n                <path d=\"M12 3.5l1.9 4.5 4.9.4-3.7 3.1 1.1 4.7L12 13.8 7.8 16.2l1.1-4.7-3.7-3.1 4.9-.4L12 3.5z\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\"></path>\n              </svg>\n            </span>\n            What You Get\n          </h3>\n\n          <ul class=\"icon-list\">\n            <li>\n<strong>20% off storewide</strong> (personal use only)</li>\n            <li>\n<strong>10% referral code</strong> to share with clients and followers</li>\n            <li>Every 10 referral uses earns a <strong>30% personal reward code</strong>\n</li>\n            <li>\n<strong>Early access</strong> to product launches and sales</li>\n            <li>\n<strong>Surprise PR packages</strong> and occasional gifts</li>\n            <li>Exclusive access to <strong>ambassador-only sales</strong>\n</li>\n            <li>\n<strong>Priority reposting</strong> on our Instagram</li>\n            <li><strong>Exclusive Elite birthday reward</strong></li>\n            <li>\n<strong>Priority consideration</strong> for campaigns and product testing</li>\n          </ul>\n        </div>\n\n        <div class=\"tier-block\">\n          <h3>\n            <span class=\"tier-heading-icon\" aria-hidden=\"true\">\n              <svg viewbox=\"0 0 24 24\" fill=\"none\">\n                <circle cx=\"12\" cy=\"12\" r=\"8.25\" stroke=\"currentColor\" stroke-width=\"1.5\"></circle>\n                <path d=\"M12 7.8v4.7l3 1.8\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n              </svg>\n            </span>\n            What We Need\n          </h3>\n\n          <ul class=\"icon-list muted-bullets\">\n            <li>Add <strong>@studiolumesupplies</strong> to your Instagram bio</li>\n            <li>Tag us in <strong>professional content</strong>\n</li>\n            <li>Represent Studio Lume in a <strong>polished, on-brand way</strong>\n</li>\n            <li><strong>No promoting competing lash supply brands</strong></li>\n            <li>Maintain <strong>consistent posting and engagement</strong>\n</li>\n          </ul>\n        </div>\n\n        <div class=\"lume-tier-apply\">\n         <button class=\"lume-tier-button lume-elite-apply\" type=\"button\">\n            <span>Apply for Elite</span>\n          </button>\n        </div>\n      </div>\n    </div>\n\n  </div>\n\n</div>\n\n<style>\n.lume-ambassador-wrap{\n  width:100%;\n  font-family:Poppins,sans-serif;\n  color:#222222;\n}\n\n.lume-tier-intro{\n  text-align:center;\n  max-width:720px;\n  margin:0 auto 28px;\n  color:#222222;\n}\n\n.lume-tier-intro h2{\n  font-size:26px;\n  font-weight:500;\n  margin:0 0 8px;\n  line-height:1.2;\n  color:#222222;\n}\n\n.lume-tier-intro p{\n  font-size:13px;\n  line-height:1.7;\n  margin:0;\n  opacity:.75;\n  color:#222222;\n}\n\n.lume-tier-jump-wrap{\n  width:100%;\n  text-align:center;\n  margin-top:14px;\n}\n\n.lume-tier-jump{\n  display:none;\n  gap:12px;\n  align-items:center;\n  justify-content:center;\n}\n\n.lume-tier-jump a{\n  display:inline-flex;\n  align-items:center;\n  justify-content:center;\n  text-align:center;\n  width:140px;\n  min-width:140px;\n  height:42px;\n  padding:0 18px;\n  border:1px solid #cbc4bc;\n  border-radius:999px;\n  text-decoration:none;\n  font-size:13px;\n  font-weight:500;\n  line-height:1;\n  color:#222222;\n  background:#ffffff;\n  box-sizing:border-box;\n  transition:background .2s ease,border-color .2s ease,transform .2s ease;\n}\n\n.lume-tier-jump a:hover{\n  background:#f5f5f5;\n  border-color:#cbc4bc;\n}\n\n.lume-tier-grid{\n  display:grid;\n  grid-template-columns:repeat(2,minmax(0,1fr));\n  gap:28px;\n  align-items:stretch;\n}\n\n.lume-tier-card{\n  position:relative;\n  background:#ffffff;\n  border:1px solid #eee9e4;\n  border-radius:14px;\n  overflow:hidden;\n  display:flex;\n  flex-direction:column;\n  height:100%;\n  box-sizing:border-box;\n  opacity:0;\n  transform:translateY(18px);\n  animation:lumeFadeUp .7s ease forwards;\n  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;\n}\n\n.lume-tier-card:nth-child(2){\n  animation-delay:.12s;\n}\n\n.lume-tier-card:hover{\n  transform:translateY(-3px);\n  border-color:#cbc4bc;\n  box-shadow:0 8px 24px rgba(0,0,0,.04);\n}\n\n.lume-elite-card{\n  border-color:#cbc4bc;\n  box-shadow:0 10px 28px rgba(0,0,0,.05);\n}\n\n.lume-elite-badge{\n  position:absolute;\n  top:14px;\n  right:14px;\n  z-index:2;\n  font-size:11px;\n  font-weight:500;\n  padding:5px 10px;\n  border-radius:999px;\n  background:#f5f5f5;\n  border:1px solid #eee9e4;\n  color:#222222;\n  font-family:Poppins,sans-serif;\n}\n\n.lume-tier-image{\n  aspect-ratio:16/8;\n  overflow:hidden;\n  background:#eee9e4;\n}\n\n.lume-tier-image img{\n  width:100%;\n  height:100%;\n  object-fit:cover;\n  display:block;\n}\n\n.lume-tier-content{\n  padding:28px 30px 30px;\n  display:flex;\n  flex-direction:column;\n  flex:1 1 auto;\n}\n\n.lume-tier-content h2{\n  text-align:center;\n  font-size:25px;\n  line-height:1.2;\n  font-weight:500;\n  margin:0;\n  color:#222222;\n  letter-spacing:.01em;\n}\n\n.lume-tier-subtitle{\n  text-align:center;\n  font-size:13px;\n  margin:6px 0 24px;\n  color:#222222;\n  font-style:italic;\n  opacity:.72;\n}\n\n.tier-block{\n  margin-top:20px;\n}\n\n.tier-block h3{\n  display:flex;\n  align-items:center;\n  gap:8px;\n  font-size:16px;\n  font-weight:500;\n  margin:0 0 12px;\n  padding-bottom:8px;\n  border-bottom:1px solid #eee9e4;\n  color:#222222;\n}\n\n.tier-heading-icon{\n  width:16px;\n  height:16px;\n  display:inline-flex;\n  color:#867E73;\n  opacity:.85;\n  flex:0 0 16px;\n}\n\n.tier-heading-icon svg{\n  width:16px;\n  height:16px;\n  display:block;\n}\n\n.icon-list{\n  list-style:none !important;\n  padding:0 !important;\n  margin:0 !important;\n}\n\n.icon-list li{\n  list-style:none !important;\n  position:relative;\n  padding-left:18px;\n  margin-bottom:10px;\n  font-size:13px;\n  line-height:1.7;\n  color:#222222;\n}\n\n.icon-list li::marker{\n  content:\"\";\n}\n\n.icon-list li::before{\n  content:\"\";\n  position:absolute;\n  left:0;\n  top:.72em;\n  width:4px;\n  height:4px;\n  border-radius:50%;\n  background:#cbc4bc;\n  transform:translateY(-50%);\n}\n\n.muted-bullets li::before{\n  width:4px;\n  height:4px;\n  background:#cbc4bc;\n}\n\n.lume-tier-content strong{\n  font-weight:450;\n  color:#222222;\n}\n\n.lume-tier-apply{\n  margin-top:auto;\n  padding-top:20px;\n}\n\n.lume-tier-button{\n  width:100%;\n  background:#aca39a;\n  border:none;\n  border-radius:999px;\n  cursor:pointer;\n  overflow:hidden;\n  padding:0;\n  transition:background .2s ease, transform .15s ease;\n  appearance:none;\n  -webkit-appearance:none;\n}\n\n.lume-tier-button span{\n  display:flex;\n  align-items:center;\n  justify-content:center;\n  width:100%;\n  min-height:46px;\n  padding:16px 20px;\n  font-family:Poppins,sans-serif;\n  font-size:14px;\n  font-weight:300;\n  color:#ffffff;\n  line-height:1;\n  text-align:center;\n  box-sizing:border-box;\n}\n\n.lume-tier-button:hover{\n  background:#aca39a;\n  transform:translateY(-1px);\n}\n\n@keyframes lumeFadeUp{\n  to{\n    opacity:1;\n    transform:translateY(0);\n  }\n}\n\n@media screen and (max-width:989px){\n  .lume-tier-grid{\n    gap:20px;\n  }\n\n  .lume-tier-content{\n    padding:24px 22px 26px;\n  }\n}\n\n@media screen and (max-width:749px){\n  .lume-tier-jump{\n    display:inline-flex;\n    flex-wrap:wrap;\n  }\n\n  .lume-tier-grid{\n    grid-template-columns:1fr;\n    gap:18px;\n  }\n\n  .lume-tier-card{\n    border-radius:12px;\n  }\n\n  .lume-tier-image{\n    aspect-ratio:16/7;\n  }\n\n  .lume-tier-content{\n    padding:22px 18px 24px;\n  }\n\n  .lume-tier-content h2{\n    font-size:22px;\n  }\n\n  .lume-tier-subtitle{\n    font-size:12px;\n    margin-bottom:18px;\n  }\n\n  .tier-block{\n    margin-top:18px;\n  }\n\n  .tier-block h3{\n    font-size:15px;\n    margin-bottom:10px;\n  }\n\n  .icon-list li{\n    font-size:12.5px;\n    line-height:1.65;\n    margin-bottom:9px;\n    padding-left:16px;\n  }\n\n  .lume-tier-button span{\n    min-height:44px;\n    padding:15px 18px;\n    font-size:13.5px;\n  }\n\n  .lume-elite-badge{\n    top:12px;\n    right:12px;\n    font-size:10px;\n    padding:5px 9px;\n  }\n}\n</style>",
+            "width": "w_100"
+          }
+        }
+      },
+      "block_order": [
+        "html_weynBz"
+      ],
+      "name": "Ambassador Section",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "gspace": 0,
+        "gspacem": 0,
+        "gspace-col": 2,
+        "prbox_style": "grid_1",
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 25,
+        "ssbm": 25,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "breadcrumb",
+    "main",
+    "hero_TUAqxi",
+    "text_with_icons_fxNCNV",
+    "text_with_icons_dMbgyd",
+    "custom_block_masonry_8HRh8w"
+  ]
+}

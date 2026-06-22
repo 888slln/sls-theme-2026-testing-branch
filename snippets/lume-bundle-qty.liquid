@@ -1,0 +1,166 @@
+{%- liquid
+  assign bundle_settings = blk_st
+  assign buy_2_discount_percent = buy_2_discount_percent | default: bundle_settings.buy_2_discount_percent | default: 10
+  assign buy_3_discount_percent = buy_3_discount_percent | default: bundle_settings.buy_3_discount_percent | default: 15
+  assign bundle_bottom_margin = bundle_settings.bm | default: 15
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign buy_2_multiplier = 100 | minus: buy_2_discount_percent
+  assign buy_3_multiplier = 100 | minus: buy_3_discount_percent
+
+  assign buy_1_total = current_variant.price
+
+  assign buy_2_compare = current_variant.price | times: 2
+  assign buy_2_total = buy_2_compare | times: buy_2_multiplier | divided_by: 100
+  assign buy_2_save = buy_2_compare | minus: buy_2_total
+
+  assign buy_3_compare = current_variant.price | times: 3
+  assign buy_3_total = buy_3_compare | times: buy_3_multiplier | divided_by: 100
+  assign buy_3_save = buy_3_compare | minus: buy_3_total
+
+  assign product_form_id = 'product-form-' | append: section.id
+-%}
+
+{{ 'lume-bundle-qty.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="lume-bundle-qty"
+  data-lume-bundle-qty
+  data-lume-active="true"
+  data-product-form-id="{{ product_form_id }}"
+  data-discount-2="{{ buy_2_discount_percent }}"
+  data-discount-3="{{ buy_3_discount_percent }}"
+  data-initial-variant-id="{{ current_variant.id }}"
+  data-money-format="{{ shop.money_format | escape }}"
+  data-money-with-currency-format="{{ shop.money_with_currency_format | escape }}"
+  data-currency-code="{{ cart.currency.iso_code | default: shop.currency }}"
+  style="
+    --lume-bundle-margin-bottom: {{ bundle_bottom_margin }}px;
+    --lume-bundle-title-color: {{ bundle_settings.title_color | default: '#222222' }};
+    --lume-bundle-subtitle-color: {{ bundle_settings.subtitle_color | default: '#222222' }};
+    --lume-bundle-label-color: {{ bundle_settings.label_color | default: '#222222' }};
+    --lume-bundle-subline-color: {{ bundle_settings.subline_color | default: '#222222' }};
+    --lume-bundle-price-color: {{ bundle_settings.price_color | default: '#222222' }};
+    --lume-bundle-compare-color: {{ bundle_settings.compare_color | default: '#aca39a' }};
+    --lume-bundle-card-bg: {{ bundle_settings.card_bg | default: '#FFFFFF' }};
+    --lume-bundle-card-hover-bg: {{ bundle_settings.card_hover_bg | default: '#ffffff' }};
+    --lume-bundle-card-border: {{ bundle_settings.card_border | default: '#eee9e4' }};
+    --lume-bundle-active-bg: {{ bundle_settings.active_bg | default: '#FFFFFF' }};
+    --lume-bundle-active-border: {{ bundle_settings.active_border | default: '#aca39a' }};
+    --lume-bundle-radio-color: {{ bundle_settings.radio_color | default: '#aca39a' }};
+    --lume-bundle-save-bg: {{ bundle_settings.save_bg | default: '#f5f5f5' }};
+    --lume-bundle-save-color: {{ bundle_settings.save_color | default: '#222222' }};
+    --lume-bundle-badge-bg: {{ bundle_settings.badge_bg | default: '#aca39a' }};
+    --lume-bundle-badge-color: {{ bundle_settings.badge_color | default: '#FFFFFF' }};
+    --lume-bundle-title-size: {{ bundle_settings.title_size | default: 13 }}px;
+    --lume-bundle-subtitle-size: {{ bundle_settings.subtitle_size | default: 13 }}px;
+    --lume-bundle-label-size: {{ bundle_settings.label_size | default: 13 }}px;
+    --lume-bundle-subline-size: {{ bundle_settings.subline_size | default: 13 }}px;
+    --lume-bundle-price-size: {{ bundle_settings.price_size | default: 13 }}px;
+    --lume-bundle-price-weight: {{ bundle_settings.price_weight | default: '600' }};
+    --lume-bundle-badge-size: {{ bundle_settings.badge_size | default: 9 }}px;
+    --lume-bundle-badge-weight: {{ bundle_settings.badge_weight | default: '600' }};
+    --lume-bundle-option-height: {{ bundle_settings.option_height | default: 60 }}px;
+    --lume-bundle-option-mobile-height: {{ bundle_settings.option_mobile_height | default: 66 }}px;
+  "
+  {{ theme_block.shopify_attributes }}
+>
+  <script type="application/json" data-lume-variants>
+    {{ product.variants | json }}
+  </script>
+
+  <div class="lume-bundle-qty__header">
+    <h3 class="lume-bundle-qty__title">Get more, save more</h3>
+    <p class="lume-bundle-qty__subtitle">Best offer automatically applied at checkout</p>
+  </div>
+
+  <div class="lume-bundle-qty__list" role="radiogroup" aria-label="Get more, save more">
+    <button
+      class="lume-bundle-option is-active"
+      type="button"
+      data-lume-option
+      data-lume-qty="1"
+      aria-checked="true"
+      role="radio"
+    >
+      <span class="lume-bundle-option__left">
+        <span class="lume-bundle-option__radio" aria-hidden="true">
+          <span class="lume-bundle-option__radio-dot"></span>
+        </span>
+
+        <span class="lume-bundle-option__content">
+          <span class="lume-bundle-option__topline">
+            <span class="lume-bundle-option__label">Buy 1</span>
+          </span>
+        </span>
+      </span>
+
+      <span class="lume-bundle-option__right">
+        <span class="lume-bundle-option__price" data-lume-price-buy1>{{ buy_1_total | money }}</span>
+      </span>
+    </button>
+
+    <button
+      class="lume-bundle-option"
+      type="button"
+      data-lume-option
+      data-lume-qty="2"
+      aria-checked="false"
+      role="radio"
+    >
+      <span class="lume-bundle-option__badge">MOST POPULAR</span>
+
+      <span class="lume-bundle-option__left">
+        <span class="lume-bundle-option__radio" aria-hidden="true">
+          <span class="lume-bundle-option__radio-dot"></span>
+        </span>
+
+        <span class="lume-bundle-option__content">
+          <span class="lume-bundle-option__topline">
+            <span class="lume-bundle-option__label">Buy 2</span>
+            <span class="lume-bundle-option__save-pill" data-lume-save-buy2>Save {{ buy_2_save | money }}</span>
+          </span>
+          <span class="lume-bundle-option__subline">{{ buy_2_discount_percent }}% OFF</span>
+        </span>
+      </span>
+
+      <span class="lume-bundle-option__right">
+        <span class="lume-bundle-option__price" data-lume-price-buy2>{{ buy_2_total | money }}</span>
+        <span class="lume-bundle-option__compare" data-lume-compare-buy2>{{ buy_2_compare | money }}</span>
+      </span>
+    </button>
+
+    <button
+      class="lume-bundle-option"
+      type="button"
+      data-lume-option
+      data-lume-qty="3"
+      aria-checked="false"
+      role="radio"
+    >
+      <span class="lume-bundle-option__badge">BEST VALUE</span>
+
+      <span class="lume-bundle-option__left">
+        <span class="lume-bundle-option__radio" aria-hidden="true">
+          <span class="lume-bundle-option__radio-dot"></span>
+        </span>
+
+        <span class="lume-bundle-option__content">
+          <span class="lume-bundle-option__topline">
+            <span class="lume-bundle-option__label" data-lume-label-buy3>Buy 3</span>
+            <span class="lume-bundle-option__save-pill" data-lume-save-buy3>Save {{ buy_3_save | money }}</span>
+          </span>
+          <span class="lume-bundle-option__subline">{{ buy_3_discount_percent }}% OFF 3 or more</span>
+        </span>
+      </span>
+
+      <span class="lume-bundle-option__right">
+        <span class="lume-bundle-option__price" data-lume-price-buy3>{{ buy_3_total | money }}</span>
+        <span class="lume-bundle-option__compare" data-lume-compare-buy3>{{ buy_3_compare | money }}</span>
+      </span>
+    </button>
+  </div>
+
+</div>
+
+<script src="{{ 'lume-bundle-qty.js' | asset_url }}" defer="defer"></script>

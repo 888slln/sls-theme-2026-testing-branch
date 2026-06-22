@@ -1,0 +1,189 @@
+{%- liquid
+  assign sls_rec_source = rec_source | default: settings.sls_recommend_source | default: 'smart'
+  if sls_rec_source == 'auto'
+    assign sls_rec_source = 'smart'
+  elsif sls_rec_source == 'manual'
+    assign sls_rec_source = 'manual_collection'
+  endif
+
+  assign sls_rec_heading = rec_heading | default: settings.sls_recommend_heading | default: 'Complete your order'
+  assign sls_rec_limit = rec_limit | default: settings.sls_recommend_limit | default: 5
+  assign sls_rec_autoplay_ms = rec_autoplay_ms | default: settings.sls_recommend_autoplay_ms | default: 3200
+  assign sls_rec_hide_mobile = rec_hide_mobile | default: settings.sls_recommend_hide_mobile
+  assign sls_rec_show_divider = true
+  if settings.sls_recommend_show_divider == false
+    assign sls_rec_show_divider = false
+  endif
+
+  if sls_rec_limit < 1
+    assign sls_rec_limit = 1
+  endif
+  if sls_rec_limit > 8
+    assign sls_rec_limit = 8
+  endif
+
+  assign sls_cart_product_ids = '|'
+  for item in cartItems
+    assign sls_item_id = item.product.id | append: ''
+    assign sls_cart_product_ids = sls_cart_product_ids | append: sls_item_id | append: '|'
+  endfor
+
+  assign sls_manual_handles_legacy = settings.sls_recommend_product_1 | append: ',' | append: settings.sls_recommend_product_2 | append: ',' | append: settings.sls_recommend_product_3 | append: ',' | append: settings.sls_recommend_product_4 | append: ',' | append: settings.sls_recommend_product_5 | append: ',' | append: settings.sls_recommend_product_6 | append: ',' | append: settings.sls_recommend_product_7 | append: ',' | append: settings.sls_recommend_product_8
+  assign sls_manual_handles_legacy = sls_manual_handles_legacy | split: ','
+  assign sls_manual_collection = collections[settings.sls_recommend_collection]
+
+  assign sls_candidate_handles_csv = ''
+  assign sls_candidate_count = 0
+
+  if sls_rec_source == 'manual_collection'
+    if sls_manual_collection != blank
+      for product in sls_manual_collection.products
+        if sls_candidate_count >= sls_rec_limit
+          break
+        endif
+        if product == blank or product.available == false
+          continue
+        endif
+        assign sls_product_id = product.id | append: ''
+        assign sls_product_token = '|' | append: sls_product_id | append: '|'
+        if sls_cart_product_ids contains sls_product_token
+          continue
+        endif
+        assign sls_candidate_handles_csv = sls_candidate_handles_csv | append: product.handle | append: ','
+        assign sls_candidate_count = sls_candidate_count | plus: 1
+      endfor
+    endif
+  endif
+
+  if sls_rec_source == 'smart'
+    assign sls_smart_priority_handles = ''
+    assign sls_smart_secondary_handles = ''
+    assign sls_smart_tertiary_handles = ''
+    assign sls_smart_seen_handles = '|'
+    for item in cartItems
+      assign sls_item_type = item.product.type | downcase | strip
+      assign sls_item_vendor = item.product.vendor | downcase | strip
+      for collection in item.product.collections limit: 4
+        for product in collection.products limit: 40
+          if product == blank or product.available == false
+            continue
+          endif
+          assign sls_product_id = product.id | append: ''
+          assign sls_product_token = '|' | append: sls_product_id | append: '|'
+          if sls_cart_product_ids contains sls_product_token
+            continue
+          endif
+          assign sls_product_handle = product.handle | strip
+          if sls_product_handle == blank
+            continue
+          endif
+          assign sls_handle_token = '|' | append: sls_product_handle | append: '|'
+          if sls_smart_seen_handles contains sls_handle_token
+            continue
+          endif
+          assign sls_smart_seen_handles = sls_smart_seen_handles | append: sls_product_handle | append: '|'
+
+          assign sls_product_type = product.type | downcase | strip
+          assign sls_product_vendor = product.vendor | downcase | strip
+          if sls_item_type != blank and sls_product_type == sls_item_type
+            assign sls_smart_priority_handles = sls_smart_priority_handles | append: sls_product_handle | append: ','
+          elsif sls_item_vendor != blank and sls_product_vendor == sls_item_vendor
+            assign sls_smart_secondary_handles = sls_smart_secondary_handles | append: sls_product_handle | append: ','
+          else
+            assign sls_smart_tertiary_handles = sls_smart_tertiary_handles | append: sls_product_handle | append: ','
+          endif
+        endfor
+      endfor
+    endfor
+    assign sls_candidate_handles_csv = sls_smart_priority_handles | append: sls_smart_secondary_handles | append: sls_smart_tertiary_handles
+  endif
+
+  if sls_candidate_handles_csv == blank
+    if sls_manual_collection != blank
+      for product in sls_manual_collection.products
+        if sls_candidate_count >= sls_rec_limit
+          break
+        endif
+        if product == blank or product.available == false
+          continue
+        endif
+        assign sls_product_id = product.id | append: ''
+        assign sls_product_token = '|' | append: sls_product_id | append: '|'
+        if sls_cart_product_ids contains sls_product_token
+          continue
+        endif
+        assign sls_candidate_handles_csv = sls_candidate_handles_csv | append: product.handle | append: ','
+        assign sls_candidate_count = sls_candidate_count | plus: 1
+      endfor
+    endif
+  endif
+
+  if sls_candidate_handles_csv == blank
+    for sls_handle in sls_manual_handles_legacy
+      if sls_candidate_count >= sls_rec_limit
+        break
+      endif
+      assign sls_handle = sls_handle | strip
+      if sls_handle == blank
+        continue
+      endif
+      assign sls_product = all_products[sls_handle]
+      if sls_product == blank or sls_product.available == false
+        continue
+      endif
+      assign sls_product_id = sls_product.id | append: ''
+      assign sls_product_token = '|' | append: sls_product_id | append: '|'
+      if sls_cart_product_ids contains sls_product_token
+        continue
+      endif
+      assign sls_candidate_handles_csv = sls_candidate_handles_csv | append: sls_product.handle | append: ','
+      assign sls_candidate_count = sls_candidate_count | plus: 1
+    endfor
+  endif
+
+  assign sls_candidate_handles = sls_candidate_handles_csv | split: ','
+  assign sls_renderable_count = 0
+  for sls_handle in sls_candidate_handles
+    if sls_renderable_count >= sls_rec_limit
+      break
+    endif
+    assign sls_handle = sls_handle | strip
+    if sls_handle == blank
+      continue
+    endif
+    assign sls_product = all_products[sls_handle]
+    if sls_product == blank
+      continue
+    endif
+    assign sls_renderable_count = sls_renderable_count | plus: 1
+  endfor
+
+  capture sls_recommend_swiper
+    echo '{ "slidesPerView":1, "loop":false, "rewind":true, "watchOverflow":false, "speed":420, "autoplay":false,"pagination":{ "el":".pgcartrecomSlider","clickable":true }}'
+  endcapture
+-%}
+
+{%- if sls_renderable_count > 0 -%}
+  <div class="recommendad-wrapper cartrecomended sls-cart-recommendations{% if sls_rec_hide_mobile %} hide-sm{% endif %}" data-id="cartrecomSlider" data-sls-divider="{{ sls_rec_show_divider }}">
+    <div class="rmttl sls-cart-recommendations__header fl f-aic f-jcsb pr">
+      <span>{{ sls_rec_heading }}</span>
+      <div class="fl1 fl f-jce swiper-pagination pgcartrecomSlider tr"></div>
+    </div>
+    <product-recommendations data-id="cartrecomSlider" data-manual="true" data-sls-autoplay-ms="{{ sls_rec_autoplay_ms }}"
+      class="grid cartrecomPr grid-products swiper" id="cartrecomSlider"
+      data-swiper='{{ sls_recommend_swiper }}'>
+      <div class="swiper-wrapper">
+        {%- assign sls_render_count = 0 -%}
+        {%- for sls_handle in sls_candidate_handles -%}
+          {%- if sls_render_count >= sls_rec_limit -%}{%- break -%}{%- endif -%}
+          {%- assign sls_handle = sls_handle | strip -%}
+          {%- if sls_handle == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign sls_product = all_products[sls_handle] -%}
+          {%- if sls_product == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign sls_render_count = sls_render_count | plus: 1 -%}
+          <div class="swiper-slide gitem">{% render 'product-card-columns', product: sls_product, block: block.settings, section: section.settings, sizes: image_size, showbtn: true, ctrecom: 'ctrecom', sls_show_cart_currency: sls_show_cart_currency %}</div>
+        {%- endfor -%}
+      </div>
+    </product-recommendations>
+  </div>
+{%- endif -%}

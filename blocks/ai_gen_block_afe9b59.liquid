@@ -1,0 +1,275 @@
+{% doc %}
+  @prompt Mobile-friendly Luxury Ambassador Page with restored original features and popup form.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  /* --- BASE SECTION --- */
+  .ai-ambassador-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: 80px 0;
+    background-color: #ffffff;
+  }
+  .ai-ambassador-container-{{ ai_gen_id }} {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* --- HEADER --- */
+  .ai-ambassador-header-{{ ai_gen_id }} { text-align: center; margin-bottom: 60px; }
+  .ai-ambassador-title-{{ ai_gen_id }} {
+    font-size: clamp(32px, 5vw, 48px); /* Fluid typography for mobile */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 15px;
+  }
+  .ai-ambassador-subtitle-{{ ai_gen_id }} {
+    color: #222222;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* --- GRID LOGIC (STACKS ON MOBILE) --- */
+  .ai-ambassador-tiers-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+  /* --- TIER CARDS --- */
+  .ai-ambassador-tier-{{ ai_gen_id }} {
+    border: 1px solid #eee9e4;
+    padding: 50px 40px;
+    border-radius: 15px;
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    background: #ffffff;
+  }
+  .ai-ambassador-tier-{{ ai_gen_id }}:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+    border-color: #222222;
+  }
+
+  .ai-ambassador-badge-{{ ai_gen_id }} {
+    background: #f5f5f5;
+    color: #222222;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    width: fit-content;
+    margin-bottom: 25px;
+    letter-spacing: 0.1em;
+  }
+
+  .ai-ambassador-tier-name-{{ ai_gen_id }} { font-size: 28px; margin-bottom: 15px; font-weight: 600; }
+  .ai-ambassador-tier-desc-{{ ai_gen_id }} { font-size: 15px; color: #222222; margin-bottom: 30px; line-height: 1.5; }
+
+  /* --- LIST WITH ORIGINAL ICONS --- */
+  .ai-ambassador-list-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px;
+    flex-grow: 1;
+  }
+  .ai-ambassador-list-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #222222;
+    line-height: 1.4;
+  }
+  .ai-ambassador-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    fill: #222222;
+  }
+
+  /* --- BUTTONS --- */
+  .ai-ambassador-btn-{{ ai_gen_id }} {
+    background: #222222;
+    color: #ffffff;
+    border: 1px solid #222222;
+    padding: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: 0.3s ease;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .ai-ambassador-btn-{{ ai_gen_id }}:hover {
+    background: transparent;
+    color: #222222;
+  }
+
+  /* --- MOBILE RESPONSIVENESS --- */
+  @media screen and (max-width: 834px) {
+    .ai-ambassador-tiers-{{ ai_gen_id }} {
+      grid-template-columns: 1fr; /* Stacks the cards */
+      gap: 30px;
+    }
+    .ai-ambassador-tier-{{ ai_gen_id }} {
+      padding: 40px 30px;
+    }
+    .ai-ambassador-title-{{ ai_gen_id }} {
+      font-size: 32px;
+    }
+  }
+
+  /* --- POPUP MODAL --- */
+  .ambassador-modal-{{ ai_gen_id }} {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
+    align-items: center;
+    justify-content: center;
+  }
+  .ambassador-modal-inner-{{ ai_gen_id }} {
+    background: #ffffff;
+    width: 95%;
+    max-width: 550px;
+    padding: 60px 25px 40px 25px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .close-modal-{{ ai_gen_id }} {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aca39a;
+  }
+
+  /* Custom scrollbar for the popup */
+  .ambassador-modal-inner-{{ ai_gen_id }}::-webkit-scrollbar { width: 5px; }
+  .ambassador-modal-inner-{{ ai_gen_id }}::-webkit-scrollbar-thumb { background: #eee9e4; border-radius: 10px; }
+{% endstyle %}
+
+<div class="ai-ambassador-{{ ai_gen_id }}">
+  <div class="ai-ambassador-container-{{ ai_gen_id }}">
+    <div class="ai-ambassador-header-{{ ai_gen_id }}">
+      <h2 class="ai-ambassador-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      <p class="ai-ambassador-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+    </div>
+
+    <div class="ai-ambassador-tiers-{{ ai_gen_id }}">
+      <div class="ai-ambassador-tier-{{ ai_gen_id }}">
+        <div class="ai-ambassador-badge-{{ ai_gen_id }}">LEVEL 01</div>
+        <h3 class="ai-ambassador-tier-name-{{ ai_gen_id }}">{{ block.settings.elite_name }}</h3>
+        <p class="ai-ambassador-tier-desc-{{ ai_gen_id }}">{{ block.settings.elite_description }}</p>
+
+        <ul class="ai-ambassador-list-{{ ai_gen_id }}">
+          <li class="ai-ambassador-list-item-{{ ai_gen_id }}">
+            <svg class="ai-ambassador-icon-{{ ai_gen_id }}" viewBox="0 0 20 20"><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0zm5.707 7.707l-6 6a.999.999 0 01-1.414 0l-3-3a.999.999 0 111.414-1.414L9 11.586l5.293-5.293a.999.999 0 111.414 1.414z"/></svg>
+            {{ block.settings.elite_benefit_1 }}
+          </li>
+          <li class="ai-ambassador-list-item-{{ ai_gen_id }}">
+            <svg class="ai-ambassador-icon-{{ ai_gen_id }}" viewBox="0 0 20 20"><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0zm5.707 7.707l-6 6a.999.999 0 01-1.414 0l-3-3a.999.999 0 111.414-1.414L9 11.586l5.293-5.293a.999.999 0 111.414 1.414z"/></svg>
+            {{ block.settings.elite_benefit_2 }}
+          </li>
+        </ul>
+        <button class="ai-ambassador-btn-{{ ai_gen_id }}" onclick="openAmbassadorModal()">Apply for Elite</button>
+      </div>
+
+      <div class="ai-ambassador-tier-{{ ai_gen_id }}">
+        <div class="ai-ambassador-badge-{{ ai_gen_id }}">LEVEL 02</div>
+        <h3 class="ai-ambassador-tier-name-{{ ai_gen_id }}">{{ block.settings.collective_name }}</h3>
+        <p class="ai-ambassador-tier-desc-{{ ai_gen_id }}">{{ block.settings.collective_description }}</p>
+
+        <ul class="ai-ambassador-list-{{ ai_gen_id }}">
+          <li class="ai-ambassador-list-item-{{ ai_gen_id }}">
+            <svg class="ai-ambassador-icon-{{ ai_gen_id }}" viewBox="0 0 20 20"><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0zm5.707 7.707l-6 6a.999.999 0 01-1.414 0l-3-3a.999.999 0 111.414-1.414L9 11.586l5.293-5.293a.999.999 0 111.414 1.414z"/></svg>
+            {{ block.settings.collective_benefit_1 }}
+          </li>
+          <li class="ai-ambassador-list-item-{{ ai_gen_id }}">
+            <svg class="ai-ambassador-icon-{{ ai_gen_id }}" viewBox="0 0 20 20"><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0zm5.707 7.707l-6 6a.999.999 0 01-1.414 0l-3-3a.999.999 0 111.414-1.414L9 11.586l5.293-5.293a.999.999 0 111.414 1.414z"/></svg>
+            {{ block.settings.collective_benefit_2 }}
+          </li>
+        </ul>
+        <button class="ai-ambassador-btn-{{ ai_gen_id }}" onclick="openAmbassadorModal()">Apply for Collective</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="Modal-{{ ai_gen_id }}" class="ambassador-modal-{{ ai_gen_id }}">
+  <div class="ambassador-modal-inner-{{ ai_gen_id }}">
+    <span class="close-modal-{{ ai_gen_id }}" onclick="closeAmbassadorModal()">✕ Close</span>
+    <h3 style="text-align: center; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 18px;">Program Application</h3>
+
+    <div class="ambassador-form-render-area">
+       {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function openAmbassadorModal() {
+    document.getElementById("Modal-{{ ai_gen_id }}").style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+  function closeAmbassadorModal() {
+    document.getElementById("Modal-{{ ai_gen_id }}").style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+  window.onclick = function(event) {
+    if (event.target == document.getElementById("Modal-{{ ai_gen_id }}")) {
+      closeAmbassadorModal();
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Luxury Ambassador Page",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Main Title", "default": "The Collective" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Represent the pinnacle of lash artistry and join our global community." },
+    { "type": "header", "content": "Tier 1: Elite" },
+    { "type": "text", "id": "elite_name", "label": "Name", "default": "Elite Ambassador" },
+    { "type": "textarea", "id": "elite_description", "label": "Description", "default": "For established lash artists with a strong social presence." },
+    { "type": "text", "id": "elite_benefit_1", "label": "Benefit 1", "default": "50% Commission on Sales" },
+    { "type": "text", "id": "elite_benefit_2", "label": "Benefit 2", "default": "Early Access to New Launches" },
+    { "type": "header", "content": "Tier 2: Collective" },
+    { "type": "text", "id": "collective_name", "label": "Name", "default": "Brand Collective" },
+    { "type": "textarea", "id": "collective_description", "label": "Description", "default": "Perfect for emerging artists passionate about our brand." },
+    { "type": "text", "id": "collective_benefit_1", "label": "Benefit 1", "default": "30% Commission on Sales" },
+    { "type": "text", "id": "collective_benefit_2", "label": "Benefit 2", "default": "Exclusive Product Discounts" }
+  ],
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Ambassador Page"
+    }
+  ]
+}
+{% endschema %}

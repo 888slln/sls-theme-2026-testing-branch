@@ -1,0 +1,264 @@
+{% doc %}
+  @prompt
+    A sleek, minimalist website banner for a luxury lash supply brand. Background is a soft, clean neutral tone with no image. In the center, clear high-quality typography reads 'Lash Emergency? Slide into our Instagram DMs for a faster response! @YourHandle'. The style is modern, clean, and feminine, professional aesthetic, soft natural lighting, high resolution.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-lash-banner-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    display: block;
+    background: linear-gradient(135deg, {{ block.settings.background_color_1 }} 0%, {{ block.settings.background_color_2 }} 100%);
+  }
+
+  .ai-lash-banner__wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding: {{ block.settings.padding_desktop }}px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-lash-banner__content-{{ ai_gen_id }} {
+    text-align: center;
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-lash-banner__text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.font_size_desktop }}px;
+    font-weight: {{ block.settings.font_weight }};
+    line-height: {{ block.settings.line_height }};
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    margin: 0;
+  }
+
+  .ai-lash-banner__text-{{ ai_gen_id }} a {
+    color: inherit;
+  }
+
+  .ai-lash-banner__handle-{{ ai_gen_id }} {
+    display: inline;
+    font-weight: 500;
+    color: {{ block.settings.link_color }};
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: opacity 0.2s ease;
+  }
+
+  .ai-lash-banner__handle-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-lash-banner__handle-{{ ai_gen_id }}:visited {
+    color: {{ block.settings.link_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-lash-banner__wrapper-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_mobile }}px 15px;
+    }
+
+    .ai-lash-banner__text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-lash-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-lash-banner__wrapper-{{ ai_gen_id }}">
+    <div class="ai-lash-banner__content-{{ ai_gen_id }}">
+      <p class="ai-lash-banner__text-{{ ai_gen_id }}">
+        {{ block.settings.banner_text_before }}
+
+        {% if block.settings.instagram_handle != blank %}
+          {% if block.settings.instagram_url != blank %}
+            <a
+              href="{{ block.settings.instagram_url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ai-lash-banner__handle-{{ ai_gen_id }}"
+            >
+              {{ block.settings.instagram_handle }}
+            </a>
+          {% else %}
+            <span class="ai-lash-banner__handle-{{ ai_gen_id }}">
+              {{ block.settings.instagram_handle }}
+            </span>
+          {% endif %}
+        {% endif %}
+
+        {{ block.settings.banner_text_after }}
+      </p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lash emergency banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color_1",
+      "label": "Gradient start",
+      "default": "#f5f3f0"
+    },
+    {
+      "type": "color",
+      "id": "background_color_2",
+      "label": "Gradient end",
+      "default": "#e8ddd4"
+    },
+    {
+      "type": "header",
+      "content": "Banner text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "banner_text_before",
+      "label": "Text before handle",
+      "default": "Lash Emergency? Slide into our Instagram DMs for a faster response! "
+    },
+    {
+      "type": "text",
+      "id": "instagram_handle",
+      "label": "Instagram handle text",
+      "default": "@studiolumesupplies"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram link"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "banner_text_after",
+      "label": "Text after handle"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Instagram link color",
+      "default": "#cbc4bc"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop",
+      "label": "Padding (desktop)",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Padding (mobile)",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lash emergency banner"
+    }
+  ]
+}
+{% endschema %}

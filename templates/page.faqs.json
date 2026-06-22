@@ -1,0 +1,488 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "richtext_XfFagw": {
+      "type": "richtext",
+      "blocks": {
+        "text_wtcxNi": {
+          "type": "text",
+          "settings": {
+            "ttl": "<p>Frequently Asked Questions</p>",
+            "tff": "ft2",
+            "fs": 28,
+            "fsm": 20,
+            "fw": "700",
+            "lh": 1.2,
+            "cl": "#222222",
+            "mb": 10
+          }
+        },
+        "text_TMX9jP": {
+          "type": "text",
+          "settings": {
+            "ttl": "<p>Here are some answers to popular questions about our brand and products.</p>",
+            "tff": "ft1",
+            "fs": 14,
+            "fsm": 14,
+            "fw": "400",
+            "lh": 1.6,
+            "cl": "#222222",
+            "mb": 5
+          }
+        }
+      },
+      "block_order": [
+        "text_wtcxNi",
+        "text_TMX9jP"
+      ],
+      "disabled": true,
+      "settings": {
+        "maxwd": 800,
+        "lefta": false,
+        "sw": false,
+        "npd": false,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "ganim": false,
+        "animsp": 15,
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "sst": 50,
+        "ssb": 50,
+        "sstm": 25,
+        "ssbm": 25,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "banner": {
+      "type": "page-banner",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "disabled": true,
+          "settings": {
+            "htag": "h2",
+            "tff": "ft2",
+            "fts": 22,
+            "ftsm": 20,
+            "fw": "600",
+            "tuu": false,
+            "cl": "#222222",
+            "mb": 5,
+            "mbm": 5
+          }
+        }
+      },
+      "block_order": [
+        "title"
+      ],
+      "disabled": true,
+      "settings": {
+        "hit": 220,
+        "hitt": 220,
+        "hitm": 150,
+        "bg": "#f5f5f5",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "cntwd": 1000,
+        "text-align": true
+      }
+    },
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "hidettl": true,
+        "hide_hdft": false,
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "361c08f1-cd75-4149-803c-a16810fee9f8": {
+      "type": "faq",
+      "blocks": {
+        "ttl_iQPkWN": {
+          "type": "ttl",
+          "settings": {
+            "title": "Shipping & Delivery"
+          }
+        },
+        "faqs_LyEpWt": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do you offer local delivery?",
+            "answer": "<p>Yes — we offer local delivery within select areas.</p><p>We currently deliver within a 40km radius, with delivery tiers based on your distance and order value:</p><p>• Up to 10km — $10 delivery (minimum $50 order)<br/><br/>• 10–20km — $15 delivery (minimum $100 order)<br/><br/>• 20–40km — $20 delivery (minimum $150 order)</p><p>All local delivery orders are same day (by 10pm) when placed before 6pm.</p><p>Delivery availability and pricing will show at checkout once your address is entered.</p>",
+            "open": false
+          }
+        },
+        "template--17789178872097__361c08f1-cd75-4149-803c-a16810fee9f8-1675510951bfbabe37-2": {
+          "type": "faqs",
+          "settings": {
+            "title": "How long will it take to receive my order?",
+            "answer": "<p><br/>Orders are processed within 1 business day.<br/><br/>Standard delivery typically takes 2–6 business days within Australia, and express delivery takes 1–3 business days depending on your location.</p>",
+            "open": false
+          }
+        },
+        "faqs_BDVgEL": {
+          "type": "faqs",
+          "settings": {
+            "title": "How much does shipping cost?",
+            "answer": "<p>We offer simple flat-rate shipping across Australia.</p><p>• Flat rate shipping: calculated at checkout<br/><br/>• Free standard shipping: orders over $150<br/><br/>• Free express shipping: orders over $250</p><p>Shipping rates will be shown at checkout before payment.</p>",
+            "open": false
+          }
+        },
+        "template--17789178872097__361c08f1-cd75-4149-803c-a16810fee9f8-1675510951bfbabe37-0": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do you offer express shipping?",
+            "answer": "<p><br/>Yes, express shipping is available at checkout for faster delivery.</p>",
+            "open": false
+          }
+        },
+        "template--17789178872097__361c08f1-cd75-4149-803c-a16810fee9f8-1675510951bfbabe37-1": {
+          "type": "faqs",
+          "settings": {
+            "title": "When will my order be dispatched?",
+            "answer": "<p>Orders placed before our daily cut-off are typically dispatched the same business day. Orders placed after this time will be shipped the next business day.</p>",
+            "open": false
+          }
+        },
+        "a11b5e03-f829-45dc-89c4-12aa39120710": {
+          "type": "faqs",
+          "settings": {
+            "title": "Will I receive tracking information?",
+            "answer": "<p>Yes — once your order has been shipped, you’ll receive a tracking number via email. Please allow up to 24 hours for tracking to update.</p>",
+            "open": false
+          }
+        },
+        "faqs_xfTAn8": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do you ship internationally?",
+            "answer": "<p>Yes — international shipping is available. Delivery times vary depending on location, and any customs duties or taxes are the responsibility of the customer.</p>",
+            "open": false
+          }
+        },
+        "ttl_rdEaaD": {
+          "type": "ttl",
+          "settings": {
+            "title": "Returns & Refunds"
+          }
+        },
+        "a2ac54fd-722c-442b-9bd8-5220335010c4": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do you offer refunds?",
+            "answer": "<p>We do not offer refunds for change of mind or incorrect purchases.<br/><br/>We provide store credit for eligible returns, and refunds are only issued for faulty or incorrect items.</p>",
+            "open": false
+          }
+        },
+        "faqs_r4bceF": {
+          "type": "faqs",
+          "settings": {
+            "title": "Can I return my order if I change my mind?",
+            "answer": "<p>Yes — we offer a 14-day return period for unused, unopened items in original condition. Approved returns are issued as store credit.</p>",
+            "open": false
+          }
+        },
+        "faqs_eiD89B": {
+          "type": "faqs",
+          "settings": {
+            "title": "What if I receive a faulty or incorrect item?",
+            "answer": "<p>Please contact us as soon as possible with your order number and clear photos of the issue. We’ll assess the claim and provide a replacement, refund, or store credit where applicable.</p>",
+            "open": false
+          }
+        },
+        "9f2740fa-db10-4715-991a-c00655ef8584": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do I have to pay for return shipping?",
+            "answer": "<p>Yes — customers are responsible for return shipping costs unless the item is confirmed to be faulty or incorrect.</p>",
+            "open": false
+          }
+        },
+        "faqs_q8g3AY": {
+          "type": "faqs",
+          "settings": {
+            "title": "Can I cancel or change my order?",
+            "answer": "<p>If your order hasn’t been processed yet, we may be able to cancel or update it. Once an order has been fulfilled, changes are no longer possible.</p>",
+            "open": false
+          }
+        },
+        "ttl_z6brcE": {
+          "type": "ttl",
+          "settings": {
+            "title": "Products & Usage"
+          }
+        },
+        "faqs_iCpBdf": {
+          "type": "faqs",
+          "settings": {
+            "title": "Who are your products designed for?",
+            "answer": "<p>All Studio Lume Supplies products are designed for trained lash technicians and beauty professionals.</p>",
+            "open": false
+          }
+        },
+        "faqs_qQztmz": {
+          "type": "faqs",
+          "settings": {
+            "title": "Can I use these products at home?",
+            "answer": "<p>No — our products are for professional use only and require proper training and experience.</p>",
+            "open": false
+          }
+        },
+        "faqs_xdeYFE": {
+          "type": "faqs",
+          "settings": {
+            "title": "How should I store lash adhesive?",
+            "answer": "<p>Store your adhesive upright in a cool, dry place away from sunlight. Proper storage is essential for maintaining performance and shelf life.</p>",
+            "open": false
+          }
+        },
+        "faqs_bFK4ht": {
+          "type": "faqs",
+          "settings": {
+            "title": "How long does your adhesive last once opened?",
+            "answer": "<p>Our adhesives typically last up to 1 month once opened, depending on storage and environmental conditions.</p>",
+            "open": false
+          }
+        },
+        "faqs_36T3bp": {
+          "type": "faqs",
+          "settings": {
+            "title": "What factors affect retention?",
+            "answer": "<p>Retention depends on:</p><ul><li>Application technique<br/></li><li>Humidity and temperature<br/></li><li>Client aftercare<br/></li><li>Proper lash prep</li></ul>",
+            "open": false
+          }
+        },
+        "faqs_jT7JEG": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do I need to patch test?",
+            "answer": "<p>Yes — patch testing is recommended before using any adhesive on clients.</p>",
+            "open": false
+          }
+        },
+        "ttl_A6hcDk": {
+          "type": "ttl",
+          "settings": {
+            "title": "Orders & Support"
+          }
+        },
+        "faqs_U3Dz73": {
+          "type": "faqs",
+          "settings": {
+            "title": "How can I contact you?",
+            "answer": "<p>You can reach us via email at <a href=\"mailto:studiolumesupplies@gmail.com\" title=\"mailto:studiolumesupplies@gmail.com\">studiolumesupplies@gmail.com</a> and we’ll get back to you as soon as possible.</p>",
+            "open": false
+          }
+        },
+        "faqs_k4yVfG": {
+          "type": "faqs",
+          "settings": {
+            "title": "Where are you located?",
+            "answer": "<p>We’re based in Queensland, Australia. Orders are shipped from our studio in Holmview.</p>",
+            "open": false
+          }
+        },
+        "faqs_V9pMDg": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do you have a physical store?",
+            "answer": "<p>No — we operate exclusively online. Orders must be placed through our website.</p>",
+            "open": false
+          }
+        },
+        "faqs_wW9XEf": {
+          "type": "faqs",
+          "settings": {
+            "title": "Do you offer discounts or promotions?",
+            "answer": "<p>We occasionally run promotions and offer first-order discounts. Make sure you're subscribed to stay updated.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "ttl_iQPkWN",
+        "faqs_LyEpWt",
+        "template--17789178872097__361c08f1-cd75-4149-803c-a16810fee9f8-1675510951bfbabe37-2",
+        "faqs_BDVgEL",
+        "template--17789178872097__361c08f1-cd75-4149-803c-a16810fee9f8-1675510951bfbabe37-0",
+        "template--17789178872097__361c08f1-cd75-4149-803c-a16810fee9f8-1675510951bfbabe37-1",
+        "a11b5e03-f829-45dc-89c4-12aa39120710",
+        "faqs_xfTAn8",
+        "ttl_rdEaaD",
+        "a2ac54fd-722c-442b-9bd8-5220335010c4",
+        "faqs_r4bceF",
+        "faqs_eiD89B",
+        "9f2740fa-db10-4715-991a-c00655ef8584",
+        "faqs_q8g3AY",
+        "ttl_z6brcE",
+        "faqs_iCpBdf",
+        "faqs_qQztmz",
+        "faqs_xdeYFE",
+        "faqs_bFK4ht",
+        "faqs_36T3bp",
+        "faqs_jT7JEG",
+        "ttl_A6hcDk",
+        "faqs_U3Dz73",
+        "faqs_k4yVfG",
+        "faqs_V9pMDg",
+        "faqs_wW9XEf"
+      ],
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "page_width": 900,
+        "accor": true,
+        "acc_style": "2",
+        "tcl": "#222222",
+        "tfs": 18,
+        "tfsm": 18,
+        "tfw": "600",
+        "qu": "#222222",
+        "fs": 13,
+        "fsm": 13,
+        "fw": "500",
+        "an": "#222222",
+        "fst": 13,
+        "fsmt": 13,
+        "bdr": "#eee9e4",
+        "links": false,
+        "lfs": 13,
+        "lfsm": 13,
+        "lfw": "600",
+        "lcl": "#222222",
+        "lclh": "#222222",
+        "lbg": "#faf9f7",
+        "lbd": "#eee9e4",
+        "sw": false,
+        "bg": "",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "headings_cl": "",
+        "sst": 40,
+        "ssb": 40,
+        "sstm": 30,
+        "ssbm": 30,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "instagram_YAEDDX": {
+      "type": "instagram",
+      "blocks": {
+        "lookbook1_QWiejf": {
+          "type": "lookbook1",
+          "settings": {
+            "width": "wd20",
+            "title": "Happy Women",
+            "imgurl": "https://www.instagram.com/revonefashion/",
+            "newtab": true
+          }
+        },
+        "lookbook1_WjeYeH": {
+          "type": "lookbook1",
+          "settings": {
+            "width": "wd20",
+            "title": "Boho Trending",
+            "imgurl": "https://www.instagram.com/revonefashion/",
+            "newtab": true
+          }
+        },
+        "lookbook1_caqHYL": {
+          "type": "lookbook1",
+          "settings": {
+            "width": "wd20",
+            "title": "High Heels",
+            "imgurl": "https://www.instagram.com/revonefashion/",
+            "newtab": true
+          }
+        },
+        "lookbook1_bdNtmR": {
+          "type": "lookbook1",
+          "settings": {
+            "width": "wd20",
+            "title": "Sports look",
+            "imgurl": "https://www.instagram.com/revonefashion/",
+            "newtab": true
+          }
+        },
+        "lookbook1_pHhijt": {
+          "type": "lookbook1",
+          "settings": {
+            "width": "wd20",
+            "title": "Denim",
+            "imgurl": "https://www.instagram.com/revonefashion/",
+            "newtab": true
+          }
+        }
+      },
+      "block_order": [
+        "lookbook1_QWiejf",
+        "lookbook1_WjeYeH",
+        "lookbook1_caqHYL",
+        "lookbook1_bdNtmR",
+        "lookbook1_pHhijt"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Follow Us",
+        "subtitle": "@REVONEFASHION",
+        "grid_design": "1",
+        "gspace": 20,
+        "gspacem": 15,
+        "col": 5,
+        "col-m": "wd33",
+        "imgclick": "2",
+        "icony": true,
+        "icon": "1",
+        "cl": "#ffffff",
+        "imgbg": "#222222",
+        "radius": 8,
+        "sw": false,
+        "npd": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 40,
+        "ssb": 60,
+        "sstm": 0,
+        "ssbm": 30,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "richtext_XfFagw",
+    "banner",
+    "breadcrumb",
+    "main",
+    "361c08f1-cd75-4149-803c-a16810fee9f8",
+    "instagram_YAEDDX"
+  ]
+}

@@ -1,0 +1,568 @@
+{% doc %}
+  @prompt
+    make a hero banner, where i can put a image for either mobile and desktop and it changes images depending on the device and size.
+
+    i also want a colour overlay option on it.
+
+    also add a parralax effect to., parralax effect is broken, let me turn it off and on.
+
+    also let me adjust height and width of both mobile and desktop hero image size.
+
+    also let me centre images, can you make a on and off setting where it locks to the size of the image no matter the screen size
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-banner-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+  }
+
+  .ai-hero-banner__wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    {% if block.settings.lock_to_image_size %}
+      height: auto;
+    {% else %}
+      height: {{ block.settings.desktop_height }}px;
+    {% endif %}
+    overflow: hidden;
+  }
+
+  .ai-hero-banner__image-container-{{ ai_gen_id }} {
+    position: {% if block.settings.lock_to_image_size %}relative{% else %}absolute{% endif %};
+    top: 0;
+    left: 0;
+    width: 100%;
+    {% unless block.settings.lock_to_image_size %}
+      height: 120%;
+    {% endunless %}
+    {% if block.settings.enable_parallax and block.settings.parallax_speed > 0 and block.settings.lock_to_image_size == false %}
+      will-change: transform;
+    {% endif %}
+  }
+
+  .ai-hero-banner__link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-hero-banner__picture-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-hero-banner__image-{{ ai_gen_id }} {
+    {% if block.settings.lock_to_image_size %}
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    {% else %}
+      width: {{ block.settings.desktop_width }}%;
+      height: {{ block.settings.desktop_image_height }}%;
+      object-fit: cover;
+    {% endif %}
+    object-position: {{ block.settings.desktop_position }};
+    display: block;
+    margin: 0 auto;
+  }
+
+  .ai-hero-banner__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    {% if block.settings.lock_to_image_size %}
+      min-height: 400px;
+    {% endif %}
+  }
+
+  .ai-hero-banner__placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+  }
+
+  .ai-hero-banner__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #222222;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-hero-banner__overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: {{ block.settings.overlay_opacity }};
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .ai-hero-banner__mobile-image-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-banner__wrapper-{{ ai_gen_id }} {
+      {% unless block.settings.lock_to_image_size %}
+        height: {{ block.settings.mobile_height }}px;
+      {% endunless %}
+    }
+
+    .ai-hero-banner__desktop-image-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-hero-banner__mobile-image-{{ ai_gen_id }},
+    .ai-hero-banner__picture-image-{{ ai_gen_id }} {
+      display: block;
+      {% if block.settings.lock_to_image_size %}
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      {% else %}
+        width: {{ block.settings.mobile_width }}%;
+        height: {{ block.settings.mobile_image_height }}%;
+        object-fit: cover;
+      {% endif %}
+      object-position: {{ block.settings.mobile_position }};
+    }
+  }
+{% endstyle %}
+
+<hero-banner-{{ ai_gen_id }}
+  class="ai-hero-banner-{{ ai_gen_id }}"
+  data-parallax-enabled="{{ block.settings.enable_parallax }}"
+  data-parallax-speed="{{ block.settings.parallax_speed }}"
+  data-lock-to-image="{{ block.settings.lock_to_image_size }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-hero-banner__wrapper-{{ ai_gen_id }}">
+    <div class="ai-hero-banner__image-container-{{ ai_gen_id }}">
+      {% if block.settings.desktop_image %}
+        {% comment %}theme-check-disable AssetPreload{% endcomment %}
+        {% if block.settings.mobile_image %}
+          <link
+            rel="preload"
+            as="image"
+            href="{{ block.settings.mobile_image | image_url: width: 640 }}"
+            imagesrcset="
+              {{ block.settings.mobile_image | image_url: width: 320 }} 320w,
+              {{ block.settings.mobile_image | image_url: width: 480 }} 480w,
+              {{ block.settings.mobile_image | image_url: width: 640 }} 640w,
+              {{ block.settings.mobile_image | image_url: width: 800 }} 800w,
+              {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w
+            "
+            imagesizes="100vw"
+            media="(max-width: 749px)"
+            fetchpriority="high"
+          >
+        {% endif %}
+        <link
+          rel="preload"
+          as="image"
+          href="{{ block.settings.desktop_image | image_url: width: 1600 }}"
+          imagesrcset="
+            {{ block.settings.desktop_image | image_url: width: 750 }} 750w,
+            {{ block.settings.desktop_image | image_url: width: 1100 }} 1100w,
+            {{ block.settings.desktop_image | image_url: width: 1500 }} 1500w,
+            {{ block.settings.desktop_image | image_url: width: 1600 }} 1600w,
+            {{ block.settings.desktop_image | image_url: width: 2000 }} 2000w,
+            {{ block.settings.desktop_image | image_url: width: 2400 }} 2400w
+          "
+          imagesizes="100vw"
+          media="(min-width: 750px)"
+          fetchpriority="high"
+        >
+        {% comment %}theme-check-enable AssetPreload{% endcomment %}
+        {% if block.settings.image_link != blank %}
+          <a href="{{ block.settings.image_link }}" class="ai-hero-banner__link-{{ ai_gen_id }}">
+        {% endif %}
+        <picture class="ai-hero-banner__picture-{{ ai_gen_id }}">
+          {% if block.settings.mobile_image %}
+            <source
+              media="(max-width: 749px)"
+              srcset="
+                {{ block.settings.mobile_image | image_url: width: 320 }} 320w,
+                {{ block.settings.mobile_image | image_url: width: 480 }} 480w,
+                {{ block.settings.mobile_image | image_url: width: 640 }} 640w,
+                {{ block.settings.mobile_image | image_url: width: 800 }} 800w,
+                {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w
+              "
+              sizes="100vw"
+            >
+          {% endif %}
+          <source
+            media="(min-width: 750px)"
+            srcset="
+              {{ block.settings.desktop_image | image_url: width: 750 }} 750w,
+              {{ block.settings.desktop_image | image_url: width: 1100 }} 1100w,
+              {{ block.settings.desktop_image | image_url: width: 1500 }} 1500w,
+              {{ block.settings.desktop_image | image_url: width: 1600 }} 1600w,
+              {{ block.settings.desktop_image | image_url: width: 2000 }} 2000w,
+              {{ block.settings.desktop_image | image_url: width: 2400 }} 2400w
+            "
+            sizes="100vw"
+          >
+          <img
+            src="{{ block.settings.desktop_image | image_url: width: 1600 }}"
+            srcset="
+              {{ block.settings.desktop_image | image_url: width: 750 }} 750w,
+              {{ block.settings.desktop_image | image_url: width: 1100 }} 1100w,
+              {{ block.settings.desktop_image | image_url: width: 1500 }} 1500w,
+              {{ block.settings.desktop_image | image_url: width: 1600 }} 1600w,
+              {{ block.settings.desktop_image | image_url: width: 2000 }} 2000w,
+              {{ block.settings.desktop_image | image_url: width: 2400 }} 2400w
+            "
+            sizes="100vw"
+            alt="{{ block.settings.desktop_image.alt | escape }}"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            width="{{ block.settings.desktop_image.width }}"
+            height="{{ block.settings.desktop_image.height }}"
+            class="ai-hero-banner__image-{{ ai_gen_id }} ai-hero-banner__picture-image-{{ ai_gen_id }}"
+          >
+        </picture>
+        {% if block.settings.image_link != blank %}
+          </a>
+        {% endif %}
+      {% else %}
+        {% if block.settings.image_link != blank %}
+          <a href="{{ block.settings.image_link }}" class="ai-hero-banner__link-{{ ai_gen_id }}">
+        {% endif %}
+        <div class="ai-hero-banner__placeholder-{{ ai_gen_id }} ai-hero-banner__desktop-image-{{ ai_gen_id }}">
+          {{ 'hero-apparel-1' | placeholder_svg_tag }}
+          <div class="ai-hero-banner__empty-state-{{ ai_gen_id }}">
+            Next, add a desktop image
+          </div>
+        </div>
+
+        {% if block.settings.mobile_image %}
+          <img
+            src="{{ block.settings.mobile_image | image_url: width: 640 }}"
+            srcset="
+              {{ block.settings.mobile_image | image_url: width: 320 }} 320w,
+              {{ block.settings.mobile_image | image_url: width: 480 }} 480w,
+              {{ block.settings.mobile_image | image_url: width: 640 }} 640w,
+              {{ block.settings.mobile_image | image_url: width: 800 }} 800w,
+              {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w
+            "
+            sizes="(max-width: 749px) 100vw, 1px"
+            alt="{{ block.settings.mobile_image.alt | escape }}"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            width="{{ block.settings.mobile_image.width }}"
+            height="{{ block.settings.mobile_image.height }}"
+            class="ai-hero-banner__image-{{ ai_gen_id }} ai-hero-banner__mobile-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-hero-banner__placeholder-{{ ai_gen_id }} ai-hero-banner__mobile-image-{{ ai_gen_id }}">
+            {{ 'hero-apparel-1' | placeholder_svg_tag }}
+            <div class="ai-hero-banner__empty-state-{{ ai_gen_id }}">
+              Next, add a mobile image
+            </div>
+          </div>
+        {% endif %}
+        {% if block.settings.image_link != blank %}
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {% if block.settings.enable_overlay %}
+      <div class="ai-hero-banner__overlay-{{ ai_gen_id }}"></div>
+    {% endif %}
+  </div>
+</hero-banner-{{ ai_gen_id }}>
+
+{% if block.settings.enable_parallax and block.settings.parallax_speed > 0 and block.settings.lock_to_image_size == false %}
+  <script>
+    (function() {
+      class HeroBanner{{ ai_gen_id }} extends HTMLElement {
+        constructor() {
+          super();
+          this.parallaxEnabled = this.dataset.parallaxEnabled === 'true';
+          this.parallaxSpeed = parseFloat(this.dataset.parallaxSpeed) || 0.5;
+          this.lockToImage = this.dataset.lockToImage === 'true';
+          this.imageContainer = this.querySelector('.ai-hero-banner__image-container-{{ ai_gen_id }}');
+          this.ticking = false;
+          this.scrollHandler = null;
+        }
+
+        connectedCallback() {
+          if (this.parallaxEnabled && this.parallaxSpeed > 0 && !this.lockToImage) {
+            this.setupParallax();
+          }
+        }
+
+        setupParallax() {
+          if (!this.imageContainer) return;
+
+          this.scrollHandler = () => {
+            if (!this.ticking) {
+              window.requestAnimationFrame(() => {
+                this.updateParallax();
+                this.ticking = false;
+              });
+              this.ticking = true;
+            }
+          };
+
+          window.addEventListener('scroll', this.scrollHandler, { passive: true });
+          this.updateParallax();
+        }
+
+        updateParallax() {
+          const rect = this.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+
+          if (rect.top < windowHeight && rect.bottom > 0) {
+            const scrolled = window.pageYOffset;
+            const elementTop = rect.top + scrolled;
+            const offset = (scrolled - elementTop) * this.parallaxSpeed;
+            this.imageContainer.style.transform = `translateY(${offset}px)`;
+          }
+        }
+
+        disconnectedCallback() {
+          if (this.scrollHandler) {
+            window.removeEventListener('scroll', this.scrollHandler);
+          }
+        }
+      }
+
+      customElements.define('hero-banner-{{ ai_gen_id }}', HeroBanner{{ ai_gen_id }});
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image link"
+    },
+    {
+      "type": "checkbox",
+      "id": "lock_to_image_size",
+      "label": "Lock to image size",
+      "default": false,
+      "info": "When enabled, the banner will use the actual image dimensions and ignore custom height/width settings"
+    },
+    {
+      "type": "header",
+      "content": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Container height",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "desktop_width",
+      "label": "Image width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "label": "Image height",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "desktop_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Mobile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Container height",
+      "min": 200,
+      "max": 700,
+      "step": 50,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "label": "Image width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Image height",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "mobile_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Enable overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#222222"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Parallax effect"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "Enable parallax",
+      "default": true,
+      "info": "Parallax is disabled when 'Lock to image size' is enabled"
+    },
+    {
+      "type": "range",
+      "id": "parallax_speed",
+      "label": "Parallax speed",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5,
+      "info": "Higher values create more movement"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,789 @@
+<script>
+  window.SLSCartDrawer = window.SLSCartDrawer || (function() {
+    window.__slsCriticalCartOpenerBound = true;
+    var cartUrl = {{ routes.cart_url | json }};
+    var cartPath = '/cart';
+    var sectionId = 'cart-drawer';
+    var isOpening = false;
+    var pendingOpen = null;
+    var isPrewarming = false;
+    var prewarmPromise = null;
+    var refreshPromise = null;
+    var activeTrigger = null;
+    var lastTrigger = null;
+    var lastOpenAt = 0;
+
+    try {
+      cartPath = new URL(cartUrl || '/cart', window.location.origin).pathname;
+    } catch(error) {}
+
+    function isCartPage() {
+      return document.body && (
+        document.body.classList.contains('template-cart') ||
+        window.location.pathname === cartPath
+      );
+    }
+
+    function readAutoOpenSetting() {
+      if(typeof window.SLSShouldAutoOpenOnAdd === 'function') {
+        try {
+          return Boolean(window.SLSShouldAutoOpenOnAdd());
+        } catch(error) {}
+      }
+
+      if(typeof window.__SLSCartAutoOpenOnAdd === 'boolean') {
+        return window.__SLSCartAutoOpenOnAdd;
+      }
+
+      var controlsNode = document.getElementById('SlsCartControls');
+      if(!controlsNode) return true;
+
+      try {
+        var controls = JSON.parse(controlsNode.textContent || '{}');
+        var raw = controls && controls.behavior ? controls.behavior.autoOpenOnAdd : undefined;
+        return typeof raw === 'boolean' ? raw : true;
+      } catch(error) {
+        return true;
+      }
+    }
+
+    function isManualOpenTrigger(trigger) {
+      if(!trigger || trigger.nodeType !== 1) return false;
+
+      var selector = '[data-sls-cart-trigger], #cartLink, a.cartOpen';
+      if(trigger.matches && trigger.matches(selector)) return true;
+      if(trigger.closest && trigger.closest(selector)) return true;
+
+      if(trigger.tagName === 'A') {
+        var href = trigger.getAttribute('href') || '';
+        if(href === '#cart-drawer') return true;
+      }
+
+      return false;
+    }
+
+    function shouldAllowOpen(trigger) {
+      if(readAutoOpenSetting()) return true;
+      if(typeof window.SLSHasManualCartOpenIntent === 'function') {
+        try {
+          return Boolean(window.SLSHasManualCartOpenIntent());
+        } catch(error) {}
+      }
+      return false;
+    }
+
+    function getEventPath(event) {
+      if(event && typeof event.composedPath === 'function') return event.composedPath();
+      var path = [];
+      var node = event ? event.target : null;
+      while(node) {
+        path.push(node);
+        node = node.parentNode || node.host;
+      }
+      path.push(window);
+      return path;
+    }
+
+    function closestInEvent(event, selector) {
+      var path = getEventPath(event);
+      for(var i = 0; i < path.length; i += 1) {
+        var node = path[i];
+        if(!node || node.nodeType !== 1) continue;
+        if(node.matches && node.matches(selector)) return node;
+        if(node.closest) {
+          var found = node.closest(selector);
+          if(found) return found;
+        }
+      }
+      return null;
+    }
+
+    function getStoredCartHref(link) {
+      if(!link || !link.getAttribute) return '';
+      return link.getAttribute('data-sls-cart-href') || link.getAttribute('href') || '';
+    }
+
+    function isCartHref(link) {
+      if(!link || !link.getAttribute) return false;
+      try {
+        var href = getStoredCartHref(link);
+        if(!href || href.charAt(0) === '#') return false;
+        var url = new URL(href, window.location.origin);
+        return url.origin === window.location.origin && url.pathname === cartPath;
+      } catch(error) {
+        return false;
+      }
+    }
+
+    function getTrigger(event) {
+      var explicit = closestInEvent(event, '[data-sls-cart-trigger], #cartLink, a.cartOpen');
+      if(explicit) return explicit;
+
+      var link = closestInEvent(event, 'a[href]');
+      return isCartHref(link) ? link : null;
+    }
+
+    function getDrawer() {
+      var drawer = document.querySelector('cart-drawer.sls-native-cart.active') ||
+        document.querySelector('cart-drawer.sls-native-cart') ||
+        document.querySelector('cart-drawer');
+      if(drawer) return drawer;
+
+      var inner = document.getElementById('CartDrawer');
+      return inner && inner.closest ? inner.closest('cart-drawer') : null;
+    }
+
+    function getDrawers() {
+      return Array.prototype.slice.call(document.querySelectorAll('cart-drawer'));
+    }
+
+    function removeDuplicateDrawers(keep) {
+      var drawers = getDrawers();
+      drawers.forEach(function(drawer) {
+        if(drawer === keep) return;
+        if(drawer.dataset && drawer.dataset.slsFallbackDrawer === 'true') {
+          drawer.remove();
+        }
+      });
+    }
+
+    function setFallbackCartScrollLock(locked) {
+      var docEl = document.documentElement;
+      var bodyEl = document.body;
+      if(!docEl) return;
+
+      if(locked) {
+        var scrollbarWidth = Math.max(0, window.innerWidth - docEl.clientWidth);
+        docEl.style.setProperty('--sls-cart-scrollbar-width', scrollbarWidth + 'px');
+        docEl.classList.add('sls-cart-scroll-lock', 'sls-cart-desktop-scroll-lock');
+        docEl.classList.remove('of_hidden');
+        if(bodyEl) bodyEl.classList.remove('of_hidden');
+        return;
+      }
+
+      docEl.classList.remove('sls-cart-scroll-lock', 'sls-cart-desktop-scroll-lock', 'of_hidden');
+      docEl.style.removeProperty('--sls-cart-scrollbar-width');
+      if(bodyEl) bodyEl.classList.remove('of_hidden');
+    }
+
+    function markOpen(drawer) {
+      if(!drawer) return false;
+
+      drawer.classList.add('sls-native-cart', 'animate', 'active');
+      drawer.classList.remove('poptop', 'hide', 'sls-cart-settled');
+      drawer.setAttribute('aria-hidden', 'false');
+
+      var panel = drawer.querySelector('#CartDrawer');
+      if(panel) panel.classList.remove('hide');
+
+      if(typeof window.SLSSetPageScrollLock === 'function') {
+        window.SLSSetPageScrollLock(true, drawer);
+      } else {
+        setFallbackCartScrollLock(true);
+      }
+      return true;
+    }
+
+    function openDrawerElement(drawer, trigger) {
+      if(!drawer) return false;
+
+      if(typeof drawer.open === 'function') {
+        try {
+          drawer.open(trigger || activeTrigger);
+          return true;
+        } catch(error) {
+          console.error('Studio Lume cart drawer native open failed; forcing open.', error);
+        }
+      }
+
+      return markOpen(drawer);
+    }
+
+    function markClosed(drawer) {
+      if(!drawer) return false;
+
+      drawer.classList.remove('active', 'poptop');
+      drawer.setAttribute('aria-hidden', 'true');
+      if(typeof window.SLSSetPageScrollLock === 'function') {
+        window.SLSSetPageScrollLock(false, drawer);
+      } else {
+        setFallbackCartScrollLock(false);
+      }
+      return true;
+    }
+
+    function bodyReady() {
+      if(document.body) return Promise.resolve();
+      return new Promise(function(resolve) {
+        document.addEventListener('DOMContentLoaded', resolve, { once: true });
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatMoney(cents) {
+      var amount = Number(cents || 0) / 100;
+      var currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || (window.theme && theme.shopCurrency) || 'AUD';
+      try {
+        return new Intl.NumberFormat(document.documentElement.lang || 'en-AU', {
+          style: 'currency',
+          currency: currency
+        }).format(amount);
+      } catch(error) {
+        return '$' + amount.toFixed(2);
+      }
+    }
+
+    var shippingMessages = {
+      standardRemaining: {{ settings.sls_shipping_standard_remaining_message | default: '<strong>[amount]</strong> AWAY FROM <strong>FREE SHIPPING</strong>' | json }},
+      expressRemaining: {{ settings.sls_shipping_express_remaining_message | default: '<strong>[amount]</strong> AWAY FROM <strong>FREE EXPRESS SHIPPING</strong>' | json }},
+      expressUnlocked: {{ settings.sls_shipping_express_unlocked_message | default: 'YOU GOT IT BABE. <strong>FREE EXPRESS SHIPPING</strong> IS YOURS.' | json }}
+    };
+
+    function renderShippingMessage(template, amount) {
+      return String(template || '').replace(/\[amount\]/g, escapeHtml(amount));
+    }
+
+    function stripHtml(value) {
+      return String(value == null ? '' : value).replace(/<[^>]*>/g, '');
+    }
+
+    function getShippingGoal(cart) {
+      var country = ((window.Shopify && Shopify.country) || 'AU').toUpperCase();
+      var standard = country === 'NZ' ? 20000 : 15000;
+      var express = country === 'NZ' ? 30000 : 25000;
+      var total = Number(cart && cart.total_price || 0);
+
+      if(total >= express) {
+        var expressUnlockedHtml = renderShippingMessage(shippingMessages.expressUnlocked, '');
+        return {
+          start: standard,
+          goal: express,
+          progress: 100,
+          label: 'FREE EXPRESS',
+          message: stripHtml(expressUnlockedHtml),
+          messageHtml: expressUnlockedHtml
+        };
+      }
+
+      if(total >= standard) {
+        var expressRemaining = formatMoney(express - total);
+        var expressRemainingHtml = renderShippingMessage(shippingMessages.expressRemaining, expressRemaining);
+        return {
+          start: standard,
+          goal: express,
+          progress: Math.min(100, ((total - standard) / (express - standard)) * 100),
+          label: 'FREE EXPRESS',
+          message: stripHtml(expressRemainingHtml),
+          messageHtml: expressRemainingHtml
+        };
+      }
+
+      var standardRemaining = formatMoney(standard - total);
+      var standardRemainingHtml = renderShippingMessage(shippingMessages.standardRemaining, standardRemaining);
+      return {
+        start: 0,
+        goal: standard,
+        progress: Math.min(100, (total / standard) * 100),
+        label: 'FREE SHIPPING',
+        message: stripHtml(standardRemainingHtml),
+        messageHtml: standardRemainingHtml
+      };
+    }
+
+    function getItemVariant(item) {
+      if(item.variant_title && item.variant_title !== 'Default Title') return item.variant_title;
+      if(item.options_with_values && item.options_with_values.length) {
+        return item.options_with_values.map(function(option) { return option.value; }).join(' / ');
+      }
+      return '';
+    }
+
+    function buildFallbackItem(item, index) {
+      var line = index + 1;
+      var variant = getItemVariant(item);
+      var points = Math.max(0, Math.floor((Number(item.final_line_price || item.line_price || 0) / 100) * 5));
+      var image = item.image
+        ? '<a href="' + escapeHtml(item.url || '#') + '" class="cart-item__link grid_img" tabindex="-1"><img class="imgFt" src="' + escapeHtml(item.image) + '" alt="' + escapeHtml(item.product_title || item.title || '') + '" loading="lazy"></a>'
+        : '';
+
+      return [
+        '<li id="CartDrawer-Item-' + line + '" class="cart-item sls-cart-item" role="row" data-sls-line="' + line + '" data-sls-key="' + escapeHtml(item.key) + '">',
+          '<div class="sls-cart-item__image" role="cell">' + image + '</div>',
+          '<div class="sls-cart-item__body pr_details fl1 tl">',
+            '<div class="sls-cart-item__top">',
+              '<div class="sls-cart-item__copy">',
+                '<a href="' + escapeHtml(item.url || '#') + '" class="pr_name sls-cart-item__title">' + escapeHtml(item.product_title || item.title || '') + '</a>',
+                variant ? '<div class="cart-item__details sls-cart-item__details"><div class="sls-cart-item__variant">' + escapeHtml(variant) + '</div></div>' : '',
+                '<p class="sls-cart-item__points">+' + points.toLocaleString() + ' points</p>',
+              '</div>',
+              '<button type="button" class="btnNone remove cart-remove-button sls-cart-remove-btn" data-sls-fallback-remove aria-label="Remove ' + escapeHtml(item.product_title || item.title || 'item') + '"><svg class="at-icon"><use xlink:href="#icon-remove"></use></svg></button>',
+            '</div>',
+            '<div class="sls-cart-item__bottom">',
+              '<div class="quantity cart-quantity qtyField sm sls-cart-quantity">',
+                '<button type="button" class="qtyBtn minus" data-sls-fallback-qty="-1" aria-label="Decrease quantity"><svg class="at-icon"><use xlink:href="#icon-minus"></use></svg></button>',
+                '<input class="quantity__input qty" type="number" value="' + Number(item.quantity || 0) + '" min="0" data-sls-fallback-input aria-label="Quantity">',
+                '<button type="button" class="qtyBtn plus" data-sls-fallback-qty="1" aria-label="Increase quantity"><svg class="at-icon"><use xlink:href="#icon-plus"></use></svg></button>',
+              '</div>',
+              '<div class="cart-item__totals sls-cart-item__price" role="cell"><div class="ctitempr">',
+                item.original_line_price && item.original_line_price !== item.final_line_price
+                  ? '<s class="cart-item__old-price price price--end">' + formatMoney(item.original_line_price) + '</s><span class="price price--end">' + formatMoney(item.final_line_price) + '</span>'
+                  : '<span class="price price--end">' + formatMoney(item.final_line_price || item.line_price || 0) + '</span>',
+                Number(item.quantity || 0) > 1 ? '<span class="sls-cart-item__each">' + formatMoney(item.final_price || item.price || 0) + ' each</span>' : '',
+              '</div></div>',
+            '</div>',
+          '</div>',
+        '</li>'
+      ].join('');
+    }
+
+    function buildFallbackDrawerHtml(cart) {
+      cart = cart || { items: [], item_count: 0, total_price: 0, items_subtotal_price: 0, total_discount: 0 };
+      var goal = getShippingGoal(cart);
+      var points = Math.max(0, Math.floor((Number(cart.total_price || 0) / 100) * 5));
+      var itemCount = Number(cart.item_count || 0);
+      var itemsHtml = (cart.items || []).map(buildFallbackItem).join('');
+      var emptyHtml = '<div class="drawer-empty sls-cart-empty fl1 fl f-col f-aic f-jcc tc"><div class="sls-cart-empty__icon"><svg class="at-icon"><use xlink:href="#icon-cart"></use></svg></div><p class="sls-cart-empty__title">Your cart is empty</p><div class="sls-cart-empty__actions"><a class="sls-cart-empty__btn" href="/collections/lash-trays">Shop lash trays</a><a class="sls-cart-empty__btn sls-cart-empty__btn--secondary" href="/collections/adhesives-liquids">Shop adhesives</a></div></div>';
+
+      return [
+        '<cart-drawer class="ctdrawer pf w_100 h_100 fl f-jce sls-native-cart' + (itemCount ? '' : ' is-empty') + '" data-id="sls-fallback-cart-drawer" data-sls-fallback-drawer="true" data-sls-points-rate="5" data-sls-points-label="points" aria-hidden="true" style="--sls-cart-font:inherit;--sls-cart-width:430px;--sls-cart-card-radius:24px;--sls-cart-button-radius:50px;--sls-cart-image-radius:4px;--sls-cart-image-border-width:0px;--sls-cart-loader-size:24px;--sls-cart-loader-gap:8px;--sls-cart-bg:#FAF9F7;--sls-cart-card-bg:#FFFFFF;--sls-cart-soft-bg:#F5F5F5;--sls-cart-accent:#867E73;--sls-cart-accent-hover:#746C62;--sls-cart-mid:#ACA39A;--sls-cart-text:#222222;--sls-cart-muted:#222222;--sls-cart-border:#EEE9E4;--sls-cart-sheet-overlay:rgba(44,41,38,.25);">',
+          '<div id="CartDrawer-Overlay" class="pf w_100 h_100 sls-cart-overlay" data-sls-fallback-close></div>',
+          '<div id="CartDrawer" class="cart-drawer anim sls-cart-drawer' + (itemCount ? '' : ' is-empty') + '">',
+            '<div class="drawer__inner block-cart ctScroll tl fl f-col sls-cart-shell' + (itemCount ? '' : ' is-empty') + '" role="dialog" aria-modal="true" aria-label="Shopping cart" tabindex="-1">',
+              '<header class="sls-cart-header"><div class="sls-cart-header__title"><span class="sls-cart-title-word">Cart</span><span class="sls-cart-count" data-cart-render="item_count">' + itemCount + ' ' + (itemCount === 1 ? 'item' : 'items') + '</span><span class="sls-cart-count-mobile" aria-hidden="true">(<span data-cart-render="item_count_mobile">' + itemCount + '</span>)</span></div><button type="button" class="sls-cart-close drawer__close" data-sls-fallback-close aria-label="Close cart"><svg class="at-icon"><use xlink:href="#icon-close"></use></svg></button></header>',
+              '<div class="sls-cart-topbar"><div class="sls-cart-marquee" aria-hidden="true"><div class="sls-cart-marquee__track"><span>$150+ free shipping</span><span>$250+ free express</span><span>Rewards points on every order</span><span>Studio-ready lash essentials</span><span>$150+ free shipping</span><span>$250+ free express</span><span>Rewards points on every order</span><span>Studio-ready lash essentials</span></div></div><div class="sls-cart-progress"><div class="sls-cart-progress__row"><p>' + (goal.messageHtml || escapeHtml(goal.message)) + '</p><span class="sls-cart-countdown"><svg class="at-icon" viewBox="0 0 24 24"><path d="M10 2h4M12 14l3-3M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/></svg><span>02:35:00</span></span></div><div class="sls-cart-progress__bar"><span style="width:' + goal.progress + '%;"></span></div><div class="sls-cart-progress__labels"><span>' + formatMoney(goal.start) + '</span><span>' + formatMoney(goal.goal) + ' ' + goal.label + '</span></div></div></div>',
+              itemCount ? '<cart-drawer-items class="sls-cart-main fl1" data-sls-fallback-items><form action="' + cartPath + '" id="CartDrawer-Form" class="cart__contents cart-drawer__form" method="post"><div id="CartDrawer-CartItems" class="drawer__contents js-contents"><div class="drawer__cart-items-wrapper"><ul class="mini_plist cart-items sls-cart-items">' + itemsHtml + '</ul></div><p id="CartDrawer-LiveRegionText" class="hidden_txt" role="status"></p><p id="CartDrawer-LineItemStatus" class="hidden_txt" aria-hidden="true" role="status">Loading</p></div><div id="CartDrawer-CartErrors" class="ermsg hide" role="alert"></div></form><section class="sls-cart-recommendations"><div class="rmttl sls-cart-recommendations__header fl f-aic f-jcsb pr"><span>Complete your order</span></div></section></cart-drawer-items>' : emptyHtml,
+              '<div class="drawer__footer sls-cart-footer' + (itemCount ? '' : ' hide') + '"><cart-option class="cartFt sls-cart-tools"><a href="#cartCoupon" class="cftBtn sls-cart-tool pr" data-sls-fallback-coupon><svg class="at-icon"><use xlink:href="#icon-tag"></use></svg><span>Coupon</span></a><a href="#cartNote" class="cftBtn sls-cart-tool pr" data-sls-fallback-note><svg class="at-icon" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span>Order note</span></a></cart-option><div class="sls-cart-rewards"><span><svg class="at-icon" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg>You&rsquo;ll earn</span><span>+' + points.toLocaleString() + ' points</span></div><div class="cart_btns sls-cart-summary"><div class="sls-cart-summary__row"><span>Subtotal</span><span>' + formatMoney(cart.items_subtotal_price || cart.total_price || 0) + '</span></div>' + (cart.total_discount > 0 ? '<div class="sls-cart-summary__row sls-cart-summary__discount"><span>Product discounts</span><span>-' + formatMoney(cart.total_discount) + '</span></div>' : '') + '<div class="sls-cart-summary__row sls-cart-summary__muted"><span>Shipping</span><span>Calculated at checkout</span></div></div><div class="cart__ctas sls-cart-ctas"><button type="submit" id="CartDrawer-Checkout" class="sls-cart-checkout cartCheckout" name="checkout" form="CartDrawer-Form"' + (itemCount ? '' : ' disabled') + '><svg class="at-icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Checkout &middot; ' + formatMoney(cart.total_price || 0) + '</span></button><button type="button" class="sls-cart-continue" data-sls-fallback-close>Continue shopping</button></div></div>',
+            '</div>',
+          '</div>',
+        '</cart-drawer>'
+      ].join('');
+    }
+
+    function fetchCartJson() {
+      return fetch(cartPath + '.js', { credentials: 'same-origin' }).then(function(response) {
+        if(!response.ok) throw new Error('Cart JSON request failed: ' + response.status);
+        return response.json();
+      });
+    }
+
+    function appendFallbackDrawer(cart) {
+      var nativeDrawer = document.querySelector('cart-drawer:not([data-sls-fallback-drawer])');
+      if(nativeDrawer) {
+        nativeDrawer.classList.add('sls-native-cart');
+        removeDuplicateDrawers(nativeDrawer);
+        return nativeDrawer;
+      }
+
+      getDrawers().forEach(function(drawer) {
+        if(drawer.dataset && drawer.dataset.slsFallbackDrawer === 'true') drawer.remove();
+      });
+
+      var template = document.createElement('template');
+      template.innerHTML = buildFallbackDrawerHtml(cart).trim();
+      var drawer = template.content.firstElementChild;
+      document.body.appendChild(drawer);
+      bindFallbackDrawer(drawer);
+      if(window.SLSApplyCartThemeConfig) window.SLSApplyCartThemeConfig(drawer);
+      removeDuplicateDrawers(drawer);
+      return drawer;
+    }
+
+    function updateCartBubble(cart) {
+      var bubble = document.getElementById('cart-icon-bubble');
+      if(!bubble) return;
+      var count = Number(cart && cart.item_count || 0);
+      bubble.textContent = count;
+      bubble.classList.toggle('hidden', count < 1);
+      bubble.classList.toggle('hide', count < 1);
+    }
+
+    function rebuildFallbackDrawer(drawer) {
+      if(refreshPromise) return refreshPromise;
+
+      refreshPromise = fetchCartJson().then(function(cart) {
+        updateCartBubble(cart);
+        var wasActive = drawer && drawer.classList.contains('active');
+        if(drawer) drawer.remove();
+        var next = appendFallbackDrawer(cart);
+        if(wasActive) openDrawerElement(next, activeTrigger);
+        return next;
+      }).finally(function() {
+        refreshPromise = null;
+      });
+
+      return refreshPromise;
+    }
+
+    function bindFallbackDrawer(drawer) {
+      if(!drawer || drawer.dataset.slsFallbackBound === 'true') return;
+      drawer.dataset.slsFallbackBound = 'true';
+      drawer.addEventListener('click', function(event) {
+        var close = event.target.closest('[data-sls-fallback-close]');
+        if(close) {
+          event.preventDefault();
+          markClosed(drawer);
+          return;
+        }
+
+        var lineEl = event.target.closest('[data-sls-line]');
+        if(!lineEl) return;
+        var line = Number(lineEl.dataset.slsLine);
+        var input = lineEl.querySelector('[data-sls-fallback-input]');
+        var current = Number(input && input.value || 0);
+        var nextQuantity = current;
+
+        if(event.target.closest('[data-sls-fallback-remove]')) {
+          nextQuantity = 0;
+        } else {
+          var qtyButton = event.target.closest('[data-sls-fallback-qty]');
+          if(!qtyButton) return;
+          nextQuantity = Math.max(0, current + Number(qtyButton.dataset.slsFallbackQty || 0));
+        }
+
+        event.preventDefault();
+        lineEl.classList.add('sls-cart-loading');
+        fetch(window.routes.cart_change_url || '/cart/change.js', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ line: line, quantity: nextQuantity })
+        })
+          .then(function(response) {
+            if(!response.ok) throw new Error('Cart change failed: ' + response.status);
+            return response.json();
+          })
+          .then(function(cart) {
+            updateCartBubble(cart);
+            return rebuildFallbackDrawer(drawer);
+          })
+          .catch(function(error) {
+            console.error('Studio Lume fallback cart update failed.', error);
+            lineEl.classList.remove('sls-cart-loading');
+          });
+      });
+    }
+
+    function buildFallbackDrawer() {
+      if(isCartPage()) return Promise.resolve(null);
+
+      return bodyReady().then(fetchCartJson).then(function(cart) {
+        return appendFallbackDrawer(cart);
+      });
+    }
+
+    function prewarmFallbackDrawer() {
+      if(isCartPage()) return Promise.resolve(null);
+      if(isPrewarming || getDrawer()) return prewarmPromise || Promise.resolve(getDrawer());
+
+      isPrewarming = true;
+      prewarmPromise = bodyReady()
+        .then(function() {
+          if(getDrawer()) return getDrawer();
+          return buildFallbackDrawer();
+        })
+        .catch(function(error) {
+          console.warn('Studio Lume fallback cart prewarm failed.', error);
+          return null;
+        })
+        .finally(function() {
+          isPrewarming = false;
+          prewarmPromise = null;
+        });
+
+      return prewarmPromise;
+    }
+
+    function refreshFallbackIfPresent() {
+      if(isCartPage()) return Promise.resolve(null);
+
+      var drawer = getDrawer();
+      if(drawer && drawer.dataset && drawer.dataset.slsFallbackDrawer === 'true') {
+        return rebuildFallbackDrawer(drawer);
+      }
+
+      if(!drawer) return prewarmFallbackDrawer();
+      removeDuplicateDrawers(drawer);
+      return Promise.resolve(drawer);
+    }
+
+    function appendDrawerFromHtml(html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var drawer = doc.querySelector('cart-drawer');
+      if(!drawer) throw new Error('Cart drawer section response did not include cart-drawer.');
+
+      document.body.appendChild(drawer);
+      if(drawer.dataset.slsFallbackDrawer === 'true') bindFallbackDrawer(drawer);
+      if(window.SLSApplyCartThemeConfig) window.SLSApplyCartThemeConfig(drawer);
+      return drawer;
+    }
+
+    function fetchDrawerFromSectionsApi() {
+      var root = window.Shopify && window.Shopify.routes && window.Shopify.routes.root ? window.Shopify.routes.root : '/';
+      var separator = root.indexOf('?') === -1 ? '?' : '&';
+
+      return fetch(root + separator + 'sections=' + encodeURIComponent(sectionId), { credentials: 'same-origin' })
+        .then(function(response) {
+          if(!response.ok) throw new Error('Cart drawer sections request failed: ' + response.status);
+          return response.json();
+        })
+        .then(function(sections) {
+          var html = sections && sections[sectionId];
+          if(!html) throw new Error('Cart drawer sections response was empty.');
+          return appendDrawerFromHtml(html);
+        });
+    }
+
+    function fetchDrawer() {
+      if(!window.fetch) return Promise.reject(new Error('Fetch is unavailable.'));
+
+      return bodyReady()
+        .then(fetchDrawerFromSectionsApi);
+    }
+
+    function ensureDrawer() {
+      if(isCartPage()) return Promise.resolve(null);
+
+      var existing = getDrawer();
+      if(existing) {
+        if(existing.dataset && existing.dataset.slsFallbackDrawer === 'true') {
+          bindFallbackDrawer(existing);
+          removeDuplicateDrawers(existing);
+          return rebuildFallbackDrawer(existing);
+        }
+        removeDuplicateDrawers(existing);
+        return Promise.resolve(existing);
+      }
+      return fetchDrawer().catch(function(error) {
+        console.warn('Studio Lume cart drawer section was unavailable; building Ajax fallback drawer.', error);
+        return buildFallbackDrawer();
+      });
+    }
+
+    function open(trigger) {
+      activeTrigger = trigger || activeTrigger;
+
+      if(!shouldAllowOpen(activeTrigger)) {
+        return Promise.resolve(getDrawer());
+      }
+
+      if(isOpening && pendingOpen) return pendingOpen;
+      isOpening = true;
+
+      pendingOpen = ensureDrawer()
+        .then(function(drawer) {
+          openDrawerElement(drawer, activeTrigger);
+          return drawer;
+        })
+        .finally(function() {
+          isOpening = false;
+          pendingOpen = null;
+        });
+
+      return pendingOpen;
+    }
+
+    function shouldIgnoreModifiedEvent(event) {
+      if(!event) return false;
+      if(event.type === 'mousedown' || event.type === 'pointerdown') {
+        if(typeof event.button === 'number' && event.button !== 0) return true;
+      }
+      return Boolean(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
+    }
+
+    function close(trigger) {
+      var drawer = trigger && trigger.closest ? trigger.closest('cart-drawer') : getDrawer();
+      if(!drawer) return false;
+
+      if(typeof drawer.close === 'function') {
+        try {
+          drawer.close();
+          return true;
+        } catch(error) {
+          console.error('Studio Lume cart drawer native close failed; forcing close.', error);
+        }
+      }
+
+      return markClosed(drawer);
+    }
+
+    function fallbackToCart(trigger, error) {
+      console.error('Studio Lume cart drawer could not open. Staying on page instead of redirecting to /cart.', error);
+      var attempts = 0;
+      function retryNativeDrawer() {
+        if(openDrawerElement(getDrawer(), trigger)) return;
+
+        attempts += 1;
+        if(attempts < 12) {
+          setTimeout(retryNativeDrawer, 100);
+        }
+      }
+      retryNativeDrawer();
+    }
+
+    function intercept(event, trigger) {
+      if(event && event.__slsCartHandled) return false;
+      if(isCartPage()) return true;
+      if(shouldIgnoreModifiedEvent(event)) return true;
+
+      if(event && event.isTrusted && typeof window.SLSMarkManualCartOpenIntent === 'function') {
+        try { window.SLSMarkManualCartOpenIntent(); } catch(error) {}
+      }
+
+      if(event) {
+        event.__slsCartHandled = true;
+        event.preventDefault();
+        event.returnValue = false;
+        event.stopPropagation();
+        if(event.stopImmediatePropagation) event.stopImmediatePropagation();
+      }
+
+      var now = Date.now();
+      if(trigger !== lastTrigger || now - lastOpenAt > 700) {
+        lastTrigger = trigger;
+        lastOpenAt = now;
+        open(trigger).catch(function(error) {
+          fallbackToCart(trigger, error);
+        });
+      }
+      return false;
+    }
+
+    function onClickCapture(event) {
+      if(event.__slsCartHandled) return;
+
+      var closeTrigger = closestInEvent(event, '[data-sls-cart-close], .sls-cart-close, .sls-cart-continue, #CartDrawer-Overlay');
+      if(closeTrigger && close(closeTrigger)) {
+        event.__slsCartHandled = true;
+        event.preventDefault();
+        event.stopPropagation();
+        if(event.stopImmediatePropagation) event.stopImmediatePropagation();
+        return;
+      }
+
+      var trigger = getTrigger(event);
+      if(trigger) intercept(event, trigger);
+    }
+
+    function onEarlyPointer(event) {
+      if(event.__slsCartHandled || shouldIgnoreModifiedEvent(event)) return;
+      var trigger = getTrigger(event);
+      if(trigger) intercept(event, trigger);
+    }
+
+    function decorateLink(link) {
+      if(!link || link.dataset.slsCartBound === 'true') return;
+      if(link.tagName === 'A') {
+        var currentHref = link.getAttribute('href');
+        if(currentHref && !link.getAttribute('data-sls-cart-href')) {
+          link.setAttribute('data-sls-cart-href', currentHref);
+        }
+        link.setAttribute('href', '#cart-drawer');
+      }
+      link.dataset.slsCartBound = 'true';
+      link.dataset.slsCartTrigger = 'true';
+      link.setAttribute('role', 'button');
+      link.setAttribute('aria-haspopup', 'dialog');
+      link.setAttribute('aria-controls', 'CartDrawer');
+      link.addEventListener('pointerdown', onEarlyPointer, { capture: true, passive: false });
+      link.addEventListener('mousedown', onEarlyPointer, { capture: true, passive: false });
+      link.addEventListener('touchstart', onEarlyPointer, { capture: true, passive: false });
+      link.addEventListener('click', onClickCapture, true);
+    }
+
+    function decorateLinks(root) {
+      root = root || document;
+      if(
+        root.nodeType === 1 &&
+        root.matches &&
+        (
+          root.matches('[data-sls-cart-trigger], #cartLink, a.cartOpen') ||
+          isCartHref(root)
+        )
+      ) {
+        decorateLink(root);
+      }
+
+      var links = root.querySelectorAll('[data-sls-cart-trigger], #cartLink, a.cartOpen, a[href]');
+      for(var i = 0; i < links.length; i += 1) {
+        if(
+          links[i].matches('[data-sls-cart-trigger], #cartLink, a.cartOpen') ||
+          isCartHref(links[i])
+        ) {
+          decorateLink(links[i]);
+        }
+      }
+    }
+
+    function watchNewLinks() {
+      if(!window.MutationObserver || !document.documentElement) return;
+
+      var observer = new MutationObserver(function(mutations) {
+        for(var i = 0; i < mutations.length; i += 1) {
+          for(var j = 0; j < mutations[i].addedNodes.length; j += 1) {
+            var node = mutations[i].addedNodes[j];
+            if(node && node.nodeType === 1) decorateLinks(node);
+          }
+        }
+      });
+
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
+
+    function init() {
+      if(isCartPage()) return;
+
+      decorateLinks(document);
+      watchNewLinks();
+      var idle = window.requestIdleCallback || function(callback) { return setTimeout(callback, 350); };
+      idle(prewarmFallbackDrawer);
+    }
+
+    var activeCapture = { capture: true, passive: false };
+    window.addEventListener('pointerdown', onEarlyPointer, activeCapture);
+    document.addEventListener('pointerdown', onEarlyPointer, activeCapture);
+    window.addEventListener('mousedown', onEarlyPointer, activeCapture);
+    document.addEventListener('mousedown', onEarlyPointer, activeCapture);
+    window.addEventListener('touchstart', onEarlyPointer, activeCapture);
+    document.addEventListener('touchstart', onEarlyPointer, activeCapture);
+    window.addEventListener('click', onClickCapture, true);
+    document.addEventListener('click', onClickCapture, true);
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+
+    return {
+      open: open,
+      close: close,
+      intercept: intercept,
+      decorateLinks: decorateLinks,
+      refresh: refreshFallbackIfPresent,
+      prewarm: prewarmFallbackDrawer
+    };
+  })();
+
+  document.addEventListener('cart:updated', function() {
+    if(window.SLSCartDrawer && typeof window.SLSCartDrawer.refresh === 'function') window.SLSCartDrawer.refresh();
+  });
+
+  document.addEventListener('product:added', function() {
+    if(window.SLSCartDrawer && typeof window.SLSCartDrawer.refresh === 'function') window.SLSCartDrawer.refresh();
+  });
+
+  window.SLSOpenCartDrawer = function(trigger) {
+    return window.SLSCartDrawer.open(trigger);
+  };
+
+  window.SLSOpenCartFromLink = function(event, trigger) {
+    return window.SLSCartDrawer.intercept(event || window.event, trigger);
+  };
+</script>

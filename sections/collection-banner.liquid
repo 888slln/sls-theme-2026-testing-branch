@@ -1,0 +1,1137 @@
+ {% assign section_st = section.settings %}
+{%- capture top_banner -%}
+    <div class="sec_cov npd"  style="--sbg:{% if section_st.bgg != blank %}{{ section_st.bgg }}{% else %}{{ section_st.bg }}{% endif %};">
+            {%- liquid
+                assign banner_img = section_st.image
+                assign banner_imgm = section_st.mb_image
+                assign banner_imgm_srcset = banner_imgm | image_url: width: banner_imgm.width | image_tag: widths: '360,480,760' | split: 'srcset="' | last | split: '"' | first
+            -%}
+            {% if section_st.image != blank %}
+            <picture class="overlay" style="--overlay:{{ section_st.overlay | color_modify: 'alpha', section_st.overlay_op }};">
+                {% if section_st.mb_image != blank %}
+                    <source media="(max-width: 767px)" srcset="{{ banner_imgm_srcset }}" width="{{ banner_imgm.width }}" height="{{ banner_imgm.height }}">
+                {% endif %}
+                {{ banner_img | image_url: width: banner_img.width | image_tag: class:'imgFt heroImg', width:banner_img.width, height:banner_img.height, widths:"400,600,800,1000,1200,1400,1600,2000,2400,3000" }}
+            </picture>
+            {% endif %}
+            {%  if  section.blocks.size > 0 %}
+                <div class="hero_wrap fl{% if section_st.text-align %} f-jcc tc{% endif %} f-aic m_auto" style="--mht:{{ section_st.hit }}px;--mhtt:{{ section_st.hitt }}px;--mhtm:{{ section_st.hitm }}px;--mwd:{{ section_st.cntwd }}px;">
+                    <div class="pr zi1 {% render 'animate-data', css:true %}">
+                        {% for block in section.blocks %}
+                            {% assign block_st = block.settings %}
+                            {% if block.type == 'title' %}
+                                <{{ block_st.htag}} class="rgTxt {{ block_st.tff}} mb{{block_st.mbm}} mb{{ block_st.mb }}-md{% if block_st.tuu %} ttu{% endif %}" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px;--fw:{{ block_st.fw }};--lh:{{ block_st.lh }};" {{ block.shopify_attributes }}>{{ collection.title }}</{{  block_st.htag }}>
+                            {% elsif block.type == 'countdown' %}
+                                <countdown-time class="atCounter box_timer fl{% if section_st.text-align %} f-jcc{% endif %} tc mb{{ block_st.mbm }} mb{{ block_st.mb }}-md ttu" data-date="{{ block_st.date }}"
+                                     style="--cl:{{ block_st.cl }};--bg:{{ block_st.bg }};--bd:{{ block_st.bdr }};--rounded:{{ block_st.radius }}px;--fs:{{ block_st.fs }}px;--fsl:{{ block_st.fsl }}px;" {{ block.shopify_attributes }}>
+                                    <span class="pd10"><span class="tm days">00</span>{{ 'date_formats.days' | t }}</span>
+                                    <span class="pd10"><span class="tm hours">00</span>{{ 'date_formats.hours' | t }}</span>
+                                    <span class="pd10"><span class="tm minutes">00</span>{{ 'date_formats.minuts' | t }}</span>
+                                    <span class="pd10"><span class="tm seconds">00</span>{{ 'date_formats.seconds' | t }}</span>
+                                </countdown-time>
+                            {% elsif block.type == 'bc' %}
+                                <nav class="breadcrumb inline fl f-wrap f-aic f-jcc{% if block_st.hidemb %} hide-sm{% endif %}{% if settings.bcase %} ttu{% endif %}" role="navigation" aria-label="breadcrumbs" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px">
+                                    <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+                                    <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+                                    {% if current_tags %}
+                                        {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+                                        {{ collection.title | link_to: url }}
+                                        <span class="barr" aria-hidden="true"><svg class="at-icon arw right"><use xlink:href="#icon-arrow"></use></svg></span>
+                                        <span>{{ current_tags | join: " + " }}</span>
+                                    {% else %}
+                                        <span class="fwm">{{ collection.title }}</span>
+                                    {% endif %}
+                                </nav>
+                                <script type="application/ld+json">
+                                  {
+                                      "@context": "https://schema.org",
+                                      "@type": "BreadcrumbList",
+                                      "itemListElement": [
+                                          {
+                                              "@type": "ListItem",
+                                              "position": 1,
+                                              "item": {
+                                                  "@id": "{{ routes.root_url }}",
+                                                  "name": "{{ 'general.breadcrumbs.home' | t }}"
+                                              }
+                                          }
+                                              ,{
+                                                  "@type": "ListItem",
+                                                  "position": 2,
+                                                  "item": {
+                                                      "@id": "{{ routes.collections_url }}/{{ collection.handle }}",
+                                                      "name": "{{ collection.title }}"
+                                                  }
+                                              }
+                                      ]
+                                  }
+                                  </script>
+                            {% elsif block.type == 'text' %}
+                                <div class="rgTxt mb{{ block_st.mbm }} mb{{ block_st.mb }}-md{% if block_st.hidemb %} hide-sm{% endif %}" style="--cl:{{ block_st.cl }};--fs:{{ block_st.fs }}px;--fsm:{{ block_st.fsm }}px;--lh:{{ block_st.lh }};" {{ block.shopify_attributes }}>{{ block_st.title }}</div>
+                            {% elsif block.type == 'custom_accent_text' %}
+                                {% render 'sls-custom-accent-text', block: block %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+    </div>
+{%- endcapture -%}
+{{ top_banner | strip_newlines | remove: "  " | remove: "	" }}
+{% schema %}
+{
+    "name": "Collection Page Banner",
+    "class": "pgbnr",
+    "enabled_on": {
+      "templates": ["collection"]
+    },
+    "settings": [
+       {
+            "type": "paragraph",
+            "content": "[How do I set different banner for each collection?](https://www.adornthemes.com/knowledge-base/collection-banner/)"
+        },
+        {
+            "type":"paragraph",
+            "content":"Height ==="
+        },
+        {
+            "type": "range",
+            "id": "hit",
+            "label": "Desktop",
+            "default": 180,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "range",
+            "id": "hitt",
+            "label": "Tablet",
+            "default": 160,
+            "min": 100,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "range",
+            "id": "hitm",
+            "label": "Mobile",
+            "default": 100,
+            "min": 50,
+            "max": 900,
+            "step": 10
+        },
+        {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default": "#f5f5f5"
+        },
+         {
+            "type": "color_background",
+            "id": "bgg",
+            "label": "Gradient background"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background image",
+            "info": "Recommended width 2000px and height as per above desktop height"
+        },
+        {
+            "type": "image_picker",
+            "id": "mb_image",
+            "label": "Mobile image",
+            "info": "Recommended width 750 and height as per above mobile height. If mobile image is blank, dekstop image will be used."
+        },
+      {
+            "type": "color",
+            "id": "overlay",
+            "label": "Image overlay",
+            "default": "#222222"
+        },
+        {
+            "type": "range",
+            "id": "overlay_op",
+            "min": 0,
+            "max": 1,
+            "step": 0.1,
+            "label": "Overlay opacity",
+            "unit": "%",
+            "default": 0
+        },
+        {
+            "type": "range",
+            "id": "cntwd",
+            "min": 600,
+            "max": 1600,
+            "step": 10,
+            "label": "Container max. width (desktop)",
+            "unit": "px",
+            "default": 1000
+        },
+        {
+            "type": "checkbox",
+            "id": "text-align",
+            "label": "Text align center?",
+            "default": true
+        }
+    ],
+    "blocks": [
+        {
+            "type": "custom_accent_text",
+            "name": "Custom text w accent",
+            "settings": [
+              {
+                "type": "header",
+                "content": "Text"
+              },
+              {
+                "type": "richtext",
+                "id": "text_before",
+                "label": "Text before accent",
+                "default": "<p>Shop by</p>"
+              },
+              {
+                "type": "text",
+                "id": "accent_text",
+                "label": "Accent text",
+                "default": "Category",
+                "info": "Best kept to 1–3 words. Only the first 3 words will show."
+              },
+              {
+                "type": "richtext",
+                "id": "text_after",
+                "label": "Text after accent",
+                "default": "<p></p>"
+              },
+              {
+                "type": "checkbox",
+                "id": "remove_line_breaks",
+                "label": "Remove line breaks inside rich text",
+                "default": true
+              },
+              {
+                "type": "header",
+                "content": "Label style"
+              },
+              {
+                "type": "font_picker",
+                "id": "label_font_family",
+                "label": "Label font",
+                "default": "poppins_n4"
+              },
+              {
+                "type": "range",
+                "id": "label_font_size_desktop",
+                "label": "Label font size",
+                "min": 10,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 42
+              },
+              {
+                "type": "range",
+                "id": "label_font_size_mobile",
+                "label": "Label font size mobile",
+                "min": 10,
+                "max": 70,
+                "step": 1,
+                "unit": "px",
+                "default": 30
+              },
+              {
+                "type": "select",
+                "id": "label_font_weight",
+                "label": "Label font weight",
+                "options": [
+                  {
+                    "value": "100",
+                    "label": "Thin 100"
+                  },
+                  {
+                    "value": "200",
+                    "label": "Extra light 200"
+                  },
+                  {
+                    "value": "300",
+                    "label": "Light 300"
+                  },
+                  {
+                    "value": "400",
+                    "label": "Regular 400"
+                  },
+                  {
+                    "value": "500",
+                    "label": "Medium 500"
+                  },
+                  {
+                    "value": "600",
+                    "label": "Semi bold 600"
+                  },
+                  {
+                    "value": "700",
+                    "label": "Bold 700"
+                  },
+                  {
+                    "value": "800",
+                    "label": "Extra bold 800"
+                  },
+                  {
+                    "value": "900",
+                    "label": "Black 900"
+                  }
+                ],
+                "default": "400"
+              },
+              {
+                "type": "select",
+                "id": "label_bold_weight",
+                "label": "Label bold rich text weight",
+                "options": [
+                  {
+                    "value": "400",
+                    "label": "Regular 400"
+                  },
+                  {
+                    "value": "500",
+                    "label": "Medium 500"
+                  },
+                  {
+                    "value": "600",
+                    "label": "Semi bold 600"
+                  },
+                  {
+                    "value": "700",
+                    "label": "Bold 700"
+                  },
+                  {
+                    "value": "800",
+                    "label": "Extra bold 800"
+                  },
+                  {
+                    "value": "900",
+                    "label": "Black 900"
+                  }
+                ],
+                "default": "700"
+              },
+              {
+                "type": "range",
+                "id": "label_line_height",
+                "label": "Label line height",
+                "min": 0.8,
+                "max": 2,
+                "step": 0.1,
+                "default": 1.1
+              },
+              {
+                "type": "range",
+                "id": "label_letter_spacing",
+                "label": "Label letter spacing",
+                "min": -5,
+                "max": 10,
+                "step": 1,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "color",
+                "id": "label_color",
+                "label": "Label colour",
+                "default": "#222222"
+              },
+              {
+                "type": "header",
+                "content": "Accent font"
+              },
+              {
+                "type": "select",
+                "id": "custom_font_source",
+                "label": "Accent font source",
+                "options": [
+                  {
+                    "value": "system",
+                    "label": "Built-in font"
+                  },
+                  {
+                    "value": "url",
+                    "label": "Google/custom font URL"
+                  },
+                  {
+                    "value": "upload",
+                    "label": "Uploaded .woff2 file URL"
+                  }
+                ],
+                "default": "system"
+              },
+              {
+                "type": "select",
+                "id": "system_font_family",
+                "label": "Built-in accent font",
+                "options": [
+                  {
+                    "value": "cursive",
+                    "label": "Browser cursive"
+                  },
+                  {
+                    "value": "'Brush Script MT', cursive",
+                    "label": "Brush Script"
+                  },
+                  {
+                    "value": "'Lucida Handwriting', cursive",
+                    "label": "Lucida Handwriting"
+                  },
+                  {
+                    "value": "'Segoe Script', cursive",
+                    "label": "Segoe Script"
+                  },
+                  {
+                    "value": "'Snell Roundhand', cursive",
+                    "label": "Snell Roundhand"
+                  }
+                ],
+                "default": "'Segoe Script', cursive"
+              },
+              {
+                "type": "url",
+                "id": "custom_font_url",
+                "label": "Google/custom font URL",
+                "info": "Example: https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap"
+              },
+              {
+                "type": "text",
+                "id": "custom_font_family_name",
+                "label": "Font family name from URL",
+                "default": "Dancing Script",
+                "info": "Must match the font name in your URL exactly."
+              },
+              {
+                "type": "url",
+                "id": "custom_font_file",
+                "label": "Uploaded .woff2 font file URL",
+                "info": "Upload the .woff2 file to Shopify Files, then paste the file URL here."
+              },
+              {
+                "type": "header",
+                "content": "Accent style"
+              },
+              {
+                "type": "range",
+                "id": "accent_font_size_desktop",
+                "label": "Accent font size",
+                "min": 15,
+                "max": 115,
+                "step": 1,
+                "unit": "px",
+                "default": 54
+              },
+              {
+                "type": "range",
+                "id": "accent_font_size_mobile",
+                "label": "Accent font size mobile",
+                "min": 15,
+                "max": 90,
+                "step": 1,
+                "unit": "px",
+                "default": 38
+              },
+              {
+                "type": "select",
+                "id": "accent_font_weight",
+                "label": "Accent font weight",
+                "options": [
+                  {
+                    "value": "100",
+                    "label": "Thin 100"
+                  },
+                  {
+                    "value": "200",
+                    "label": "Extra light 200"
+                  },
+                  {
+                    "value": "300",
+                    "label": "Light 300"
+                  },
+                  {
+                    "value": "400",
+                    "label": "Regular 400"
+                  },
+                  {
+                    "value": "500",
+                    "label": "Medium 500"
+                  },
+                  {
+                    "value": "600",
+                    "label": "Semi bold 600"
+                  },
+                  {
+                    "value": "700",
+                    "label": "Bold 700"
+                  },
+                  {
+                    "value": "800",
+                    "label": "Extra bold 800"
+                  },
+                  {
+                    "value": "900",
+                    "label": "Black 900"
+                  }
+                ],
+                "default": "400",
+                "info": "Only works properly if the uploaded/custom font includes that weight."
+              },
+              {
+                "type": "range",
+                "id": "accent_line_height",
+                "label": "Accent line height",
+                "min": 0.8,
+                "max": 2,
+                "step": 0.1,
+                "default": 1
+              },
+              {
+                "type": "range",
+                "id": "accent_letter_spacing",
+                "label": "Accent letter spacing",
+                "min": -8,
+                "max": 10,
+                "step": 1,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "accent_vertical_offset_desktop",
+                "label": "Accent vertical nudge",
+                "min": -30,
+                "max": 30,
+                "step": 1,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "accent_vertical_offset_mobile",
+                "label": "Accent vertical nudge mobile",
+                "min": -25,
+                "max": 25,
+                "step": 1,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "color",
+                "id": "accent_color",
+                "label": "Accent colour",
+                "default": "#867E73"
+              },
+              {
+                "type": "header",
+                "content": "Layout"
+              },
+              {
+                "type": "select",
+                "id": "text_alignment",
+                "label": "Desktop alignment",
+                "options": [
+                  {
+                    "value": "flex-start",
+                    "label": "Left"
+                  },
+                  {
+                    "value": "center",
+                    "label": "Centre"
+                  },
+                  {
+                    "value": "flex-end",
+                    "label": "Right"
+                  }
+                ],
+                "default": "center"
+              },
+              {
+                "type": "select",
+                "id": "mobile_text_alignment",
+                "label": "Mobile alignment",
+                "options": [
+                  {
+                    "value": "flex-start",
+                    "label": "Left"
+                  },
+                  {
+                    "value": "center",
+                    "label": "Centre"
+                  },
+                  {
+                    "value": "flex-end",
+                    "label": "Right"
+                  }
+                ],
+                "default": "center"
+              },
+              {
+                "type": "select",
+                "id": "vertical_alignment",
+                "label": "Vertical alignment",
+                "options": [
+                  {
+                    "value": "flex-start",
+                    "label": "Top"
+                  },
+                  {
+                    "value": "center",
+                    "label": "Centre"
+                  },
+                  {
+                    "value": "baseline",
+                    "label": "Baseline"
+                  },
+                  {
+                    "value": "flex-end",
+                    "label": "Bottom"
+                  }
+                ],
+                "default": "baseline"
+              },
+              {
+                "type": "checkbox",
+                "id": "keep_one_line_desktop",
+                "label": "Keep on one line desktop",
+                "default": true
+              },
+              {
+                "type": "checkbox",
+                "id": "keep_one_line_mobile",
+                "label": "Keep on one line mobile",
+                "default": true
+              },
+              {
+                "type": "range",
+                "id": "gap_desktop",
+                "label": "Gap between text",
+                "min": 0,
+                "max": 60,
+                "step": 1,
+                "unit": "px",
+                "default": 10
+              },
+              {
+                "type": "range",
+                "id": "gap_mobile",
+                "label": "Gap between text mobile",
+                "min": 0,
+                "max": 40,
+                "step": 1,
+                "unit": "px",
+                "default": 8
+              },
+              {
+                "type": "range",
+                "id": "max_width_desktop",
+                "label": "Max width desktop",
+                "min": 300,
+                "max": 1600,
+                "step": 20,
+                "unit": "px",
+                "default": 1200
+              },
+              {
+                "type": "range",
+                "id": "max_width_mobile",
+                "label": "Max width mobile",
+                "min": 250,
+                "max": 750,
+                "step": 5,
+                "unit": "px",
+                "default": 420
+              },
+              {
+                "type": "range",
+                "id": "side_padding_desktop",
+                "label": "Side padding desktop",
+                "min": 0,
+                "max": 80,
+                "step": 2,
+                "unit": "px",
+                "default": 20
+              },
+              {
+                "type": "range",
+                "id": "side_padding_mobile",
+                "label": "Side padding mobile",
+                "min": 0,
+                "max": 40,
+                "step": 1,
+                "unit": "px",
+                "default": 16
+              },
+              {
+                "type": "checkbox",
+                "id": "enable_background",
+                "label": "Enable background colour",
+                "default": false
+              },
+              {
+                "type": "color",
+                "id": "background_color",
+                "label": "Background colour",
+                "default": "#FFFFFF"
+              },
+              {
+                "type": "header",
+                "content": "Spacing"
+              },
+              {
+                "type": "range",
+                "id": "spacing_top_desktop",
+                "label": "Inner top spacing desktop",
+                "min": 0,
+                "max": 180,
+                "step": 2,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "spacing_bottom_desktop",
+                "label": "Inner bottom spacing desktop",
+                "min": 0,
+                "max": 180,
+                "step": 2,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "spacing_top_mobile",
+                "label": "Inner top spacing mobile",
+                "min": 0,
+                "max": 120,
+                "step": 2,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "spacing_bottom_mobile",
+                "label": "Inner bottom spacing mobile",
+                "min": 0,
+                "max": 120,
+                "step": 2,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "outer_margin_top_desktop",
+                "label": "Outer top pull / margin desktop",
+                "min": -150,
+                "max": 150,
+                "step": 5,
+                "unit": "px",
+                "default": 0,
+                "info": "Use a negative value if your theme section is creating a big gap above."
+              },
+              {
+                "type": "range",
+                "id": "outer_margin_bottom_desktop",
+                "label": "Outer bottom pull / margin desktop",
+                "min": -150,
+                "max": 150,
+                "step": 5,
+                "unit": "px",
+                "default": 0,
+                "info": "Use a negative value if your theme section is creating a big gap below."
+              },
+              {
+                "type": "range",
+                "id": "outer_margin_top_mobile",
+                "label": "Outer top pull / margin mobile",
+                "min": -100,
+                "max": 100,
+                "step": 5,
+                "unit": "px",
+                "default": 0
+              },
+              {
+                "type": "range",
+                "id": "outer_margin_bottom_mobile",
+                "label": "Outer bottom pull / margin mobile",
+                "min": -100,
+                "max": 100,
+                "step": 5,
+                "unit": "px",
+                "default": 0
+              }
+            ]
+        },
+        {
+            "type": "title",
+            "name": "Collection Title",
+            "limit":1,
+            "settings": [
+              {
+                    "type": "select",
+                    "id": "htag",
+                    "label": "Heading tag",
+                   "info":"Specify heading types for SEO and search engines for crawling purposes.",
+                    "default": "h1",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        },
+                       {
+                            "value": "p",
+                            "label": "P"
+                        }
+                    ]
+                },
+               {
+                    "type": "select",
+                    "id": "tff",
+                    "label": "Font family",
+                    "default": "ft2",
+                    "options": [
+                        {
+                            "value": "ft1",
+                            "label": "Font 1"
+                        },
+                        {
+                            "value": "ft2",
+                            "label": "Font 2"
+                        },
+                        {
+                            "value": "ft3",
+                            "label": "Font 3"
+                        }
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 22,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 20,
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px"
+                },
+                 {
+                  "type": "select",
+                  "id": "fw",
+                  "label": "Font weight",
+                  "default": "600",
+                  "options": [
+                    {
+                      "value": "300",
+                      "label": "Light"
+                    },
+                    {
+                      "value": "400",
+                      "label": "Regular"
+                    },
+                    {
+                      "value": "500",
+                      "label": "Medium"
+                    },
+                    {
+                      "value": "600",
+                      "label": "Semi Bold"
+                    },
+                    {
+                      "value": "700",
+                      "label": "Bold"
+                    }
+                  ]
+                },
+                {
+                    "type": "checkbox",
+                    "id": "tuu",
+                    "label": "Use uppercase?",
+                    "default": false
+                },
+               {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#222222"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 5,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 5,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "name": "Text",
+            "limit":2,
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Text",
+                    "default": "Banner short description",
+                    "info": "Use dynamic source to show different text for each collection page."
+                },
+                {
+                    "type": "checkbox",
+                    "id": "hidemb",
+                    "label": "Hide on mobile?",
+                    "default": true
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 14,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 14,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "lh",
+                    "label": "Line height",
+                    "default": 1.5,
+                    "min": 1.0,
+                    "max": 2.0,
+                    "step": 0.1,
+                    "info": "Space between text lines."
+                },
+               {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#222222"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 5,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 5,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "countdown",
+            "name": "Countdown Timer",
+            "limit":1,
+            "settings":[
+                {
+                    "type": "text",
+                    "id": "date",
+                    "label": "End Date",
+                    "info": "Format - mm/dd/yyyy"
+                },
+                {
+                    "type": "color",
+                    "id": "bg",
+                    "label": "Background",
+                    "default": "#222222"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Text",
+                    "default": "#eee9e4"
+                },
+                {
+                    "type": "color",
+                    "id": "bdr",
+                    "label": "Border",
+                    "default": "#222222"
+                },
+               {
+                    "type": "range",
+                    "id": "fs",
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "label": "Font size (digit)",
+                    "unit": "px",
+                    "default": 18
+                },
+               {
+                    "type": "range",
+                    "id": "fsl",
+                    "min": 10,
+                    "max": 20,
+                    "step": 1,
+                    "label": "Font size (label)",
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "label": "Roudned corner",
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 30,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 20,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        },
+        {
+            "type": "bc",
+            "name": "Breadcrumb",
+            "limit":1,
+            "settings":[
+                {
+                    "type": "checkbox",
+                    "id": "hidemb",
+                    "label": "Hide on mobile?",
+                    "default": true
+                },
+                {
+                    "type": "range",
+                    "id": "fs",
+                    "label": "Font size",
+                    "default": 13,
+                    "min": 10,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsm",
+                    "label": "Font size (mobile)",
+                    "default": 12,
+                    "min": 10,
+                    "max": 30,
+                    "step": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "color",
+                    "id": "cl",
+                    "label": "Color",
+                    "default": "#eee9e4"
+                },
+                {
+                    "type": "range",
+                    "id": "mb",
+                    "label": "Margin bottom",
+                    "default": 0,
+                    "min": 0,
+                    "max": 50,
+                    "step": 5,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "mbm",
+                    "label": "Margin bottom (mobile)",
+                    "default": 0,
+                    "min": 0,
+                    "max": 30,
+                    "step": 5,
+                    "unit": "px"
+                }
+            ]
+        }
+    ],
+  "presets": [
+    {
+      "name": "Collection Page Banner"
+    }
+  ]
+}
+{% endschema %}

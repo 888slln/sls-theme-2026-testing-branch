@@ -1,0 +1,219 @@
+{% doc %}
+  @prompt
+    Custom inline text block with separate text before, accent text, and text after.
+    Designed for headings like "Shop by Category", where the accent word can use a custom script font.
+{% enddoc %}
+
+{% liquid
+  assign ai_gen_id = block.id | replace: '_', '' | downcase
+  assign label_font = block.settings.label_font_family
+
+  assign before_plain = block.settings.text_before | strip_html | strip
+  assign after_plain = block.settings.text_after | strip_html | strip
+
+  assign desktop_text_align = 'center'
+  if block.settings.text_alignment == 'flex-start'
+    assign desktop_text_align = 'left'
+  elsif block.settings.text_alignment == 'flex-end'
+    assign desktop_text_align = 'right'
+  endif
+
+  assign mobile_text_align = 'center'
+  if block.settings.mobile_text_alignment == 'flex-start'
+    assign mobile_text_align = 'left'
+  elsif block.settings.mobile_text_alignment == 'flex-end'
+    assign mobile_text_align = 'right'
+  endif
+
+  assign accent_word_count = 0
+  assign accent_words = block.settings.accent_text | strip | split: ' '
+
+  capture accent_output
+    for word in accent_words
+      assign clean_word = word | strip
+      if clean_word != blank and accent_word_count < 3
+        if accent_word_count > 0
+          echo ' '
+        endif
+        echo clean_word
+        assign accent_word_count = accent_word_count | plus: 1
+      endif
+    endfor
+  endcapture
+
+  assign accent_output = accent_output | strip
+%}
+
+{% style %}
+  {{ label_font | font_face: font_display: 'swap' }}
+
+  {% if block.settings.custom_font_source == 'upload' and block.settings.custom_font_file != blank %}
+    @font-face {
+      font-family: 'SLSAccent{{ ai_gen_id }}';
+      src: url({{ block.settings.custom_font_file | json }}) format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+  {% endif %}
+
+  {% if block.settings.custom_font_source == 'url' and block.settings.custom_font_url != blank %}
+    @import url({{ block.settings.custom_font_url | json }});
+  {% endif %}
+
+  .sls-inline-text-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: {{ block.settings.outer_margin_top_desktop }}px;
+    margin-bottom: {{ block.settings.outer_margin_bottom_desktop }}px;
+    padding-top: {{ block.settings.spacing_top_desktop }}px;
+    padding-bottom: {{ block.settings.spacing_bottom_desktop }}px;
+    padding-left: {{ block.settings.side_padding_desktop }}px;
+    padding-right: {{ block.settings.side_padding_desktop }}px;
+    {% if block.settings.enable_background %}
+      background: {{ block.settings.background_color }};
+    {% else %}
+      background: transparent;
+    {% endif %}
+  }
+
+  .sls-inline-text-{{ ai_gen_id }} *,
+  .sls-inline-text-{{ ai_gen_id }} *::before,
+  .sls-inline-text-{{ ai_gen_id }} *::after {
+    box-sizing: border-box;
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__inner {
+    width: 100%;
+    max-width: {{ block.settings.max_width_desktop }}px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__line {
+    display: flex;
+    align-items: {{ block.settings.vertical_alignment }};
+    justify-content: {{ block.settings.text_alignment }};
+    flex-wrap: {% if block.settings.keep_one_line_desktop %}nowrap{% else %}wrap{% endif %};
+    gap: {{ block.settings.gap_desktop }}px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    text-align: {{ desktop_text_align }};
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__part {
+    display: inline;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__part :where(p, h1, h2, h3, h4, h5, h6, span, strong, b, em, i, a) {
+    display: inline;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__part :where(br) {
+    {% if block.settings.remove_line_breaks %}
+      display: none;
+    {% endif %}
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__label {
+    color: {{ block.settings.label_color }};
+    font-family: {{ label_font.family }}, {{ label_font.fallback_families }};
+    font-size: {{ block.settings.label_font_size_desktop }}px;
+    font-weight: {{ block.settings.label_font_weight }};
+    font-style: {{ label_font.style }};
+    line-height: {{ block.settings.label_line_height }};
+    letter-spacing: {{ block.settings.label_letter_spacing }}px;
+    white-space: {% if block.settings.keep_one_line_desktop %}nowrap{% else %}normal{% endif %};
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__label :where(strong, b) {
+    font-weight: {{ block.settings.label_bold_weight }} !important;
+  }
+
+  .sls-inline-text-{{ ai_gen_id }}__accent {
+    display: inline-block;
+    color: {{ block.settings.accent_color }};
+    font-size: {{ block.settings.accent_font_size_desktop }}px;
+    font-weight: {{ block.settings.accent_font_weight }};
+    line-height: {{ block.settings.accent_line_height }};
+    letter-spacing: {{ block.settings.accent_letter_spacing }}px;
+    transform: translateY({{ block.settings.accent_vertical_offset_desktop }}px);
+    white-space: {% if block.settings.keep_one_line_desktop %}nowrap{% else %}normal{% endif %};
+
+    {% if block.settings.custom_font_source == 'upload' and block.settings.custom_font_file != blank %}
+      font-family: 'SLSAccent{{ ai_gen_id }}', cursive;
+    {% elsif block.settings.custom_font_source == 'url' and block.settings.custom_font_family_name != blank %}
+      font-family: {{ block.settings.custom_font_family_name | json }}, cursive;
+    {% else %}
+      font-family: {{ block.settings.system_font_family }};
+    {% endif %}
+  }
+
+  @media screen and (max-width: 749px) {
+    .sls-inline-text-{{ ai_gen_id }} {
+      margin-top: {{ block.settings.outer_margin_top_mobile }}px;
+      margin-bottom: {{ block.settings.outer_margin_bottom_mobile }}px;
+      padding-top: {{ block.settings.spacing_top_mobile }}px;
+      padding-bottom: {{ block.settings.spacing_bottom_mobile }}px;
+      padding-left: {{ block.settings.side_padding_mobile }}px;
+      padding-right: {{ block.settings.side_padding_mobile }}px;
+    }
+
+    .sls-inline-text-{{ ai_gen_id }}__inner {
+      max-width: {{ block.settings.max_width_mobile }}px;
+    }
+
+    .sls-inline-text-{{ ai_gen_id }}__line {
+      justify-content: {{ block.settings.mobile_text_alignment }};
+      flex-wrap: {% if block.settings.keep_one_line_mobile %}nowrap{% else %}wrap{% endif %};
+      gap: {{ block.settings.gap_mobile }}px;
+      text-align: {{ mobile_text_align }};
+    }
+
+    .sls-inline-text-{{ ai_gen_id }}__label {
+      font-size: {{ block.settings.label_font_size_mobile }}px;
+      white-space: {% if block.settings.keep_one_line_mobile %}nowrap{% else %}normal{% endif %};
+    }
+
+    .sls-inline-text-{{ ai_gen_id }}__accent {
+      font-size: {{ block.settings.accent_font_size_mobile }}px;
+      transform: translateY({{ block.settings.accent_vertical_offset_mobile }}px);
+      white-space: {% if block.settings.keep_one_line_mobile %}nowrap{% else %}normal{% endif %};
+    }
+  }
+{% endstyle %}
+
+<div class="sls-inline-text-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="sls-inline-text-{{ ai_gen_id }}__inner">
+    <div class="sls-inline-text-{{ ai_gen_id }}__line">
+      {% if before_plain != blank %}
+        <div class="sls-inline-text-{{ ai_gen_id }}__part sls-inline-text-{{ ai_gen_id }}__label">
+          {{ block.settings.text_before }}
+        </div>
+      {% endif %}
+
+      {% if accent_output != blank %}
+        <div class="sls-inline-text-{{ ai_gen_id }}__part sls-inline-text-{{ ai_gen_id }}__accent">
+          {{ accent_output | escape }}
+        </div>
+      {% endif %}
+
+      {% if after_plain != blank %}
+        <div class="sls-inline-text-{{ ai_gen_id }}__part sls-inline-text-{{ ai_gen_id }}__label">
+          {{ block.settings.text_after }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

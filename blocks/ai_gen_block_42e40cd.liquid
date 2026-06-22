@@ -1,0 +1,399 @@
+{% doc %}
+  @prompt
+    make a countdown that counts down to when the sale ends
+
+    let me adjust font size for mobile and desktop
+
+    spacing top and bottom on both mobile and desktop
+
+    font colour and backround colour., make it a one line promotion bar, perfect, let me adjust the font weight
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-countdown-promo-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.spacing_top_desktop }}px 0 {{ block.settings.spacing_bottom_desktop }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-countdown-promo__container-{{ ai_gen_id }} {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .ai-countdown-promo__content-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .ai-countdown-promo__message-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size_desktop }}px;
+    font-weight: {{ block.settings.font_weight }};
+    color: {{ block.settings.font_color }};
+    line-height: 1.2;
+  }
+
+  .ai-countdown-promo__timer-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: {{ block.settings.font_size_desktop }}px;
+    font-weight: {{ block.settings.font_weight }};
+    color: {{ block.settings.font_color }};
+    line-height: 1.2;
+  }
+
+  .ai-countdown-promo__unit-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+
+  .ai-countdown-promo__number-{{ ai_gen_id }} {
+    font-weight: {{ block.settings.font_weight }};
+  }
+
+  .ai-countdown-promo__label-{{ ai_gen_id }} {
+    font-size: calc({{ block.settings.font_size_desktop }}px * 0.7);
+    font-weight: 400;
+    opacity: 0.9;
+  }
+
+  .ai-countdown-promo__separator-{{ ai_gen_id }} {
+    opacity: 0.5;
+    margin: 0 2px;
+  }
+
+  .ai-countdown-promo__expired-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size_desktop }}px;
+    color: {{ block.settings.font_color }};
+    font-weight: {{ block.settings.font_weight }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-countdown-promo-{{ ai_gen_id }} {
+      padding: {{ block.settings.spacing_top_mobile }}px 0 {{ block.settings.spacing_bottom_mobile }}px;
+    }
+
+    .ai-countdown-promo__message-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+    }
+
+    .ai-countdown-promo__timer-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+    }
+
+    .ai-countdown-promo__label-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.font_size_mobile }}px * 0.7);
+    }
+
+    .ai-countdown-promo__expired-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<countdown-promo-{{ ai_gen_id }}
+  class="ai-countdown-promo-{{ ai_gen_id }}"
+  data-end-date="{{ block.settings.end_date }}"
+  data-end-time="{{ block.settings.end_time }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-countdown-promo__container-{{ ai_gen_id }}">
+    <div class="ai-countdown-promo__content-{{ ai_gen_id }}">
+      {% if block.settings.promo_message != blank %}
+        <div class="ai-countdown-promo__message-{{ ai_gen_id }}">{{ block.settings.promo_message }}</div>
+      {% endif %}
+      <div class="ai-countdown-promo__timer-{{ ai_gen_id }}">
+        <span class="ai-countdown-promo__unit-{{ ai_gen_id }}">
+          <span class="ai-countdown-promo__number-{{ ai_gen_id }}" data-days>00</span>
+          <span class="ai-countdown-promo__label-{{ ai_gen_id }}">d</span>
+        </span>
+        <span class="ai-countdown-promo__separator-{{ ai_gen_id }}">:</span>
+        <span class="ai-countdown-promo__unit-{{ ai_gen_id }}">
+          <span class="ai-countdown-promo__number-{{ ai_gen_id }}" data-hours>00</span>
+          <span class="ai-countdown-promo__label-{{ ai_gen_id }}">h</span>
+        </span>
+        <span class="ai-countdown-promo__separator-{{ ai_gen_id }}">:</span>
+        <span class="ai-countdown-promo__unit-{{ ai_gen_id }}">
+          <span class="ai-countdown-promo__number-{{ ai_gen_id }}" data-minutes>00</span>
+          <span class="ai-countdown-promo__label-{{ ai_gen_id }}">m</span>
+        </span>
+        <span class="ai-countdown-promo__separator-{{ ai_gen_id }}">:</span>
+        <span class="ai-countdown-promo__unit-{{ ai_gen_id }}">
+          <span class="ai-countdown-promo__number-{{ ai_gen_id }}" data-seconds>00</span>
+          <span class="ai-countdown-promo__label-{{ ai_gen_id }}">s</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</countdown-promo-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CountdownPromo{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.endDate = (this.dataset.endDate || '').trim();
+        this.endTime = (this.dataset.endTime || '').trim();
+        this.interval = null;
+      }
+
+      connectedCallback() {
+        this.daysEl = this.querySelector('[data-days]');
+        this.hoursEl = this.querySelector('[data-hours]');
+        this.minutesEl = this.querySelector('[data-minutes]');
+        this.secondsEl = this.querySelector('[data-seconds]');
+
+        if (!this.daysEl || !this.hoursEl || !this.minutesEl || !this.secondsEl) {
+          return;
+        }
+
+        const parsedEnd = this.getEndDateTime();
+
+        if (!parsedEnd) {
+          this.showExpired('Invalid countdown date');
+          return;
+        }
+
+        this.endDateTime = parsedEnd.getTime();
+        this.startCountdown();
+      }
+
+      disconnectedCallback() {
+        if (this.interval) {
+          clearInterval(this.interval);
+        }
+      }
+
+      getEndDateTime() {
+        if (!this.endDate || !this.endTime) return null;
+
+        const dateParts = this.endDate.split('-');
+        const timeParts = this.endTime.split(':');
+
+        if (dateParts.length !== 3) return null;
+        if (timeParts.length < 2) return null;
+
+        const year = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10);
+        const day = parseInt(dateParts[2], 10);
+
+        const hours = parseInt(timeParts[0], 10);
+        const minutes = parseInt(timeParts[1], 10);
+        const seconds = timeParts[2] ? parseInt(timeParts[2], 10) : 0;
+
+        if (
+          isNaN(year) || isNaN(month) || isNaN(day) ||
+          isNaN(hours) || isNaN(minutes) || isNaN(seconds)
+        ) {
+          return null;
+        }
+
+        return new Date(year, month - 1, day, hours, minutes, seconds);
+      }
+
+      startCountdown() {
+        this.updateCountdown();
+        this.interval = setInterval(() => {
+          this.updateCountdown();
+        }, 1000);
+      }
+
+      updateCountdown() {
+        const now = new Date().getTime();
+        const distance = this.endDateTime - now;
+
+        if (isNaN(distance) || distance <= 0) {
+          clearInterval(this.interval);
+          this.showExpired('Sale has ended');
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        this.daysEl.textContent = String(days).padStart(2, '0');
+        this.hoursEl.textContent = String(hours).padStart(2, '0');
+        this.minutesEl.textContent = String(minutes).padStart(2, '0');
+        this.secondsEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      showExpired(message) {
+        const container = this.querySelector('.ai-countdown-promo__content-{{ ai_gen_id }}');
+        if (container) {
+          container.innerHTML = '<div class="ai-countdown-promo__expired-{{ ai_gen_id }}">' + message + '</div>';
+        }
+      }
+    }
+
+    if (!customElements.get('countdown-promo-{{ ai_gen_id }}')) {
+      customElements.define('countdown-promo-{{ ai_gen_id }}', CountdownPromo{{ ai_gen_id }});
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Countdown promo bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Promotion message"
+    },
+    {
+      "type": "text",
+      "id": "promo_message",
+      "label": "Message",
+      "default": "Sale ends in"
+    },
+    {
+      "type": "header",
+      "content": "Sale end date and time"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date",
+      "info": "Format: YYYY-MM-DD (e.g., 2026-04-10)",
+      "default": "2026-04-10"
+    },
+    {
+      "type": "text",
+      "id": "end_time",
+      "label": "End time",
+      "info": "Format: HH:MM:SS in 24-hour format (e.g., 23:59:59)",
+      "default": "23:59:59"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Font size desktop",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "font_color",
+      "label": "Font color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#222222"
+    },
+    {
+      "type": "header",
+      "content": "Spacing desktop"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top_desktop",
+      "label": "Top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom_desktop",
+      "label": "Bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Spacing mobile"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown promo bar"
+    }
+  ]
+}
+{% endschema %}

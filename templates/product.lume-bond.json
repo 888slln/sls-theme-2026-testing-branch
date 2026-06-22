@@ -1,0 +1,825 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "custom_css": [],
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": true
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "d3ad6ba3-0eeb-40b7-baa2-e58f0c1e9537": {
+          "type": "title",
+          "settings": {
+            "cl": "#222222",
+            "tff": "ft1",
+            "fs": 23,
+            "fsm": 20,
+            "fw": "400",
+            "lh": 1.3,
+            "tcase": "ttc",
+            "bm": 10
+          }
+        },
+        "judge_me_reviews_preview_badge_nprDWV": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "hr_Rd9RAB": {
+          "type": "hr",
+          "settings": {
+            "hrc": "#ffffff",
+            "bm": 10
+          }
+        },
+        "fa9c66a2-d2aa-4d30-974e-61bb044bb59d": {
+          "type": "price",
+          "settings": {
+            "pcl": "#222222",
+            "pcls": "#222222",
+            "fs": 20,
+            "fsm": 17,
+            "pfw": "400",
+            "saved": true,
+            "bfs": 12,
+            "salet": "#ffffff",
+            "salebg": "#aca39a",
+            "fw": "fwr",
+            "brad": 30,
+            "tax_msg": false,
+            "ship_msg": false,
+            "bm": 20
+          }
+        },
+        "afterpay_on_site_messaging_payments_messaging_RNyPNM": {
+          "type": "shopify://apps/afterpay-on-site-messaging/blocks/payments-messaging/f45a5524-d177-4475-bf59-281efd2215a8",
+          "settings": {
+            "text_align": "left",
+            "margin_top": -16,
+            "margin_bottom": 16,
+            "color": "",
+            "size": "xs",
+            "intro_text": "or",
+            "show_interest_free": true,
+            "payment_amount_is_bold": true,
+            "show_with": true,
+            "logo_type": "compact-badge",
+            "logo_theme": "black-on-mint",
+            "modal_link_style": "circled-info-icon",
+            "modal_theme": "mint",
+            "breakpoint": 749,
+            "text_align_mobile": "left",
+            "margin_top_mobile": -20,
+            "margin_bottom_mobile": 16,
+            "show_lower_limit": true,
+            "show_upper_limit": true,
+            "show_if_outside_limits": true,
+            "product": "{{product}}"
+          }
+        },
+        "featured_text_wmeW8F": {
+          "type": "featured-text",
+          "settings": {
+            "icon": "custom",
+            "sicon": "shopify://shop_images/time-svgrepo-com.svg",
+            "text": "<p>0.5 - 1s Dry Time</p>",
+            "icon2": "custom",
+            "sicon2": "shopify://shop_images/calendar-heart-svgrepo-com.svg",
+            "text2": "<p>Up To 8 Weeks Retention</p>",
+            "icon3": "custom",
+            "sicon3": "shopify://shop_images/sun-svgrepo-com.svg",
+            "text3": "<p>High Performance Formula</p>",
+            "fs": 12,
+            "fsm": 12,
+            "cl": "#222222",
+            "clbg": "#f5f5f5",
+            "brad": 10,
+            "bm": 15
+          }
+        },
+        "spoint_JfYnbV": {
+          "type": "spoint",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "text": "<p>⚡ 0.5–1s Dry Time<br/>🔒 6–8 Week Retention<br/>💧 Best in 40–60% Humidity</p>",
+            "atc": false,
+            "fs": 14,
+            "fsm": 14,
+            "cl": "#222222",
+            "clbg": "#ffffff",
+            "tpd": 50,
+            "bm": 5
+          }
+        },
+        "spoint_9FUQPe": {
+          "type": "spoint",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "text": "<p>🔒  Up to 8 Weeks Retention</p>",
+            "atc": false,
+            "fs": 14,
+            "fsm": 14,
+            "cl": "#222222",
+            "clbg": "#ffffff",
+            "tpd": 0,
+            "bm": 0
+          }
+        },
+        "spoint_e39jdn": {
+          "type": "spoint",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "text": "<p>💧  Best in 45–65% Humidity</p>",
+            "atc": false,
+            "fs": 14,
+            "fsm": 14,
+            "cl": "#222222",
+            "clbg": "#ffffff",
+            "tpd": 0,
+            "bm": 5
+          }
+        },
+        "hr_YJ6Dxi": {
+          "type": "hr",
+          "disabled": true,
+          "settings": {
+            "hrc": "#f5f5f5",
+            "bm": 15
+          }
+        },
+        "d3f45ea4-ab08-46d0-ab08-3771d2eb15d3": {
+          "type": "order",
+          "disabled": true,
+          "settings": {
+            "icon": true,
+            "orders": 19,
+            "otime": 24,
+            "omsg": "[orders] sold in last [hours] hours",
+            "cl": "#c44a4a",
+            "bm": 25
+          }
+        },
+        "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c": {
+          "type": "countdown",
+          "disabled": true,
+          "settings": {
+            "cds": "box_timer",
+            "clbl": "The offer will last till",
+            "cl": "#222222",
+            "tcl": "#222222",
+            "bg": "#f5f5f5",
+            "border": "#eee9e4",
+            "fs": 20,
+            "tfs": 13,
+            "text_ttu": true,
+            "fw": "400",
+            "iscenter": false,
+            "brad": 5,
+            "bm": 20
+          }
+        },
+        "visitor_KGMfe8": {
+          "type": "visitor",
+          "disabled": true,
+          "settings": {
+            "visitors": 50,
+            "visitors_time": 5,
+            "visitors_msg": "[visitors] People looking for this product",
+            "cl": "#222222",
+            "bg": "#222222",
+            "ccl": "#ffffff",
+            "bm": 15
+          }
+        },
+        "variants_e43NdX": {
+          "type": "variants",
+          "settings": {
+            "sold": false,
+            "cltype": "ts",
+            "othervr": "sw",
+            "bm": 15
+          }
+        },
+        "ccd4e61d-1477-4664-bd33-351a9aa1ec00": {
+          "type": "inventory",
+          "disabled": true,
+          "settings": {
+            "qty_sel": true,
+            "qlbl": true,
+            "inv": false,
+            "maxqty": 5,
+            "fs": 10,
+            "fcase": false,
+            "font-style": "none",
+            "instock": "#007133",
+            "lstock": "#fda43c",
+            "ostock": "#c44a4a",
+            "anim": true,
+            "bm": 15
+          }
+        },
+        "f3aed949-c526-4cd5-affb-f209a0499d89": {
+          "type": "cta",
+          "settings": {
+            "gift_recipient": true,
+            "atc-style": "btn6",
+            "wishlist-btn": "btn5",
+            "ext-btn": "btn1",
+            "dynamic_btn": true,
+            "btnbg": "#aca39a",
+            "btntext": "#ffffff",
+            "btnbdr": "#aca39a",
+            "bis": true,
+            "bg": "#faf9f7",
+            "bd": "#eee9e4",
+            "bdr": 5,
+            "bm": 20
+          }
+        },
+        "pickup_fkpkwg": {
+          "type": "pickup",
+          "settings": {
+            "bm": 30,
+            "bg": "#cbc4bc",
+            "icon": "#222222",
+            "text": "#222222",
+            "brad": 0
+          }
+        },
+        "customc_Nhrbtn": {
+          "type": "customc",
+          "name": "Tab Slider",
+          "settings": {
+            "custom_liquid": "<script>\n  const SLIDER_CONFIG = {\n    // --- COLORS & STYLE ---\n    slide_bg: \"#f5f5f5\",\n    slide_text: \"#222222\",\n    border_radius: \"0px\",\n\n    // --- FONT CUSTOMISATION ---\n    h_size: \"0.875rem\",  \n    h_weight: \"700\",     \n    h_spacing: \"0px\",    \n\n    p_size: \"0.875rem\",  \n    p_weight: \"300\",     \n    p_spacing: \"0px\",    \n\n    // --- AUTOMATED TEXT ---\n    Ships_Today_Heading: \"Ships Today\",\n    Ships_Today_Sub: \"Order within the next\", \n    Ships_Tomorrow_Heading: \"Ships Tomorrow\",\n    Ships_Tomorrow_Sub: \"Order now for priority dispatch\",\n    \n    Ships_Monday_Heading: \"Ships Monday\",\n    Ships_Monday_Sub: \"Secure your spot for Monday’s first dispatch\",\n    \n    Holiday_Heading: \"Public Holiday\",\n    Holiday_Sub: \"Shipping resumes next business day\",\n\n    // --- SHIPPING LOGIC ---\n    cutoff_hour: 14, // 2:00 PM\n    cutoff_minute: 30, // 30 Minutes\n    \n    // --- QLD PUBLIC HOLIDAYS ---\n    public_holidays: [\n      '2025-01-01', '2025-01-27', '2025-04-18', '2025-04-19', '2025-04-20', '2025-04-21',\n      '2025-04-25', '2025-05-05', '2025-08-13', '2025-10-06', '2025-12-25', '2025-12-26',\n      '2026-01-01', '2026-01-26', '2026-04-03', '2026-04-04', '2026-04-05', '2026-04-06',\n      '2026-04-25', '2026-05-04', '2026-08-12', '2026-10-05', '2026-12-25', '2026-12-26', '2026-12-28'\n    ],\n\n    test_mode: {\n      enabled: false, \n      date: \"2025-12-27T10:00:00\" \n    }\n  };\n</script>\n\n<div class=\"shipping-announcer-main\" id=\"announcer-box\">\n  <div class=\"announcer-content\" id=\"style-box\">\n    <h3 id=\"dyn-h\"></h3>\n    <p id=\"dyn-p\"></p>\n  </div>\n</div>\n\n<style>\n  .shipping-announcer-main { \n    max-width: 100%; \n    margin: 10px 0; \n    overflow: hidden; \n    position: relative; \n    font-family: inherit; \n  }\n  .announcer-content { \n    padding: 25px 20px; \n    text-align: center; \n    box-sizing: border-box; \n  }\n  \n  .announcer-content h3 { \n    margin: 0 0 5px 0 !important; \n    color: inherit; \n    line-height: 1.2 !important;\n  }\n  .announcer-content p { \n    margin: 0 !important; \n    color: inherit; \n    line-height: 1.4 !important;\n  }\n</style>\n\n<script>\n  (function() {\n    const c = SLIDER_CONFIG;\n    const h = document.getElementById('dyn-h');\n    const p = document.getElementById('dyn-p');\n    const box = document.getElementById('style-box');\n    const wrapper = document.getElementById('announcer-box');\n\n    const update = () => {\n      const now = c.test_mode.enabled ? new Date(c.test_mode.date) : new Date();\n      \n      // Get Brisbane Time\n      const qParts = new Intl.DateTimeFormat('en-CA', {\n        timeZone: 'Australia/Brisbane', \n        year:'numeric', month:'2-digit', day:'2-digit', \n        hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false\n      }).formatToParts(now);\n      \n      const q = {}; qParts.forEach(({type, value}) => q[type] = value);\n      const brisNow = new Date(now.toLocaleString(\"en-US\", {timeZone: \"Australia/Brisbane\"}));\n      \n      const dStr = `${q.year}-${q.month}-${q.day}`;\n      const hr = parseInt(q.hour);\n      const min = parseInt(q.minute);\n      const day = brisNow.getDay(); \n      \n      const isPastCutoff = (hr > c.cutoff_hour || (hr === c.cutoff_hour && min >= c.cutoff_minute));\n\n      // 1. Weekend Logic\n      if (day === 0 || day === 6 || (day === 5 && isPastCutoff)) {\n        h.innerText = c.Ships_Monday_Heading; \n        p.innerText = c.Ships_Monday_Sub;\n      } \n      // 2. Public Holiday\n      else if (c.public_holidays.includes(dStr)) {\n        h.innerText = c.Holiday_Heading; \n        p.innerText = c.Holiday_Sub;\n      } \n      // 3. After Cutoff Weekday\n      else if (isPastCutoff) {\n        h.innerText = c.Ships_Tomorrow_Heading; \n        p.innerText = c.Ships_Tomorrow_Sub;\n      } \n      // 4. Countdown\n      else {\n        h.innerText = c.Ships_Today_Heading;\n        const target = new Date(brisNow);\n        target.setHours(c.cutoff_hour, c.cutoff_minute, 0, 0);\n        const diff = target - brisNow;\n        const hh = Math.floor(diff/36e5), mm = Math.floor((diff%36e5)/6e4), ss = Math.floor((diff%6e4)/1e3);\n        p.innerHTML = `${c.Ships_Today_Sub} <strong style=\"font-weight:700\">${hh}h : ${mm}m : ${ss}s</strong>`;\n      }\n    };\n\n    // Apply Styles\n    h.style.fontSize = c.h_size; h.style.fontWeight = c.h_weight; h.style.letterSpacing = c.h_spacing;\n    p.style.fontSize = c.p_size; p.style.fontWeight = c.p_weight; p.style.letterSpacing = c.p_spacing;\n    \n    Object.assign(box.style, { background: c.slide_bg, color: c.slide_text });\n    wrapper.style.borderRadius = c.border_radius;\n\n    setInterval(update, 1000); \n    update();\n  })();\n</script>",
+            "bm": 15
+          }
+        },
+        "shortdes_QbJDAK": {
+          "type": "shortdes",
+          "settings": {
+            "des_type": "fulld",
+            "bm": 20
+          }
+        },
+        "addons_3DKyxX": {
+          "type": "addons",
+          "disabled": true,
+          "settings": {
+            "askpr": true,
+            "isdr": true,
+            "page": "delivery-returns",
+            "share": true,
+            "cl": "#222222",
+            "clh": "#222222",
+            "fs": 13,
+            "fw": "400",
+            "bm": 15
+          }
+        },
+        "hr_zDHmMw": {
+          "type": "hr",
+          "disabled": true,
+          "settings": {
+            "hrc": "#eee9e4",
+            "bm": 25
+          }
+        },
+        "coltabs_mhn6Wn": {
+          "type": "coltabs",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "title": "Details",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#f5f5f5",
+            "opt": "des",
+            "richtxt": "<p>This tab is a useful tool that allows store to display different product details for each individual product. This feature provides a more comprehensive and tailored approach as it enables companies to showcase specific information related to their products</p>",
+            "tbopen": true,
+            "bm": 0
+          }
+        },
+        "coltabs_wg4kPa": {
+          "type": "coltabs",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "title": "Product Details",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "",
+            "tbopen": false,
+            "bm": 0
+          }
+        },
+        "coltabs_JCBKKL": {
+          "type": "coltabs",
+          "settings": {
+            "icon": "none",
+            "title": "Ingredients",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "<p>Ethyl Cyanoacrylate, Ethoxyethyl Cyanoacrylate, Poly(methyl methacrylate) (PMMA), CI 77266 (Carbon Black).</p><p></p>",
+            "tbopen": false,
+            "bm": 0
+          }
+        },
+        "coltabs_f8F7f3": {
+          "type": "coltabs",
+          "settings": {
+            "icon": "none",
+            "title": "Cautions",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "<p>For professional use only. External use only.</p><p>• Do not apply while client’s eyes are open.<br/><br/>• Avoid contact with eyes, skin and mouth.<br/><br/>• In case of accidental contact, seek immediate medical advice.<br/><br/>• Keep out of reach of children.</p>",
+            "tbopen": false,
+            "bm": 0
+          }
+        },
+        "coltabs_dCjG9y": {
+          "type": "coltabs",
+          "settings": {
+            "icon": "none",
+            "title": "Shipping & Returns",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "<p><strong>Standard Shipping (Parcel Post)</strong><br/>$10 AUD or FREE on orders over $150<br/>Estimated delivery: 4–6 business day</p><p><strong>Express Shipping</strong><br/>$15 AUD or FREE on orders over $250<br/>Estimated delivery: 2–4 business days</p><p><strong>Same-Day Dispatch</strong><br/>Place your order before <strong>2:30pm AEST, Monday–Friday</strong> for same-day dispatch.<br/><br/>Orders placed after this time will be dispatched the next business day.</p><p>Please note: Orders are not dispatched on weekends or Australian public holidays.</p><p>Delivery timeframes are estimates provided by the carrier and may vary during peak periods or promotional events.</p><p><strong>RETURNS & SUPPORT<br/></strong>Please refer to our <a href=\"/policies/refund-policy\" title=\"Refund Policy\">Refund & Returns Policy</a> for full details on returns, store credits, and faulty items.</p><p><strong>Questions or feedback?</strong><br/>We’re here for you, babe!<br/>Reach out anytime at <a href=\"mailto:studiolumesupplies@gmail.com\" title=\"mailto:studiolumesupplies@gmail.com\">studiolumesupplies@gmail.com</a></p>",
+            "tbopen": false,
+            "bm": 0
+          }
+        },
+        "coltabs_LzJ9C9": {
+          "type": "coltabs",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "title": "Professional Use Only",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "<p>This product is designed for trained lash artists and is not suitable for at-home use. Please ensure you are fully qualified before purchasing and always follow the provided instructions for safe, correct application.</p>",
+            "tbopen": false,
+            "bm": 0
+          }
+        },
+        "68994def-e552-45b0-bd90-20cf81d0255c": {
+          "type": "freeship",
+          "disabled": true,
+          "settings": {
+            "bm": 15
+          }
+        },
+        "72e2acab-2fcd-4a7a-8088-123a653bf7f5": {
+          "type": "shiptime",
+          "disabled": true,
+          "settings": {
+            "shipmsg_ico": true,
+            "estimate_ship": "2/7",
+            "estimate_shipping_msg": "Estimated delivery time : [startdate] - [enddate].",
+            "bm": 30
+          }
+        },
+        "complementary_PwPWxA": {
+          "type": "complementary",
+          "disabled": true,
+          "settings": {
+            "title": "Complete the look",
+            "cl": "#222222",
+            "fs": 18,
+            "fsm": 16,
+            "fw": "600",
+            "limit": 3,
+            "grid": 3,
+            "gridtb": 3,
+            "gridmb": 2,
+            "bm": 15,
+            "loop": true,
+            "autoplay": true,
+            "speed": 5,
+            "arrow": true,
+            "arrowm": false,
+            "dot": false,
+            "dotm": true
+          }
+        },
+        "img_Vgftba": {
+          "type": "img",
+          "disabled": true,
+          "settings": {
+            "title": "Guarantee Safe Checkout",
+            "imgwd": 320,
+            "img_align": true,
+            "cl": "#222222",
+            "add_bg": true,
+            "bg": "#f5f5f5",
+            "brad": 8,
+            "pimg_url": "",
+            "bm": 20
+          }
+        }
+      },
+      "block_order": [
+        "d3ad6ba3-0eeb-40b7-baa2-e58f0c1e9537",
+        "judge_me_reviews_preview_badge_nprDWV",
+        "hr_Rd9RAB",
+        "fa9c66a2-d2aa-4d30-974e-61bb044bb59d",
+        "afterpay_on_site_messaging_payments_messaging_RNyPNM",
+        "featured_text_wmeW8F",
+        "spoint_JfYnbV",
+        "spoint_9FUQPe",
+        "spoint_e39jdn",
+        "hr_YJ6Dxi",
+        "d3f45ea4-ab08-46d0-ab08-3771d2eb15d3",
+        "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c",
+        "visitor_KGMfe8",
+        "variants_e43NdX",
+        "ccd4e61d-1477-4664-bd33-351a9aa1ec00",
+        "f3aed949-c526-4cd5-affb-f209a0499d89",
+        "pickup_fkpkwg",
+        "customc_Nhrbtn",
+        "shortdes_QbJDAK",
+        "addons_3DKyxX",
+        "hr_zDHmMw",
+        "coltabs_mhn6Wn",
+        "coltabs_wg4kPa",
+        "coltabs_JCBKKL",
+        "coltabs_f8F7f3",
+        "coltabs_dCjG9y",
+        "coltabs_LzJ9C9",
+        "68994def-e552-45b0-bd90-20cf81d0255c",
+        "72e2acab-2fcd-4a7a-8088-123a653bf7f5",
+        "complementary_PwPWxA",
+        "img_Vgftba"
+      ],
+      "custom_css": [
+        "pickup-availability.product__pickup-availabilities {background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; text-align: left !important;}",
+        "pickup-availability .pickup-availability-preview {background: none !important; border: 0 !important; padding: 0 !important;}"
+      ],
+      "settings": {
+        "image-col": "lg",
+        "prstyle": "1",
+        "prthumbs": "left",
+        "play_ico": "#ffffff",
+        "thumb_bdr": "#222222",
+        "przoom": true,
+        "prlightbox": true,
+        "arrow_mobile": false,
+        "sprnav": false,
+        "sprnavm": false,
+        "scart": true,
+        "cl_bg": "#ffffff",
+        "cl_txt": "#222222",
+        "qty_bdr": "#cbc4bc",
+        "btn-sticky": "btn6",
+        "page_width": 1400,
+        "sst": 0,
+        "ssb": 30,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "#ffffff",
+        "sw": false
+      }
+    },
+    "quick_order_list_erKtgp": {
+      "type": "quick-order-list",
+      "disabled": true,
+      "settings": {
+        "show_image": true,
+        "show_sku": true,
+        "page_width": 1200,
+        "cbg": "#f5f5f5",
+        "border": "#eee9e4",
+        "brad": 15,
+        "btn-viewcart": "btn1",
+        "btn-remove": "btn2",
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 40,
+        "ssb": 40,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "upsell": {
+      "type": "upsell-bundle",
+      "disabled": true,
+      "settings": {
+        "title": "Frequently Bought Together",
+        "subtitle": "",
+        "products": [],
+        "sw": false,
+        "bg": "#faf9f7",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 60,
+        "ssb": 60,
+        "sstm": 30,
+        "ssbm": 30,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "tabs": {
+      "type": "product-tabs",
+      "blocks": {
+        "612c9c15-e72e-45af-8f23-6e5da8137791": {
+          "type": "desc",
+          "settings": {
+            "title": "Product Details"
+          }
+        },
+        "spec_qLrJqk": {
+          "type": "spec",
+          "settings": {
+            "title": "Specifications",
+            "content": "",
+            "style": "2",
+            "grid": 4,
+            "tgrid": 3,
+            "mgrid": 2,
+            "bdr": "#f5f5f5"
+          }
+        },
+        "review_gFFTDF": {
+          "type": "review",
+          "disabled": true,
+          "settings": {
+            "title": "Reviews"
+          }
+        },
+        "faq_9jQ4EE": {
+          "type": "faq",
+          "settings": {
+            "title": "FAQ's",
+            "qcl": "#222222",
+            "qfs": 15,
+            "qfsm": 14,
+            "qfw": "400",
+            "bdr": "#eee9e4"
+          }
+        },
+        "extra_YG9Qf4": {
+          "type": "extra",
+          "settings": {
+            "title": "Shipping & Returns",
+            "content": "<h5><strong>DELIVERY</strong></h5><ul><li>Dispatch: Within 24 Hours</li><li>Free shipping across all products on a minimum purchase of $50.</li><li>International delivery time - 7-10 business days</li><li>Cash on delivery might be available</li><li>Easy 30 days returns and exchanges</li></ul><h5><strong>RETURNS</strong></h5><p>If you do not like the product you can return it within 15 days - no questions asked. This excludes bodysuits, swimwear and clearance sale items. <br/>We have an easy and hassle free return policy. Please look at our Delivery & Returns section for further information.</p>",
+            "liquid": ""
+          }
+        },
+        "extra_3Hp4gw": {
+          "type": "extra",
+          "disabled": true,
+          "settings": {
+            "title": "Custom Tab",
+            "content": "<p>This tab is a useful tool that allows store to display different product details for each individual product. This feature provides a more comprehensive and tailored approach as it enables companies to showcase specific information related to their products. </p><p>It is an excellent way to provide customers with in-depth details such as ingredients, materials used, dimensions, and other specifications that are unique to each product. By using the product custom tab, businesses can ensure transparency and accuracy in providing product information, which builds trust and credibility among consumers. This feature also gives customers the opportunity to make informed decisions based on their preferences and needs.</p>",
+            "liquid": ""
+          }
+        }
+      },
+      "block_order": [
+        "612c9c15-e72e-45af-8f23-6e5da8137791",
+        "spec_qLrJqk",
+        "review_gFFTDF",
+        "faq_9jQ4EE",
+        "extra_YG9Qf4",
+        "extra_3Hp4gw"
+      ],
+      "disabled": true,
+      "settings": {
+        "tab_style": "1",
+        "acc": true,
+        "tab_align": "center",
+        "tfs": 14,
+        "tfsm": 14,
+        "tff": "ft2",
+        "tfw": "500",
+        "cl": "#222222",
+        "cla": "#ffffff",
+        "tbg": "rgba(0,0,0,0)",
+        "tbga": "#222222",
+        "bdr": "#eee9e4",
+        "bdra": "#222222",
+        "bdrr": 30,
+        "sw": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 20,
+        "ssb": 40,
+        "sstm": 20,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "devider_ywr3VC": {
+      "type": "devider",
+      "name": "Devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#eee9e4",
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 20,
+        "ssb": 20,
+        "sstm": 10,
+        "ssbm": 10,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "1766244928f8978603": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_tfwyL7": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_tfwyL7"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "devider_yN9fQG": {
+      "type": "devider",
+      "name": "Devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#eee9e4",
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 20,
+        "ssb": 20,
+        "sstm": 10,
+        "ssbm": 10,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "title": "Related Products",
+        "subtitle": "",
+        "type": "1",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "limit": 5,
+        "carousel": true,
+        "loop": false,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 25,
+        "ssb": 25,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "recommanded": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "title": "Recommended Products",
+        "subtitle": "",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "limit": 7,
+        "carousel": true,
+        "loop": true,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "recentviewed": {
+      "type": "recently-viewed",
+      "disabled": true,
+      "settings": {
+        "title": "Recently Viewed Products",
+        "subtitle": "",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "row": 6,
+        "carousel": true,
+        "loop": true,
+        "autoplay": true,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 30,
+        "ssb": 40,
+        "sstm": 15,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "quick_order_list_erKtgp",
+    "upsell",
+    "tabs",
+    "devider_ywr3VC",
+    "1766244928f8978603",
+    "devider_yN9fQG",
+    "related",
+    "recommanded",
+    "recentviewed"
+  ]
+}

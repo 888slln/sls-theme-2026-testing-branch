@@ -1,0 +1,171 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": true
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "disabled": true,
+      "settings": {
+        "title": "All Collections 2025",
+        "subtitle": "Expect fashion that focuses on influence, charm, and seduction",
+        "sort": "products_high",
+        "style": "1",
+        "ratio": "img",
+        "gspace": 28,
+        "gspacem": 10,
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "count": true,
+        "zoom": true,
+        "irad": 10,
+        "ft": "ft1",
+        "fs": 17,
+        "fsm": 13,
+        "fw": "500",
+        "cl": "#222222",
+        "tbg": "#ffffff",
+        "tbg_op": 0.9,
+        "drad": 6,
+        "tbp": 18,
+        "sw": false,
+        "npd": true,
+        "bg": "",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0.7,
+        "headings_cl": "rgba(0,0,0,0)",
+        "sst": 50,
+        "ssb": 100,
+        "sstm": 20,
+        "ssbm": 60,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "collection_list_MdTmRM": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_Awbca4": {
+          "type": "collection",
+          "settings": {
+            "collection": "lash-trays",
+            "title": "Lash Trays",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_epRdfR": {
+          "type": "collection",
+          "settings": {
+            "collection": "adhesive-liquids",
+            "title": "Adhesives & Liquids",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_RqdrwE": {
+          "type": "collection",
+          "settings": {
+            "collection": "tweezers",
+            "title": "Tweezers",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_Kh7Qmj": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "title": "Accessories",
+            "btntxt": "",
+            "url": ""
+          }
+        },
+        "collection_7Eykct": {
+          "type": "collection",
+          "settings": {
+            "collection": "disposables",
+            "title": "Disposables",
+            "btntxt": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_Awbca4",
+        "collection_epRdfR",
+        "collection_RqdrwE",
+        "collection_Kh7Qmj",
+        "collection_7Eykct"
+      ],
+      "settings": {
+        "title": "All Collections",
+        "subtitle": "",
+        "style": "4",
+        "ratio": "img",
+        "gspace": 30,
+        "gspacem": 10,
+        "grid": 5,
+        "gridtb": 2,
+        "gridmb": 1,
+        "count": true,
+        "zoom": true,
+        "irad": 8,
+        "btn-style": "btn1",
+        "btn-size": "btn-sm",
+        "ft": "ft1",
+        "fs": 12,
+        "fsm": 12,
+        "lh": 1.5,
+        "fw": "500",
+        "cl": "#222222",
+        "tbg": "#ffffff",
+        "tbg_op": 1,
+        "drad": 20,
+        "tbp": 15,
+        "carousel": false,
+        "loop": true,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "overlay": "#222222",
+        "overlay_op": 0,
+        "headings_cl": "#222222",
+        "sst": 25,
+        "ssb": 50,
+        "sstm": 15,
+        "ssbm": 25,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "collection_list_MdTmRM"
+  ]
+}

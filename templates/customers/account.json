@@ -1,0 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "account",
+      "settings": {
+        "cl": "#222222",
+        "fs": 20,
+        "fsm": 18,
+        "fw": "600",
+        "btn": "btn1",
+        "btnsz": "btn-md",
+        "sfs": 14,
+        "sfsm": 13,
+        "scl": "#222222",
+        "sclh": "#222222",
+        "sst": 50,
+        "ssb": 80,
+        "sstm": 30,
+        "ssbm": 30,
+        "bg": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

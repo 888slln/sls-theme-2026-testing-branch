@@ -1,0 +1,319 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "custom.overlay",
+  "name": "Overlay Group",
+  "sections": {
+    "mobile-toolbar": {
+      "type": "mobile-toolbar",
+      "blocks": {
+        "home": {
+          "type": "home",
+          "settings": {
+            "title": "Home"
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "title": "Menu"
+          }
+        },
+        "src": {
+          "type": "src",
+          "settings": {
+            "title": "Search"
+          }
+        },
+        "act": {
+          "type": "act",
+          "settings": {
+            "title": "Account"
+          }
+        },
+        "cart": {
+          "type": "cart",
+          "settings": {
+            "title": "Cart"
+          }
+        },
+        "filter_TWzMWP": {
+          "type": "filter",
+          "disabled": true,
+          "settings": {
+            "title": "Filter"
+          }
+        },
+        "wish_3zmTKz": {
+          "type": "wish",
+          "disabled": true,
+          "settings": {
+            "title": "Wishlist"
+          }
+        },
+        "shop_9xYtEz": {
+          "type": "shop",
+          "disabled": true,
+          "settings": {
+            "title": "Shop",
+            "collection": "accessories"
+          }
+        }
+      },
+      "block_order": [
+        "home",
+        "menu",
+        "src",
+        "act",
+        "cart",
+        "filter_TWzMWP",
+        "wish_3zmTKz",
+        "shop_9xYtEz"
+      ],
+      "disabled": true,
+      "settings": {
+        "hdtxt": false,
+        "fsicon": 15,
+        "fs": 11,
+        "fw": "600",
+        "cl": "#222222",
+        "bg": "#ffffff",
+        "bgg": ""
+      }
+    },
+    "exit_intent_popup_96JaDD": {
+      "type": "exit-intent-popup",
+      "blocks": {
+        "heading_7AFpRd": {
+          "type": "heading",
+          "settings": {
+            "title": "Wait! before you leave...",
+            "cl": "#ffffff",
+            "ff": "ft2",
+            "fs": 30,
+            "fsm": 20,
+            "fw": "500",
+            "lh": 1.2,
+            "mb": 10,
+            "mbm": 10
+          }
+        },
+        "text_8LJ3jc": {
+          "type": "text",
+          "settings": {
+            "text": "Enter the code below at checkout to get 20% off your first order",
+            "hidem": true,
+            "cl": "#ffffff",
+            "addbg": false,
+            "bg": "#ffffff",
+            "fs": 15,
+            "fsm": 15,
+            "ls": 0,
+            "lh": 1.5,
+            "mb": 20,
+            "mbm": 20
+          }
+        },
+        "text_ErBWeL": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>FIRST20OFF</strong>",
+            "hidem": true,
+            "cl": "#c44a4a",
+            "addbg": true,
+            "bg": "#ffffff",
+            "fs": 13,
+            "fsm": 13,
+            "ls": 0,
+            "lh": 1.5,
+            "mb": 20,
+            "mbm": 20
+          }
+        }
+      },
+      "block_order": [
+        "heading_7AFpRd",
+        "text_8LJ3jc",
+        "text_ErBWeL"
+      ],
+      "disabled": true,
+      "settings": {
+        "sty": "2",
+        "iconc": "#ffffff",
+        "cbn": true,
+        "bg": "#222222",
+        "overlay": "rgba(0,0,0,0)",
+        "prd": 9,
+        "hidem": false,
+        "rpttl": "Top Selling Products",
+        "products": [
+          "crew-neck-pullover-full-sleeve",
+          "crossbody-bag-with-adjustable-strap-beige",
+          "deep-neck-ribbon-sweater",
+          "denim-maxi-skirt-off-white"
+        ],
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "loop": true,
+        "autoplay": true,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "index": true,
+        "product": true,
+        "collection": false,
+        "article": false,
+        "blog": false,
+        "cart": false,
+        "page": false
+      }
+    },
+    "newsletter_popup_JityNd": {
+      "type": "newsletter-popup",
+      "blocks": {
+        "heading_cTVj4f": {
+          "type": "heading",
+          "settings": {
+            "title": "ENJOY 15% OFF<br> YOUR FIRST ORDER",
+            "htag": "p",
+            "cl": "#222222",
+            "fs": 30,
+            "fsm": 21,
+            "ff": "ft2",
+            "fw": "600",
+            "lh": 1.2,
+            "mb": 15,
+            "mbm": 10
+          }
+        },
+        "text_8XCYbd": {
+          "type": "text",
+          "settings": {
+            "title": "<p>Join our email list for early access, restock updates and exclusive offers.</p>",
+            "hidem": true,
+            "cl": "#222222",
+            "fs": 15,
+            "fsm": 15,
+            "lh": 1.5,
+            "mb": 30,
+            "mbm": 20
+          }
+        },
+        "form_PRBYMb": {
+          "type": "form",
+          "settings": {
+            "cl": "#222222",
+            "bg": "#ffffff",
+            "bdr": "#eee9e4",
+            "btncl": "#ffffff",
+            "btnbg": "#979085",
+            "btnclh": "#ffffff",
+            "btnbgh": "#6eb69c",
+            "c_msg": "NO,THANK YOU",
+            "ccl": "#222222",
+            "mb": 25,
+            "mbm": 20
+          }
+        },
+        "social_cTzLi8": {
+          "type": "social",
+          "settings": {
+            "cl": "#222222",
+            "icn": 14,
+            "mb": 0,
+            "mbm": 0
+          }
+        }
+      },
+      "block_order": [
+        "heading_cTVj4f",
+        "text_8XCYbd",
+        "form_PRBYMb",
+        "social_cTzLi8"
+      ],
+      "disabled": true,
+      "settings": {
+        "seconds": 11,
+        "image": "shopify://shop_images/f1ea2c78-feea-4740-996c-2c23dc128e5a.png",
+        "hide_img": true,
+        "style": "st2",
+        "talign": "tc",
+        "bg": "#faf9f7",
+        "bgg": "",
+        "brad": 10,
+        "index": true,
+        "product": true,
+        "collection": false,
+        "article": false,
+        "blog": false,
+        "cart": false,
+        "page": false
+      }
+    },
+    "someone_purchased_f78FmY": {
+      "type": "someone-purchased",
+      "disabled": true,
+      "settings": {
+        "hide_mb": true,
+        "products": [
+          "10d-promade-lashes-acrylic-trays",
+          "10d-premade-lash-tray",
+          "3d-promade-lashes-acrylic-trays",
+          "3d-premade-lash-tray",
+          "4d-premade-lash-tray",
+          "4d-promade-lashes-acrylic-trays",
+          "5d-premade-lash-tray",
+          "6d-promade-lashes",
+          "6d-premade-lashes-acrylic-trays",
+          "easy-fans-acrylic-tray",
+          "flat-classic-20-row-lash-tray",
+          "bond-lash-adhesive",
+          "lume-curved-tweezers",
+          "lume-arched-tweezers",
+          "lume-lock-super-bonder",
+          "lume-isolate-tweezers",
+          "lume-straight-tweezers",
+          "lume-prep-primer",
+          "lume-melt-cream-remover",
+          "volume-fans-acrylic-tray",
+          "xl-3d-fans",
+          "xl-4d-fans",
+          "xl-6d-premade-lashes-acrylic-trays",
+          "xl-5d-fans",
+          "xl-10d-fans"
+        ],
+        "msg": "Someone purchased:",
+        "fake_time": true,
+        "time_msg": "Minutes Ago",
+        "location_msg": "From",
+        "location": "Brisbane QLD, Gold Coast QLD, Sunshine Coast QLD, Ipswich QLD, Toowoomba QLD, Sydney NSW, Melbourne VIC, Perth WA, Adelaide SA, Canberra ACT, Hobart TAS, Darwin NT, Auckland NZ, Wellington NZ, Christchurch NZ",
+        "delay": 15,
+        "display": 5,
+        "cl": "#222222",
+        "bg": "#ffffff",
+        "bd": "#cbc4bc",
+        "index": true,
+        "product": false,
+        "collection": false,
+        "article": false,
+        "blog": false,
+        "cart": false,
+        "page": false
+      }
+    }
+  },
+  "order": [
+    "mobile-toolbar",
+    "exit_intent_popup_96JaDD",
+    "newsletter_popup_JityNd",
+    "someone_purchased_f78FmY"
+  ]
+}

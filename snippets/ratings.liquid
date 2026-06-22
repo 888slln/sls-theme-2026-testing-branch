@@ -1,0 +1,22 @@
+{%- if settings.reviews == 'loox' -%}
+    <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+{%- elsif settings.reviews == 'trustoo' -%}
+    <div class="custom-vstar-rating-widget" product-id="{{ product.id }}"></div>
+{%- elsif settings.reviews == 'other' -%}
+    {{ settings.otherapp }}     
+              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+  {{ product.metafields.judgeme.badge }}
+</div>                              
+{%- endif -%}
+<style>
+.pr_review .loox-rating-label{ display:none;}
+.loox-rating-content .loox-rating-label{font-size:12px !important;}
+.pr_review .jdgm-prev-badge__stars,
+.pr_review .jdgm-star,
+.pr_review .jdgm-star:before {
+  color:#aca39a !important;
+}
+.pr_review .jdgm-prev-badge__text {
+  color:#222222 !important;
+}
+</style>

@@ -1,0 +1,11 @@
+{%- liquid
+  assign menu_link_title = title | split: '[' | first | strip
+  assign menu_link_color = blank
+  if title contains '[#'
+    assign menu_link_color_token = title | split: '[#' | last | split: ']' | first | strip | remove: ' '
+    if menu_link_color_token != blank
+      assign menu_link_color = menu_link_color_token | prepend: '#'
+    endif
+  endif
+-%}
+{%- if menu_link_color != blank -%}<span class="lume-menu-link-title" style="color:{{ menu_link_color }} !important;">{{ menu_link_title }}</span>{%- else -%}{{ menu_link_title }}{%- endif -%}

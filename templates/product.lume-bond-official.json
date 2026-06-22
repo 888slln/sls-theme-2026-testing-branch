@@ -1,0 +1,720 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "custom_css": [],
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": true
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "rating_TRwTmg": {
+          "type": "rating",
+          "settings": {
+            "bm": 0
+          }
+        },
+        "hr_Rd9RAB": {
+          "type": "hr",
+          "settings": {
+            "hrc": "#ffffff",
+            "bm": 10
+          }
+        },
+        "d3ad6ba3-0eeb-40b7-baa2-e58f0c1e9537": {
+          "type": "title",
+          "settings": {
+            "cl": "#222222",
+            "tff": "ft1",
+            "fs": 24,
+            "fsm": 20,
+            "fw": "400",
+            "lh": 1.3,
+            "tcase": "ttc",
+            "bm": 10
+          }
+        },
+        "fa9c66a2-d2aa-4d30-974e-61bb044bb59d": {
+          "type": "price",
+          "settings": {
+            "pcl": "#222222",
+            "pcls": "#222222",
+            "fs": 19,
+            "fsm": 17,
+            "pfw": "400",
+            "saved": true,
+            "bfs": 12,
+            "salet": "#ffffff",
+            "salebg": "#aca39a",
+            "fw": "fwr",
+            "brad": 30,
+            "tax_msg": false,
+            "ship_msg": false,
+            "bm": 20
+          }
+        },
+        "afterpay_on_site_messaging_payments_messaging_RNyPNM": {
+          "type": "shopify://apps/afterpay-on-site-messaging/blocks/payments-messaging/f45a5524-d177-4475-bf59-281efd2215a8",
+          "settings": {
+            "text_align": "left",
+            "margin_top": -14,
+            "margin_bottom": 10,
+            "color": "",
+            "size": "xs",
+            "intro_text": "or",
+            "show_interest_free": false,
+            "payment_amount_is_bold": true,
+            "show_with": true,
+            "logo_type": "compact-badge",
+            "logo_theme": "black-on-mint",
+            "modal_link_style": "circled-info-icon",
+            "modal_theme": "mint",
+            "breakpoint": 749,
+            "text_align_mobile": "left",
+            "margin_top_mobile": -14,
+            "margin_bottom_mobile": 10,
+            "show_lower_limit": true,
+            "show_upper_limit": true,
+            "show_if_outside_limits": true,
+            "product": "{{product}}"
+          }
+        },
+        "customc_YWVEG6": {
+          "type": "customc",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{%- assign lume_uid = section.id | default: product.id -%}\n\n<style>\n  .lume-proof-{{ lume_uid }}{\n    width:100%;\n    margin: 10px 0 14px;\n    padding: 0;\n    border: 0;\n    border-radius: 0;\n    background: transparent;\n  }\n\n  .lume-proof-{{ lume_uid }} .lume-proof__list{\n    list-style:none;\n    margin:0;\n    padding: 12px 14px;\n    border-radius: 14px;\n    background: #F5F5F5; /* soft luxe panel */\n    border: 1px solid rgba(134,126,115,.14);\n    display:flex;\n    flex-direction:column;\n    gap:8px;\n  }\n\n  .lume-proof-{{ lume_uid }} .lume-proof__item{\n    display:flex;\n    align-items:flex-start;\n    gap:10px;\n    color:#222222;\n    font-size: 12.5px;\n    line-height: 1.35;\n    letter-spacing: .15px;\n  }\n\n  .lume-proof-{{ lume_uid }} .lume-proof__dot{\n    width: 6px;\n    height: 6px;\n    margin-top: 7px;\n    border-radius: 999px;\n    background: #aca39a;\n    box-shadow: none;\n    opacity: .9;\n  }\n\n  .lume-proof-{{ lume_uid }} .lume-proof__text{\n    font-weight: 500;\n  }\n\n  @media (max-width: 749px){\n    .lume-proof-{{ lume_uid }} .lume-proof__list{ padding: 11px 12px; border-radius: 12px; }\n    .lume-proof-{{ lume_uid }} .lume-proof__item{ font-size: 12px; }\n  }\n</style>\n<div class=\"lume-proof-{{ lume_uid }}\" role=\"group\" aria-label=\"Product highlights\">\n  <ul class=\"lume-proof__list\">\n    <li class=\"lume-proof__item\">\n      <span class=\"lume-proof__dot\" aria-hidden=\"true\"></span>\n      <span class=\"lume-proof__text\">Ultra-Fast 0.5–1s Dry Time</span>\n    </li>\n    <li class=\"lume-proof__item\">\n      <span class=\"lume-proof__dot\" aria-hidden=\"true\"></span>\n      <span class=\"lume-proof__text\">Retention Up To 8 Weeks</span>\n    </li>\n    <li class=\"lume-proof__item\">\n      <span class=\"lume-proof__dot\" aria-hidden=\"true\"></span>\n      <span class=\"lume-proof__text\">Made For Serious Lash Artists</span>\n    </li>\n  </ul>\n</div>",
+            "bm": 15
+          }
+        },
+        "hr_YJ6Dxi": {
+          "type": "hr",
+          "settings": {
+            "hrc": "#f5f5f5",
+            "bm": 15
+          }
+        },
+        "d3f45ea4-ab08-46d0-ab08-3771d2eb15d3": {
+          "type": "order",
+          "disabled": true,
+          "settings": {
+            "icon": true,
+            "orders": 19,
+            "otime": 24,
+            "omsg": "[orders] sold in last [hours] hours",
+            "cl": "#c44a4a",
+            "bm": 25
+          }
+        },
+        "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c": {
+          "type": "countdown",
+          "disabled": true,
+          "settings": {
+            "cds": "box_timer",
+            "clbl": "The offer will last till",
+            "cl": "#222222",
+            "tcl": "#222222",
+            "bg": "#f5f5f5",
+            "border": "#eee9e4",
+            "fs": 20,
+            "tfs": 13,
+            "text_ttu": true,
+            "fw": "400",
+            "iscenter": false,
+            "brad": 5,
+            "bm": 20
+          }
+        },
+        "visitor_KGMfe8": {
+          "type": "visitor",
+          "disabled": true,
+          "settings": {
+            "visitors": 50,
+            "visitors_time": 5,
+            "visitors_msg": "[visitors] People looking for this product",
+            "cl": "#222222",
+            "bg": "#222222",
+            "ccl": "#ffffff",
+            "bm": 15
+          }
+        },
+        "variants_e43NdX": {
+          "type": "variants",
+          "settings": {
+            "sold": false,
+            "cltype": "ts",
+            "othervr": "sw",
+            "bm": 15
+          }
+        },
+        "ccd4e61d-1477-4664-bd33-351a9aa1ec00": {
+          "type": "inventory",
+          "disabled": true,
+          "settings": {
+            "qty_sel": true,
+            "qlbl": true,
+            "inv": false,
+            "maxqty": 5,
+            "fs": 10,
+            "fcase": false,
+            "font-style": "none",
+            "instock": "#007133",
+            "lstock": "#fda43c",
+            "ostock": "#c44a4a",
+            "anim": true,
+            "bm": 15
+          }
+        },
+        "f3aed949-c526-4cd5-affb-f209a0499d89": {
+          "type": "cta",
+          "settings": {
+            "gift_recipient": true,
+            "atc-style": "btn6",
+            "wishlist-btn": "btn5",
+            "ext-btn": "btn1",
+            "dynamic_btn": true,
+            "btnbg": "#aca39a",
+            "btntext": "#ffffff",
+            "btnbdr": "#aca39a",
+            "bis": true,
+            "bg": "#faf9f7",
+            "bd": "#eee9e4",
+            "bdr": 5,
+            "bm": 20
+          }
+        },
+        "pickup_fkpkwg": {
+          "type": "pickup",
+          "disabled": true,
+          "settings": {
+            "bm": 0,
+            "bg": "#ffffff",
+            "icon": "#222222",
+            "text": "#222222",
+            "brad": 0
+          }
+        },
+        "customc_Nhrbtn": {
+          "type": "customc",
+          "name": "Tab Slider",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<script>\n  const SLIDER_CONFIG = {\n    // --- COLORS & STYLE ---\n    slide_bg: \"#f5f5f5\",\n    slide_text: \"#222222\",\n    border_radius: \"0px\",\n\n    // --- FONT CUSTOMISATION ---\n    h_size: \"0.875rem\",  \n    h_weight: \"700\",     \n    h_spacing: \"0px\",    \n\n    p_size: \"0.875rem\",  \n    p_weight: \"300\",     \n    p_spacing: \"0px\",    \n\n    // --- AUTOMATED TEXT ---\n    Ships_Today_Heading: \"Ships Today\",\n    Ships_Today_Sub: \"Order within the next\", \n    Ships_Tomorrow_Heading: \"Ships Tomorrow\",\n    Ships_Tomorrow_Sub: \"Order now for priority dispatch\",\n    \n    Ships_Monday_Heading: \"Ships Monday\",\n    Ships_Monday_Sub: \"Secure your spot for Monday’s first dispatch\",\n    \n    Holiday_Heading: \"Public Holiday\",\n    Holiday_Sub: \"Shipping resumes next business day\",\n\n    // --- SHIPPING LOGIC ---\n    cutoff_hour: 14, // 2:00 PM\n    cutoff_minute: 30, // 30 Minutes\n    \n    // --- QLD PUBLIC HOLIDAYS ---\n    public_holidays: [\n      '2025-01-01', '2025-01-27', '2025-04-18', '2025-04-19', '2025-04-20', '2025-04-21',\n      '2025-04-25', '2025-05-05', '2025-08-13', '2025-10-06', '2025-12-25', '2025-12-26',\n      '2026-01-01', '2026-01-26', '2026-04-03', '2026-04-04', '2026-04-05', '2026-04-06',\n      '2026-04-25', '2026-05-04', '2026-08-12', '2026-10-05', '2026-12-25', '2026-12-26', '2026-12-28'\n    ],\n\n    test_mode: {\n      enabled: false, \n      date: \"2025-12-27T10:00:00\" \n    }\n  };\n</script>\n\n<div class=\"shipping-announcer-main\" id=\"announcer-box\">\n  <div class=\"announcer-content\" id=\"style-box\">\n    <h3 id=\"dyn-h\"></h3>\n    <p id=\"dyn-p\"></p>\n  </div>\n</div>\n\n<style>\n  .shipping-announcer-main { \n    max-width: 100%; \n    margin: 10px 0; \n    overflow: hidden; \n    position: relative; \n    font-family: inherit; \n  }\n  .announcer-content { \n    padding: 25px 20px; \n    text-align: center; \n    box-sizing: border-box; \n  }\n  \n  .announcer-content h3 { \n    margin: 0 0 5px 0 !important; \n    color: inherit; \n    line-height: 1.2 !important;\n  }\n  .announcer-content p { \n    margin: 0 !important; \n    color: inherit; \n    line-height: 1.4 !important;\n  }\n</style>\n\n<script>\n  (function() {\n    const c = SLIDER_CONFIG;\n    const h = document.getElementById('dyn-h');\n    const p = document.getElementById('dyn-p');\n    const box = document.getElementById('style-box');\n    const wrapper = document.getElementById('announcer-box');\n\n    const update = () => {\n      const now = c.test_mode.enabled ? new Date(c.test_mode.date) : new Date();\n      \n      // Get Brisbane Time\n      const qParts = new Intl.DateTimeFormat('en-CA', {\n        timeZone: 'Australia/Brisbane', \n        year:'numeric', month:'2-digit', day:'2-digit', \n        hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false\n      }).formatToParts(now);\n      \n      const q = {}; qParts.forEach(({type, value}) => q[type] = value);\n      const brisNow = new Date(now.toLocaleString(\"en-US\", {timeZone: \"Australia/Brisbane\"}));\n      \n      const dStr = `${q.year}-${q.month}-${q.day}`;\n      const hr = parseInt(q.hour);\n      const min = parseInt(q.minute);\n      const day = brisNow.getDay(); \n      \n      const isPastCutoff = (hr > c.cutoff_hour || (hr === c.cutoff_hour && min >= c.cutoff_minute));\n\n      // 1. Weekend Logic\n      if (day === 0 || day === 6 || (day === 5 && isPastCutoff)) {\n        h.innerText = c.Ships_Monday_Heading; \n        p.innerText = c.Ships_Monday_Sub;\n      } \n      // 2. Public Holiday\n      else if (c.public_holidays.includes(dStr)) {\n        h.innerText = c.Holiday_Heading; \n        p.innerText = c.Holiday_Sub;\n      } \n      // 3. After Cutoff Weekday\n      else if (isPastCutoff) {\n        h.innerText = c.Ships_Tomorrow_Heading; \n        p.innerText = c.Ships_Tomorrow_Sub;\n      } \n      // 4. Countdown\n      else {\n        h.innerText = c.Ships_Today_Heading;\n        const target = new Date(brisNow);\n        target.setHours(c.cutoff_hour, c.cutoff_minute, 0, 0);\n        const diff = target - brisNow;\n        const hh = Math.floor(diff/36e5), mm = Math.floor((diff%36e5)/6e4), ss = Math.floor((diff%6e4)/1e3);\n        p.innerHTML = `${c.Ships_Today_Sub} <strong style=\"font-weight:600\">${hh}h ${mm}m ${ss}s</strong>`;\n      }\n    };\n\n    // Apply Styles\n    h.style.fontSize = c.h_size; h.style.fontWeight = c.h_weight; h.style.letterSpacing = c.h_spacing;\n    p.style.fontSize = c.p_size; p.style.fontWeight = c.p_weight; p.style.letterSpacing = c.p_spacing;\n    \n    Object.assign(box.style, { background: c.slide_bg, color: c.slide_text });\n    wrapper.style.borderRadius = c.border_radius;\n\n    setInterval(update, 1000); \n    update();\n  })();\n</script>",
+            "bm": 15
+          }
+        },
+        "customc_fhTeiX": {
+          "type": "customc",
+          "name": "shipping and pickup",
+          "settings": {
+            "custom_liquid": "{%- assign lume_uid = section.id | default: product.id -%}\n{%- assign current_variant = product.selected_or_first_available_variant -%}\n{%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}\n\n<div class=\"lume-fulfilment\" id=\"lume-fulfilment-{{ lume_uid }}\">\n\n  <!-- DELIVERY -->\n  <div class=\"lume-row\">\n    <div class=\"lume-label\">Delivery</div>\n\n    <div class=\"lume-body\">\n      <div class=\"lume-primary\">\n        <span id=\"ship-title-{{ lume_uid }}\">Ships Today</span>\n      </div>\n\n      <div class=\"lume-secondary\">\n        <span id=\"ship-sub-{{ lume_uid }}\">Order within the next</span>\n        <span class=\"lume-timer\" id=\"ship-timer-{{ lume_uid }}\"></span>\n      </div>\n    </div>\n\n    <div class=\"lume-meta\"></div>\n  </div>\n\n  <!-- IN STORE -->\n  <div class=\"lume-row\">\n    <div class=\"lume-label\">In store</div>\n\n    <div class=\"lume-body\">\n      <pickup-availability\n        class=\"product__pickup-availabilities lume-pickup\"\n        {% if current_variant.available and pick_up_availabilities.size > 0 %}available{% endif %}\n        data-root-url=\"{{ routes.root_url }}\"\n        data-variant-id=\"{{ current_variant.id }}\"\n        data-has-only-default-variant=\"{{ product.has_only_default_variant }}\"\n      >\n        <template>\n          <pickup-availability-preview class=\"pickup-availability-preview\">\n            <span class=\"svg-wrapper\">{{- 'icon-unavailable.svg' | inline_asset_content -}}</span>\n            <div class=\"pickup-availability-info\">\n              <p class=\"caption-large\">{{ 'products.pickup_availability.unavailable' | t }}</p>\n              <button class=\"pickup-availability-button\">\n                {{ 'products.pickup_availability.refresh' | t }}\n              </button>\n            </div>\n          </pickup-availability-preview>\n        </template>\n      </pickup-availability>\n    </div>\n\n    <div class=\"lume-meta\"></div>\n  </div>\n\n</div>\n\n<script>\n(function(){\n  if (window.__lumePickupLoaded) return;\n  window.__lumePickupLoaded = true;\n  var s = document.createElement('script');\n  s.src = \"{{ 'pickup-availability.js' | asset_url }}\";\n  s.defer = true;\n  document.head.appendChild(s);\n})();\n</script>\n\n<style>\n/* ================= CONTAINER ================= */\n#lume-fulfilment-{{ lume_uid }}{\n  background:#FFFFFF;\n  border-radius:10px;\n  border:1px solid rgba(203,196,188,0.55);\n  box-shadow:\n    0 0 0 1px rgba(255,255,255,0.6) inset,\n    0 6px 20px rgba(203,196,188,0.15);\n  animation: lumeFadeUp .35s ease-out both;\n}\n\n/* ================= ROW ================= */\n#lume-fulfilment-{{ lume_uid }} .lume-row{\n  display:grid;\n  grid-template-columns: 88px 1fr auto;\n  gap:12px;\n  padding:16px 18px;\n  align-items:start;\n  position:relative;\n}\n\n/* Beige divider */\n#lume-fulfilment-{{ lume_uid }} .lume-row + .lume-row::before{\n  content:\"\";\n  position:absolute;\n  top:0;\n  left:18px;\n  right:18px;\n  height:1px;\n  background:rgba(203,196,188,0.45);\n}\n\n/* ================= TYPOGRAPHY ================= */\n#lume-fulfilment-{{ lume_uid }} .lume-label{\n  font-size:12px;\n  font-weight:500;\n  color:#867E73;\n  padding-top:2px;\n}\n\n#lume-fulfilment-{{ lume_uid }} .lume-primary{\n  font-size:13px;\n  font-weight:600;\n  color:#222222;\n  line-height:1.35;\n}\n\n#lume-fulfilment-{{ lume_uid }} .lume-secondary{\n  margin-top:6px;\n  font-size:13px;\n  font-weight:400;\n  color:#222222;\n  display:flex;\n  flex-wrap:wrap;\n  gap:8px;\n  align-items:center;\n}\n\n/* Countdown (no border, subtle highlight) */\n#lume-fulfilment-{{ lume_uid }} .lume-timer strong{\n  font-weight:600;\n  font-size:13px;\n  color:#222222;\n  background:rgba(203,196,188,0.18);\n  padding:2px 8px;\n  border-radius:6px;\n  letter-spacing:0.2px;\n  display:inline-block;\n}\n\n/* ================= PICKUP CLEANUP ================= */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .svg-wrapper{ display:none !important; }\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-preview{ padding:0 !important; }\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-info{ margin:0 !important; }\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-info p{\n  font-size:13px;\n  font-weight:600;\n  color:#222222;\n  margin:0;\n}\n\n/* ================= ANIMATED UNDERLINE LINK ================= */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button{\n  margin-top:6px;\n  font-size:12px;\n  font-weight:400;\n  color:#867E73;\n  position:relative;\n  padding-bottom:2px;\n  background:none;\n  border:0;\n  cursor:pointer;\n  transition: color .2s ease;\n}\n\n/* Animated underline */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button::before{\n  content:\"\";\n  position:absolute;\n  left:0;\n  bottom:0;\n  width:0%;\n  height:1px;\n  background:#867E73;\n  transition: width .25s ease;\n}\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button:hover::before{\n  width:100%;\n}\n\n/* Arrow */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button::after{\n  content:\"→\";\n  font-size:12px;\n  margin-left:6px;\n  opacity:.6;\n  display:inline-block;\n  transform:translateX(0);\n  transition: transform .2s ease, opacity .2s ease;\n}\n\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button:hover{\n  color:#222222;\n}\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button:hover::after{\n  transform:translateX(3px);\n  opacity:.85;\n}\n\n/* ================= ANIMATION ================= */\n@keyframes lumeFadeUp{\n  from{ opacity:0; transform: translateY(4px); }\n  to{ opacity:1; transform: translateY(0); }\n}\n\n/* ================= MOBILE ================= */\n@media (max-width: 749px){\n  #lume-fulfilment-{{ lume_uid }} .lume-row{\n    grid-template-columns:1fr;\n    gap:8px;\n    padding:16px 16px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-row + .lume-row::before{\n    left:16px;\n    right:16px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-label{\n    padding-top:0;\n    font-size:11px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-secondary{\n    margin-top:4px;\n    font-size:13px;\n    gap:8px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-timer strong{\n    font-size:13px;\n    padding:2px 8px;\n  }\n}\n</style>\n\n<script>\n(function(){\n  const uid = \"{{ lume_uid }}\";\n  const titleEl = document.getElementById(\"ship-title-\" + uid);\n  const subEl   = document.getElementById(\"ship-sub-\" + uid);\n  const timerEl = document.getElementById(\"ship-timer-\" + uid);\n  if (!titleEl || !subEl || !timerEl) return;\n\n  /* =========================\n        TEST MODE\n     =========================\n     enabled: true  -> uses values below (Brisbane time)\n     enabled: true -> uses real Brisbane time\n\n     month: 1–12\n     hour:  0–23\n\n     Examples:\n     - Before cutoff: hour 10\n     - After cutoff:  hour 15\n     - Sunday:        set a date that is Sunday\n     - Public holiday:set month/day to a holiday date\n  */\n  const TEST_MODE = {\n    enabled: false,  // ← turn on to test\n\n    year: 2026,\n    month: 2,\n    day: 25,\n    hour: 14,\n    minute: 0,\n    second: 0\n  };\n\n  const cutoffHour = 14;\n  const cutoffMinute = 30;\n\n  const publicHolidays = new Set([\n    '2025-01-01','2025-01-27','2025-04-18','2025-04-19','2025-04-20','2025-04-21',\n    '2025-04-25','2025-05-05','2025-08-13','2025-10-06','2025-12-25','2025-12-26',\n    '2026-01-01','2026-01-26','2026-04-03','2026-04-04','2026-04-05','2026-04-06',\n    '2026-04-25','2026-05-04','2026-08-12','2026-10-05','2026-12-25','2026-12-26','2026-12-28'\n  ]);\n\n  function getBrisbaneNow(){\n    if (TEST_MODE.enabled) {\n      // Month is 0–11 in JS Dates\n      return new Date(\n        TEST_MODE.year,\n        TEST_MODE.month - 1,\n        TEST_MODE.day,\n        TEST_MODE.hour,\n        TEST_MODE.minute,\n        TEST_MODE.second\n      );\n    }\n    return new Date(new Date().toLocaleString(\"en-US\", { timeZone:\"Australia/Brisbane\" }));\n  }\n\n  function yyyyMmDd(d){\n    const yyyy = d.getFullYear();\n    const mm = String(d.getMonth()+1).padStart(2,'0');\n    const dd = String(d.getDate()).padStart(2,'0');\n    return `${yyyy}-${mm}-${dd}`;\n  }\n\n  const update = () => {\n    const brisNow = getBrisbaneNow();\n    const dStr = yyyyMmDd(brisNow);\n\n    const hr = brisNow.getHours();\n    const min = brisNow.getMinutes();\n    const day = brisNow.getDay();\n\n    const isPastCutoff = (hr > cutoffHour || (hr === cutoffHour && min >= cutoffMinute));\n\n    if (publicHolidays.has(dStr)) {\n      titleEl.textContent = \"Public Holiday\";\n      subEl.textContent = \"Shipping resumes next business day\";\n      timerEl.innerHTML = \"\";\n      return;\n    }\n\n    if (day === 0 || day === 6 || (day === 5 && isPastCutoff)) {\n      titleEl.textContent = \"Ships Monday\";\n      subEl.textContent = \"Secure your spot for Monday’s first dispatch\";\n      timerEl.innerHTML = \"\";\n      return;\n    }\n\n    if (isPastCutoff) {\n      titleEl.textContent = \"Ships Tomorrow\";\n      subEl.textContent = \"Order now for priority dispatch\";\n      timerEl.innerHTML = \"\";\n      return;\n    }\n\n    titleEl.textContent = \"Ships Today\";\n    subEl.textContent = \"Order within the next\";\n\n    const target = new Date(brisNow);\n    target.setHours(cutoffHour, cutoffMinute, 0, 0);\n\n    const diff = Math.max(0, target - brisNow);\n    const hh = Math.floor(diff/36e5);\n    const mm = Math.floor((diff%36e5)/6e4);\n    const ss = Math.floor((diff%6e4)/1e3);\n\n    timerEl.innerHTML = `<strong>${hh}h ${mm}m ${ss}s</strong>`;\n  };\n\n  update();\n  setInterval(update, 1000);\n})();\n</script>",
+            "bm": 15
+          }
+        },
+        "shortdes_QbJDAK": {
+          "type": "shortdes",
+          "settings": {
+            "des_type": "fulld",
+            "bm": 20
+          }
+        },
+        "hr_zDHmMw": {
+          "type": "hr",
+          "disabled": true,
+          "settings": {
+            "hrc": "#eee9e4",
+            "bm": 25
+          }
+        },
+        "coltabs_mhn6Wn": {
+          "type": "coltabs",
+          "disabled": true,
+          "settings": {
+            "icon": "none",
+            "title": "Details",
+            "tfs": 14,
+            "fw": "600",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#f5f5f5",
+            "opt": "des",
+            "richtxt": "<p>This tab is a useful tool that allows store to display different product details for each individual product. This feature provides a more comprehensive and tailored approach as it enables companies to showcase specific information related to their products</p>",
+            "tbopen": true,
+            "bm": 0
+          }
+        },
+        "coltabs_dCjG9y": {
+          "type": "coltabs",
+          "settings": {
+            "icon": "truck",
+            "title": "Shipping & Returns",
+            "tfs": 13,
+            "fw": "500",
+            "tbdr": true,
+            "bbdr": false,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "<p><strong>Standard Shipping (Parcel Post)</strong><br/>$10 AUD or FREE on orders over $150<br/>Estimated delivery: 4–6 business day</p><p><strong>Express Shipping</strong><br/>$15 AUD or FREE on orders over $250<br/>Estimated delivery: 2–4 business days</p><p><strong>Same-Day Dispatch</strong><br/>Place your order before <strong>2:30pm AEST, Monday–Friday</strong> for same-day dispatch.<br/><br/>Orders placed after this time will be dispatched the next business day.</p><p>Please note: Orders are not dispatched on weekends or Australian public holidays.</p><p>Delivery timeframes are estimates provided by the carrier and may vary during peak periods or promotional events.</p><p><strong>RETURNS & SUPPORT<br/></strong>Please refer to our <a href=\"/policies/refund-policy\" title=\"Refund Policy\">Refund & Returns Policy</a> for full details on returns, store credits, and faulty items.</p><p><strong>Questions or feedback?</strong><br/>We’re here for you, babe!<br/>Reach out anytime at <a href=\"mailto:studiolumesupplies@gmail.com\" title=\"mailto:studiolumesupplies@gmail.com\">studiolumesupplies@gmail.com</a></p>",
+            "tbopen": false,
+            "bm": 0
+          }
+        },
+        "coltabs_LzJ9C9": {
+          "type": "coltabs",
+          "settings": {
+            "icon": "info",
+            "title": "Professional Use Only",
+            "tfs": 13,
+            "fw": "500",
+            "tbdr": true,
+            "bbdr": true,
+            "bdrcl": "#eee9e4",
+            "opt": "txt",
+            "richtxt": "<p>This product is designed for trained lash artists and is not suitable for at-home use. Please ensure you are fully qualified before purchasing and always follow the provided instructions for safe, correct application.</p>",
+            "tbopen": false,
+            "bm": 15
+          }
+        },
+        "addons_3DKyxX": {
+          "type": "addons",
+          "settings": {
+            "askpr": true,
+            "isdr": false,
+            "page": "delivery-returns",
+            "share": true,
+            "cl": "#222222",
+            "clh": "#222222",
+            "fs": 13,
+            "fw": "400",
+            "bm": 15
+          }
+        },
+        "68994def-e552-45b0-bd90-20cf81d0255c": {
+          "type": "freeship",
+          "disabled": true,
+          "settings": {
+            "bm": 15
+          }
+        },
+        "72e2acab-2fcd-4a7a-8088-123a653bf7f5": {
+          "type": "shiptime",
+          "disabled": true,
+          "settings": {
+            "shipmsg_ico": true,
+            "estimate_ship": "2/7",
+            "estimate_shipping_msg": "Estimated delivery time : [startdate] - [enddate].",
+            "bm": 30
+          }
+        },
+        "complementary_PwPWxA": {
+          "type": "complementary",
+          "disabled": true,
+          "settings": {
+            "title": "Complete the look",
+            "cl": "#222222",
+            "fs": 18,
+            "fsm": 16,
+            "fw": "600",
+            "limit": 3,
+            "grid": 3,
+            "gridtb": 3,
+            "gridmb": 2,
+            "bm": 15,
+            "loop": true,
+            "autoplay": true,
+            "speed": 5,
+            "arrow": true,
+            "arrowm": false,
+            "dot": false,
+            "dotm": true
+          }
+        },
+        "img_Vgftba": {
+          "type": "img",
+          "disabled": true,
+          "settings": {
+            "title": "Guarantee Safe Checkout",
+            "imgwd": 320,
+            "img_align": true,
+            "cl": "#222222",
+            "add_bg": true,
+            "bg": "#f5f5f5",
+            "brad": 8,
+            "pimg_url": "",
+            "bm": 20
+          }
+        }
+      },
+      "block_order": [
+        "rating_TRwTmg",
+        "hr_Rd9RAB",
+        "d3ad6ba3-0eeb-40b7-baa2-e58f0c1e9537",
+        "fa9c66a2-d2aa-4d30-974e-61bb044bb59d",
+        "afterpay_on_site_messaging_payments_messaging_RNyPNM",
+        "customc_YWVEG6",
+        "hr_YJ6Dxi",
+        "d3f45ea4-ab08-46d0-ab08-3771d2eb15d3",
+        "f1d46c9f-2b72-405e-a1e8-4bfab6ac6a8c",
+        "visitor_KGMfe8",
+        "variants_e43NdX",
+        "ccd4e61d-1477-4664-bd33-351a9aa1ec00",
+        "f3aed949-c526-4cd5-affb-f209a0499d89",
+        "pickup_fkpkwg",
+        "customc_Nhrbtn",
+        "customc_fhTeiX",
+        "shortdes_QbJDAK",
+        "hr_zDHmMw",
+        "coltabs_mhn6Wn",
+        "coltabs_dCjG9y",
+        "coltabs_LzJ9C9",
+        "addons_3DKyxX",
+        "68994def-e552-45b0-bd90-20cf81d0255c",
+        "72e2acab-2fcd-4a7a-8088-123a653bf7f5",
+        "complementary_PwPWxA",
+        "img_Vgftba"
+      ],
+      "custom_css": [],
+      "settings": {
+        "image-col": "lg",
+        "prstyle": "1",
+        "prthumbs": "left",
+        "play_ico": "#ffffff",
+        "thumb_bdr": "#222222",
+        "przoom": true,
+        "prlightbox": true,
+        "arrow_mobile": false,
+        "sprnav": false,
+        "sprnavm": false,
+        "scart": true,
+        "cl_bg": "#ffffff",
+        "cl_txt": "#222222",
+        "qty_bdr": "#cbc4bc",
+        "btn-sticky": "btn6",
+        "page_width": 1400,
+        "sst": 0,
+        "ssb": 15,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "#ffffff",
+        "sw": false
+      }
+    },
+    "quick_order_list_erKtgp": {
+      "type": "quick-order-list",
+      "disabled": true,
+      "settings": {
+        "show_image": true,
+        "show_sku": true,
+        "page_width": 1200,
+        "cbg": "#f5f5f5",
+        "border": "#eee9e4",
+        "brad": 15,
+        "btn-viewcart": "btn1",
+        "btn-remove": "btn2",
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 40,
+        "ssb": 40,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "upsell": {
+      "type": "upsell-bundle",
+      "disabled": true,
+      "settings": {
+        "title": "Frequently Bought Together",
+        "subtitle": "",
+        "products": [],
+        "sw": false,
+        "bg": "#faf9f7",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 60,
+        "ssb": 60,
+        "sstm": 30,
+        "ssbm": 30,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "tabs": {
+      "type": "product-tabs",
+      "blocks": {
+        "612c9c15-e72e-45af-8f23-6e5da8137791": {
+          "type": "desc",
+          "settings": {
+            "title": "Product Details"
+          }
+        },
+        "spec_qLrJqk": {
+          "type": "spec",
+          "settings": {
+            "title": "Specifications",
+            "content": "",
+            "style": "2",
+            "grid": 4,
+            "tgrid": 3,
+            "mgrid": 2,
+            "bdr": "#f5f5f5"
+          }
+        },
+        "review_gFFTDF": {
+          "type": "review",
+          "disabled": true,
+          "settings": {
+            "title": "Reviews"
+          }
+        },
+        "faq_9jQ4EE": {
+          "type": "faq",
+          "settings": {
+            "title": "FAQ's",
+            "qcl": "#222222",
+            "qfs": 15,
+            "qfsm": 14,
+            "qfw": "400",
+            "bdr": "#eee9e4"
+          }
+        },
+        "extra_YG9Qf4": {
+          "type": "extra",
+          "settings": {
+            "title": "Shipping & Returns",
+            "content": "<h5><strong>DELIVERY</strong></h5><ul><li>Dispatch: Within 24 Hours</li><li>Free shipping across all products on a minimum purchase of $50.</li><li>International delivery time - 7-10 business days</li><li>Cash on delivery might be available</li><li>Easy 30 days returns and exchanges</li></ul><h5><strong>RETURNS</strong></h5><p>If you do not like the product you can return it within 15 days - no questions asked. This excludes bodysuits, swimwear and clearance sale items. <br/>We have an easy and hassle free return policy. Please look at our Delivery & Returns section for further information.</p>",
+            "liquid": ""
+          }
+        },
+        "extra_3Hp4gw": {
+          "type": "extra",
+          "disabled": true,
+          "settings": {
+            "title": "Custom Tab",
+            "content": "<p>This tab is a useful tool that allows store to display different product details for each individual product. This feature provides a more comprehensive and tailored approach as it enables companies to showcase specific information related to their products. </p><p>It is an excellent way to provide customers with in-depth details such as ingredients, materials used, dimensions, and other specifications that are unique to each product. By using the product custom tab, businesses can ensure transparency and accuracy in providing product information, which builds trust and credibility among consumers. This feature also gives customers the opportunity to make informed decisions based on their preferences and needs.</p>",
+            "liquid": ""
+          }
+        }
+      },
+      "block_order": [
+        "612c9c15-e72e-45af-8f23-6e5da8137791",
+        "spec_qLrJqk",
+        "review_gFFTDF",
+        "faq_9jQ4EE",
+        "extra_YG9Qf4",
+        "extra_3Hp4gw"
+      ],
+      "disabled": true,
+      "settings": {
+        "tab_style": "1",
+        "acc": true,
+        "tab_align": "center",
+        "tfs": 14,
+        "tfsm": 14,
+        "tff": "ft2",
+        "tfw": "500",
+        "cl": "#222222",
+        "cla": "#ffffff",
+        "tbg": "rgba(0,0,0,0)",
+        "tbga": "#222222",
+        "bdr": "#eee9e4",
+        "bdra": "#222222",
+        "bdrr": 30,
+        "sw": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 20,
+        "ssb": 40,
+        "sstm": 20,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "devider_ywr3VC": {
+      "type": "devider",
+      "name": "Devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#eee9e4",
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 20,
+        "ssb": 20,
+        "sstm": 10,
+        "ssbm": 10,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "1766244928f8978603": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_tfwyL7": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_tfwyL7"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "devider_yN9fQG": {
+      "type": "devider",
+      "name": "Devider",
+      "settings": {
+        "isbdr": true,
+        "lns": "solid",
+        "lht": 1,
+        "bdr": "#eee9e4",
+        "sw": false,
+        "npd": true,
+        "bg": "#ffffff",
+        "bgg": "",
+        "sst": 20,
+        "ssb": 20,
+        "sstm": 10,
+        "ssbm": 10,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "title": "Related Products",
+        "subtitle": "",
+        "type": "1",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "limit": 5,
+        "carousel": true,
+        "loop": false,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 25,
+        "ssb": 25,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "recommanded": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "title": "Recommended Products",
+        "subtitle": "",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "limit": 7,
+        "carousel": true,
+        "loop": true,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": false,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 30,
+        "ssb": 30,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "recentviewed": {
+      "type": "recently-viewed",
+      "disabled": true,
+      "settings": {
+        "title": "Recently Viewed Products",
+        "subtitle": "",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "row": 6,
+        "carousel": true,
+        "loop": true,
+        "autoplay": true,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 30,
+        "ssb": 40,
+        "sstm": 15,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "quick_order_list_erKtgp",
+    "upsell",
+    "tabs",
+    "devider_ywr3VC",
+    "1766244928f8978603",
+    "devider_yN9fQG",
+    "related",
+    "recommanded",
+    "recentviewed"
+  ]
+}

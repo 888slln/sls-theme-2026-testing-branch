@@ -1,0 +1,289 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "custom_css": [],
+      "settings": {
+        "sw": false,
+        "hidemb": false,
+        "tc": true
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "rating_CDEKHx": {
+          "type": "rating",
+          "settings": {
+            "bm": 20
+          }
+        },
+        "title_XVWgDL": {
+          "type": "title",
+          "settings": {
+            "cl": "#222222",
+            "tff": "ft2",
+            "fs": 22,
+            "fsm": 16,
+            "fw": "600",
+            "lh": 1.5,
+            "tcase": "none",
+            "bm": 20
+          }
+        },
+        "shortdes_9grwGB": {
+          "type": "shortdes",
+          "settings": {
+            "des_type": "shortd",
+            "bm": 20
+          }
+        },
+        "price_QHMBD3": {
+          "type": "price",
+          "settings": {
+            "pcl": "#222222",
+            "pcls": "#c44a4a",
+            "fs": 25,
+            "fsm": 16,
+            "pfw": "600",
+            "saved": true,
+            "bfs": 12,
+            "salet": "#ffffff",
+            "salebg": "#c44a4a",
+            "fw": "fwm",
+            "brad": 1,
+            "tax_msg": false,
+            "ship_msg": false,
+            "bm": 20
+          }
+        },
+        "afterpay_on_site_messaging_payments_messaging_8cifj9": {
+          "type": "shopify://apps/afterpay-on-site-messaging/blocks/payments-messaging/f45a5524-d177-4475-bf59-281efd2215a8",
+          "settings": {
+            "text_align": "inherit",
+            "margin_top": 16,
+            "margin_bottom": 16,
+            "color": "",
+            "size": "md",
+            "intro_text": "or",
+            "show_interest_free": true,
+            "payment_amount_is_bold": true,
+            "show_with": true,
+            "logo_type": "badge",
+            "logo_theme": "black-on-mint",
+            "modal_link_style": "circled-info-icon",
+            "modal_theme": "mint",
+            "breakpoint": 749,
+            "text_align_mobile": "inherit",
+            "margin_top_mobile": 16,
+            "margin_bottom_mobile": 16,
+            "show_lower_limit": true,
+            "show_upper_limit": true,
+            "show_if_outside_limits": true,
+            "product": "{{product}}"
+          }
+        },
+        "text_P3wVmt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Ultra-fast 0.5–1s dry time. Up to 8 weeks retention.</p>",
+            "cl": "#222222",
+            "fs": 14,
+            "fsm": 14,
+            "bm": 20
+          }
+        },
+        "variants_Q6mDCg": {
+          "type": "variants",
+          "settings": {
+            "sold": false,
+            "cltype": "ts",
+            "othervr": "sw",
+            "bm": 15
+          }
+        },
+        "cta_KwqPVC": {
+          "type": "cta",
+          "settings": {
+            "gift_recipient": false,
+            "atc-style": "btn1",
+            "wishlist-btn": "btn1",
+            "ext-btn": "btn1",
+            "dynamic_btn": true,
+            "btnbg": "#c44a4a",
+            "btntext": "#ffffff",
+            "btnbdr": "#c44a4a",
+            "bis": true,
+            "bg": "#faf9f7",
+            "bd": "#eee9e4",
+            "bdr": 0,
+            "bm": 15
+          }
+        },
+        "customc_A4GPd6": {
+          "type": "customc",
+          "settings": {
+            "custom_liquid": "{%- assign lume_uid = section.id | default: product.id -%}\n{%- assign current_variant = product.selected_or_first_available_variant -%}\n{%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}\n\n<div class=\"lume-fulfilment\" id=\"lume-fulfilment-{{ lume_uid }}\">\n\n  <!-- DELIVERY -->\n  <div class=\"lume-row\">\n    <div class=\"lume-label\">Delivery</div>\n\n    <div class=\"lume-body\">\n      <div class=\"lume-primary\">\n        <span id=\"ship-title-{{ lume_uid }}\">Ships Today</span>\n      </div>\n\n      <div class=\"lume-secondary\">\n        <span id=\"ship-sub-{{ lume_uid }}\">Order within the next</span>\n        <span class=\"lume-timer\" id=\"ship-timer-{{ lume_uid }}\"></span>\n      </div>\n    </div>\n\n    <div class=\"lume-meta\"></div>\n  </div>\n\n  <!-- IN STORE -->\n  <div class=\"lume-row\">\n    <div class=\"lume-label\">In store</div>\n\n    <div class=\"lume-body\">\n      <pickup-availability\n        class=\"product__pickup-availabilities lume-pickup\"\n        {% if current_variant.available and pick_up_availabilities.size > 0 %}available{% endif %}\n        data-root-url=\"{{ routes.root_url }}\"\n        data-variant-id=\"{{ current_variant.id }}\"\n        data-has-only-default-variant=\"{{ product.has_only_default_variant }}\"\n      >\n        <template>\n          <pickup-availability-preview class=\"pickup-availability-preview\">\n            <span class=\"svg-wrapper\">{{- 'icon-unavailable.svg' | inline_asset_content -}}</span>\n            <div class=\"pickup-availability-info\">\n              <p class=\"caption-large\">{{ 'products.pickup_availability.unavailable' | t }}</p>\n              <button class=\"pickup-availability-button\">\n                {{ 'products.pickup_availability.refresh' | t }}\n              </button>\n            </div>\n          </pickup-availability-preview>\n        </template>\n      </pickup-availability>\n    </div>\n\n    <div class=\"lume-meta\"></div>\n  </div>\n\n</div>\n\n<script>\n(function(){\n  if (window.__lumePickupLoaded) return;\n  window.__lumePickupLoaded = true;\n  var s = document.createElement('script');\n  s.src = \"{{ 'pickup-availability.js' | asset_url }}\";\n  s.defer = true;\n  document.head.appendChild(s);\n})();\n</script>\n\n<style>\n/* ================= CONTAINER ================= */\n#lume-fulfilment-{{ lume_uid }}{\n  background:#FFFFFF;\n  border-radius:10px;\n  border:1px solid rgba(203,196,188,0.55);\n  box-shadow:\n    0 0 0 1px rgba(255,255,255,0.6) inset,\n    0 6px 20px rgba(203,196,188,0.15);\n  animation: lumeFadeUp .35s ease-out both;\n}\n\n/* ================= ROW ================= */\n#lume-fulfilment-{{ lume_uid }} .lume-row{\n  display:grid;\n  grid-template-columns: 88px 1fr auto;\n  gap:12px;\n  padding:16px 18px;\n  align-items:start;\n  position:relative;\n}\n\n/* Beige divider */\n#lume-fulfilment-{{ lume_uid }} .lume-row + .lume-row::before{\n  content:\"\";\n  position:absolute;\n  top:0;\n  left:18px;\n  right:18px;\n  height:1px;\n  background:rgba(203,196,188,0.45);\n}\n\n/* ================= TYPOGRAPHY ================= */\n#lume-fulfilment-{{ lume_uid }} .lume-label{\n  font-size:12px;\n  font-weight:500;\n  color:#867E73;\n  padding-top:2px;\n}\n\n#lume-fulfilment-{{ lume_uid }} .lume-primary{\n  font-size:13px;\n  font-weight:600;\n  color:#222222;\n  line-height:1.35;\n}\n\n#lume-fulfilment-{{ lume_uid }} .lume-secondary{\n  margin-top:6px;\n  font-size:13px;\n  font-weight:400;\n  color:#222222;\n  display:flex;\n  flex-wrap:wrap;\n  gap:8px;\n  align-items:center;\n}\n\n/* Countdown (no border, subtle highlight) */\n#lume-fulfilment-{{ lume_uid }} .lume-timer strong{\n  font-weight:600;\n  font-size:13px;\n  color:#222222;\n  background:rgba(203,196,188,0.18);\n  padding:2px 8px;\n  border-radius:6px;\n  letter-spacing:0.2px;\n  display:inline-block;\n}\n\n/* ================= PICKUP CLEANUP ================= */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .svg-wrapper{ display:none !important; }\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-preview{ padding:0 !important; }\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-info{ margin:0 !important; }\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-info p{\n  font-size:13px;\n  font-weight:600;\n  color:#222222;\n  margin:0;\n}\n\n/* ================= ANIMATED UNDERLINE LINK ================= */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button{\n  margin-top:6px;\n  font-size:12px;\n  font-weight:400;\n  color:#867E73;\n  position:relative;\n  padding-bottom:2px;\n  background:none;\n  border:0;\n  cursor:pointer;\n  transition: color .2s ease;\n}\n\n/* Animated underline */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button::before{\n  content:\"\";\n  position:absolute;\n  left:0;\n  bottom:0;\n  width:0%;\n  height:1px;\n  background:#867E73;\n  transition: width .25s ease;\n}\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button:hover::before{\n  width:100%;\n}\n\n/* Arrow */\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button::after{\n  content:\"→\";\n  font-size:12px;\n  margin-left:6px;\n  opacity:.6;\n  display:inline-block;\n  transform:translateX(0);\n  transition: transform .2s ease, opacity .2s ease;\n}\n\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button:hover{\n  color:#222222;\n}\n#lume-fulfilment-{{ lume_uid }} pickup-availability .pickup-availability-button:hover::after{\n  transform:translateX(3px);\n  opacity:.85;\n}\n\n/* ================= ANIMATION ================= */\n@keyframes lumeFadeUp{\n  from{ opacity:0; transform: translateY(4px); }\n  to{ opacity:1; transform: translateY(0); }\n}\n\n/* ================= MOBILE ================= */\n@media (max-width: 749px){\n  #lume-fulfilment-{{ lume_uid }} .lume-row{\n    grid-template-columns:1fr;\n    gap:8px;\n    padding:16px 16px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-row + .lume-row::before{\n    left:16px;\n    right:16px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-label{\n    padding-top:0;\n    font-size:11px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-secondary{\n    margin-top:4px;\n    font-size:13px;\n    gap:8px;\n  }\n  #lume-fulfilment-{{ lume_uid }} .lume-timer strong{\n    font-size:13px;\n    padding:2px 8px;\n  }\n}\n</style>\n\n<script>\n(function(){\n  const uid = \"{{ lume_uid }}\";\n  const titleEl = document.getElementById(\"ship-title-\" + uid);\n  const subEl   = document.getElementById(\"ship-sub-\" + uid);\n  const timerEl = document.getElementById(\"ship-timer-\" + uid);\n  if (!titleEl || !subEl || !timerEl) return;\n\n  /* =========================\n        TEST MODE\n     =========================\n     enabled: true  -> uses values below (Brisbane time)\n     enabled: true -> uses real Brisbane time\n\n     month: 1–12\n     hour:  0–23\n\n     Examples:\n     - Before cutoff: hour 10\n     - After cutoff:  hour 15\n     - Sunday:        set a date that is Sunday\n     - Public holiday:set month/day to a holiday date\n  */\n  const TEST_MODE = {\n    enabled: false,  // ← turn on to test\n\n    year: 2026,\n    month: 2,\n    day: 25,\n    hour: 14,\n    minute: 0,\n    second: 0\n  };\n\n  const cutoffHour = 14;\n  const cutoffMinute = 30;\n\n  const publicHolidays = new Set([\n    '2025-01-01','2025-01-27','2025-04-18','2025-04-19','2025-04-20','2025-04-21',\n    '2025-04-25','2025-05-05','2025-08-13','2025-10-06','2025-12-25','2025-12-26',\n    '2026-01-01','2026-01-26','2026-04-03','2026-04-04','2026-04-05','2026-04-06',\n    '2026-04-25','2026-05-04','2026-08-12','2026-10-05','2026-12-25','2026-12-26','2026-12-28'\n  ]);\n\n  function getBrisbaneNow(){\n    if (TEST_MODE.enabled) {\n      // Month is 0–11 in JS Dates\n      return new Date(\n        TEST_MODE.year,\n        TEST_MODE.month - 1,\n        TEST_MODE.day,\n        TEST_MODE.hour,\n        TEST_MODE.minute,\n        TEST_MODE.second\n      );\n    }\n    return new Date(new Date().toLocaleString(\"en-US\", { timeZone:\"Australia/Brisbane\" }));\n  }\n\n  function yyyyMmDd(d){\n    const yyyy = d.getFullYear();\n    const mm = String(d.getMonth()+1).padStart(2,'0');\n    const dd = String(d.getDate()).padStart(2,'0');\n    return `${yyyy}-${mm}-${dd}`;\n  }\n\n  const update = () => {\n    const brisNow = getBrisbaneNow();\n    const dStr = yyyyMmDd(brisNow);\n\n    const hr = brisNow.getHours();\n    const min = brisNow.getMinutes();\n    const day = brisNow.getDay();\n\n    const isPastCutoff = (hr > cutoffHour || (hr === cutoffHour && min >= cutoffMinute));\n\n    if (publicHolidays.has(dStr)) {\n      titleEl.textContent = \"Public Holiday\";\n      subEl.textContent = \"Shipping resumes next business day\";\n      timerEl.innerHTML = \"\";\n      return;\n    }\n\n    if (day === 0 || day === 6 || (day === 5 && isPastCutoff)) {\n      titleEl.textContent = \"Ships Monday\";\n      subEl.textContent = \"Secure your spot for Monday’s first dispatch\";\n      timerEl.innerHTML = \"\";\n      return;\n    }\n\n    if (isPastCutoff) {\n      titleEl.textContent = \"Ships Tomorrow\";\n      subEl.textContent = \"Order now for priority dispatch\";\n      timerEl.innerHTML = \"\";\n      return;\n    }\n\n    titleEl.textContent = \"Ships Today\";\n    subEl.textContent = \"Order within the next\";\n\n    const target = new Date(brisNow);\n    target.setHours(cutoffHour, cutoffMinute, 0, 0);\n\n    const diff = Math.max(0, target - brisNow);\n    const hh = Math.floor(diff/36e5);\n    const mm = Math.floor((diff%36e5)/6e4);\n    const ss = Math.floor((diff%6e4)/1e3);\n\n    timerEl.innerHTML = `<strong>${hh}h ${mm}m ${ss}s</strong>`;\n  };\n\n  update();\n  setInterval(update, 1000);\n})();\n</script>",
+            "bm": 15
+          }
+        },
+        "featured_text_8nHNmn": {
+          "type": "featured-text",
+          "settings": {
+            "icon": "check",
+            "text": "<p>Free worldwide shipping</p>",
+            "icon2": "check",
+            "text2": "<p>Free worldwide shipping</p>",
+            "icon3": "check",
+            "text3": "<p>Free worldwide shipping</p>",
+            "fs": 14,
+            "fsm": 14,
+            "cl": "#222222",
+            "clbg": "#f5f5f5",
+            "brad": 1,
+            "bm": 15
+          }
+        }
+      },
+      "block_order": [
+        "rating_CDEKHx",
+        "title_XVWgDL",
+        "shortdes_9grwGB",
+        "price_QHMBD3",
+        "afterpay_on_site_messaging_payments_messaging_8cifj9",
+        "text_P3wVmt",
+        "variants_Q6mDCg",
+        "cta_KwqPVC",
+        "customc_A4GPd6",
+        "featured_text_8nHNmn"
+      ],
+      "custom_css": [],
+      "settings": {
+        "image-col": "lg",
+        "prstyle": "1",
+        "prthumbs": "left",
+        "play_ico": "#ffffff",
+        "thumb_bdr": "#222222",
+        "przoom": true,
+        "prlightbox": true,
+        "arrow_mobile": false,
+        "sprnav": false,
+        "sprnavm": false,
+        "scart": true,
+        "cl_bg": "#ffffff",
+        "cl_txt": "#222222",
+        "qty_bdr": "#cbc4bc",
+        "btn-sticky": "btn6",
+        "page_width": 1400,
+        "sst": 0,
+        "ssb": 30,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "#ffffff",
+        "sw": false
+      }
+    },
+    "1766244928f8978603": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_tfwyL7": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_tfwyL7"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "sst": 0,
+        "ssb": 0,
+        "sstm": 0,
+        "ssbm": 0,
+        "bg": "",
+        "sw": false
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "title": "Related Products",
+        "subtitle": "",
+        "type": "1",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "limit": 5,
+        "carousel": true,
+        "loop": false,
+        "autoplay": false,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 25,
+        "ssb": 25,
+        "sstm": 15,
+        "ssbm": 15,
+        "hidem": false,
+        "hided": false
+      }
+    },
+    "recentviewed": {
+      "type": "recently-viewed",
+      "disabled": true,
+      "settings": {
+        "title": "Recently Viewed Products",
+        "subtitle": "",
+        "grid": 4,
+        "gridtb": 3,
+        "gridmb": 2,
+        "row": 6,
+        "carousel": true,
+        "loop": true,
+        "autoplay": true,
+        "speed": 5,
+        "arrow": true,
+        "arrowm": false,
+        "dot": false,
+        "dotm": true,
+        "sw": false,
+        "bg": "#ffffff",
+        "bgg": "",
+        "headings_cl": "#222222",
+        "sst": 30,
+        "ssb": 40,
+        "sstm": 15,
+        "ssbm": 20,
+        "hidem": false,
+        "hided": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "1766244928f8978603",
+    "related",
+    "recentviewed"
+  ]
+}

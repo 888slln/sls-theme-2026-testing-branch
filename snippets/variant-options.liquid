@@ -1,0 +1,88 @@
+{%- liquid
+  assign variants_available_arr = product.variants | map: 'available'
+  assign variants_option_1_arr = product.variants | map: 'option1'
+  assign variants_option_2_arr = product.variants | map: 'option2'
+  assign variants_option_3_arr = product.variants | map: 'option3'
+  assign sw_size = settings.s_size
+  if section.id == 'quick-view'
+    assign sw_size = settings.qvsw_size
+  endif
+-%}
+{%- for value in option.values -%}
+  {%- liquid
+    assign option_disabled = true
+
+    for option1_name in variants_option_1_arr
+      case option.position
+        when 1
+          if variants_option_1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option_3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+
+    assign opt_index = option.position | minus: 1 
+    for variant in product.variants
+        if variant.options[opt_index] == value
+          assign vr_img = variant.image | image_url: width: 100
+          break
+        endif
+    endfor
+
+    assign swatch_clr = value.swatch.color
+    if value.swatch.image
+       assign swatch_img = value.swatch.image | image_url: width: 70
+       assign swatch_clr = 'url(' | append: swatch_img | append: ')'
+    endif
+  -%}
+  {%- capture input_id -%}
+    {{ section_id }}-{{ option.position }}-{{ forloop.index0 -}}
+  {%- endcapture -%}
+
+  {%- capture label_unavailable %}
+    <span class="hidden label-unavailable">{{- 'products.product.variant_sold_out_or_unavailable' | t -}}</span>
+  {%- endcapture %}
+
+  {%- if is_color -%}
+      <input type="radio" id="{{ input_id }}" name="{{ option.name }}" value="{{ value | escape }}" form="{{ product_form_id }}"
+          {% if option.selected_value == value %}checked{% endif %} class="swatchInput clr dn{% if option_disabled %} disabled{% endif %}">
+      {%- if cltype == 'cs' -%}
+        <label class="swatchLbl color swt{{ value | handle }} {{ sw_size }}" for="{{ input_id }}" style="background:{{ swatch_clr }};">
+            <span class="tooltip-label top">{{ value -}}{{ label_unavailable }}</span>
+        </label>
+      {%- elsif cltype == 'vi' -%}
+        {% # theme-check-disable DeprecateBgsizes %}
+        <label class="swatchLbl color swt{{ value | handle }} {{ sw_size }} lazyload" for="{{ input_id }}" data-bgset="{{ vr_img }}">
+            <span class="tooltip-label top">{{ value -}}{{ label_unavailable }}</span>
+        </label>
+        {% # theme-check-enable DeprecateBgsizes %}
+      {%- elsif cltype == 'ts' -%}
+        <label class="swatchLbl" for="{{ input_id }}">
+            {{ value -}}{{ label_unavailable }}
+        </label>
+      {%- elsif cltype == 'tc' -%}
+        <label class="swatchLbl pill fl f-aic" for="{{ input_id }}">
+            <span class="color swt{{ value | handle }}" style="background:{{ swatch_clr }};"></span>
+            {{ value -}}{{ label_unavailable }}
+        </label>
+      {%- elsif cltype == 'ts' -%}
+        <label class="swatchLbl fl f-aic" for="{{ input_id }}">{{ value -}}{{ label_unavailable }}</label>
+      {%- elsif cltype == 'dd' -%}aaa
+        <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %} class="vrOpt clr{% if option_disabled %} disabled{% endif %}">{{- value -}}</option>
+      {%- endif -%}
+  {%- elsif othervr == 'sw' and is_color == false -%}
+    <input type="radio" id="{{ input_id }}" name="{{ option.name }}" value="{{ value | escape }}" form="{{ product_form_id }}"
+      {% if option.selected_value == value %}checked{% endif %} class="swatchInput dn{% if option_disabled %} disabled{% endif %}">
+      <label class="swatchLbl" for="{{ input_id }}">{{ value -}}{{ label_unavailable }}</label>
+  {%- else -%}
+    <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %} class="vrOpt{% if option_disabled %} disabled{% endif %}">{{- value -}}</option>
+  {%- endif -%}
+{%- endfor -%}

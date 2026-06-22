@@ -1,0 +1,55 @@
+{%- liquid
+  assign sls_account_label = label_text | default: ''
+  if sls_account_label == blank
+    assign sls_account_label = 'sections.header.account' | t
+  endif
+  assign sls_account_wrapper_class = wrapper_class | default: 'hdicon user-menu'
+  assign sls_account_icon_type = icntyp | default: '1'
+  assign sls_account_label_class = label_class | default: ''
+  assign sls_account_menu = menu | default: 'customer-account-main-menu'
+  if customer
+    assign sls_account_fallback_url = routes.account_url
+  else
+    assign sls_account_fallback_url = routes.account_login_url
+  endif
+-%}
+<span class="{{ sls_account_wrapper_class }} sls-account-shell" title="{{ sls_account_label | escape }}">
+  <shopify-account class="sls-account-component" menu="{{ sls_account_menu }}" aria-label="{{ sls_account_label | escape }}">
+    <span slot="signed-out-avatar" class="sls-account-avatar">
+      {%- render 'icon-account', icntyp: sls_account_icon_type -%}
+    </span>
+  </shopify-account>
+  <a class="sls-account-fallback" href="{{ sls_account_fallback_url }}" title="{{ sls_account_label | escape }}" aria-label="{{ sls_account_label | escape }}">
+    {%- render 'icon-account', icntyp: sls_account_icon_type -%}
+  </a>
+  {%- if sls_account_label_class != blank -%}
+    <p class="{{ sls_account_label_class }}">{{ sls_account_label }}</p>
+  {%- endif -%}
+</span>
+<script>
+  window.SLSAccountDialogPositioner = window.SLSAccountDialogPositioner || (function() {
+    function setAccountDialogPosition(accountElement) {
+      if (!accountElement) return;
+      var rect = accountElement.getBoundingClientRect();
+      var top = Math.max(12, Math.round(rect.bottom + 8));
+      var right = Math.max(12, Math.round(window.innerWidth - rect.right - 8));
+
+      accountElement.style.setProperty('--sls-account-dialog-top', top + 'px');
+      accountElement.style.setProperty('--sls-account-dialog-right', right + 'px');
+    }
+
+    function updateFromEvent(event) {
+      var accountElement = event.target && event.target.closest && event.target.closest('.sls-account-component');
+      if (accountElement) setAccountDialogPosition(accountElement);
+    }
+
+    document.addEventListener('pointerdown', updateFromEvent, true);
+    document.addEventListener('focusin', updateFromEvent, true);
+    document.querySelectorAll('.sls-account-component').forEach(setAccountDialogPosition);
+    window.addEventListener('resize', function() {
+      document.querySelectorAll('.sls-account-component').forEach(setAccountDialogPosition);
+    }, { passive: true });
+
+    return true;
+  })();
+</script>
