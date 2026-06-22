@@ -757,10 +757,6 @@
                         {%- if blk_st.bis and is_backinstock -%}
                             {%- #render 'back-in-stock', blk_st: blk_st, product:product, current_variant:current_variant -%}
                         {%- endif -%}
-                        {%- unless fulfilment_rendered -%}
-                          {%- render 'sls-product-fulfilment', product: product, current_variant: current_variant, section: section, margin_bottom: 15 -%}
-                          {%- assign fulfilment_rendered = true -%}
-                        {%- endunless -%}
                     {%- when 'link-popup' -%}
                         <div class="poplink f-wrap mb15" style="--fs:{{ blk_st.fs }};--cl:{{ blk_st.cl }};--bg:{{ blk_st.clbg }};--fw:{{ blk_st.fw }};--brad:{{ blk_st.brad }}px;--bdr:{{ blk_st.bdr }};" {{ block.shopify_attributes }}>
                             <a href="#lp{{ block.id }}" class="fl popup-link mr15 {{ blk_st.lstyle }}" data-popup="lp{{ block.id }}" aria-haspopup="dialog">
@@ -848,7 +844,7 @@
                             {% if settings.progress_bar %}<div class="shipBar"><span class="db anim" style="width:calc(100% - {{ shipbar }}%);"></span></div>{% endif %}
                         </div>
 					{%- when 'pickup' -%}
-                      {%- comment -%}Rendered by sls-product-fulfilment after the CTA so shipping and pickup stay together.{%- endcomment -%}
+                      {%- comment -%}Rendered by sls-product-fulfilment in the old fulfilment custom block slot.{%- endcomment -%}
                       {%- if false -%}
                         {%- assign pick_up_availabilities = current_variant.store_availabilities | where: 'pick_up_enabled', true -%}
                       <pickup-availability class="product__pickup-availabilities quick-add-hidden db mb{{ blk_st.bm }} brad of_hidden" style="--rounded:{{ blk_st.brad }}px;--bg:{{ blk_st.bg }};;--icon:{{ blk_st.icon }};--cl:{{ blk_st.text }}" {% if current_variant.available and pick_up_availabilities.size > 0 %}available{% endif %}
@@ -924,7 +920,22 @@
                       {%- endif -%}
 
 					{%- when 'customc' -%}
-						<div class="mb{{ blk_st.bm }}" {{ block.shopify_attributes }}>{{ blk_st.custom_liquid }}</div>
+                        {%- liquid
+                          assign is_old_fulfilment_block = false
+                          if blk_st.custom_liquid contains 'shipping-announcer-main' or blk_st.custom_liquid contains 'lume-fulfilment' or blk_st.custom_liquid contains 'ship-title-' or blk_st.custom_liquid contains 'Ships_Today'
+                            assign is_old_fulfilment_block = true
+                          endif
+                        -%}
+                        {%- if is_old_fulfilment_block -%}
+                          {%- unless fulfilment_rendered -%}
+                            <div {{ block.shopify_attributes }}>
+                              {%- render 'sls-product-fulfilment', product: product, current_variant: current_variant, section: section, margin_bottom: blk_st.bm -%}
+                            </div>
+                            {%- assign fulfilment_rendered = true -%}
+                          {%- endunless -%}
+                        {%- else -%}
+						  <div class="mb{{ blk_st.bm }}" {{ block.shopify_attributes }}>{{ blk_st.custom_liquid }}</div>
+                        {%- endif -%}
                     {%- when 'lume-bundle-qty' -%}
                         {% render 'lume-bundle-qty', blk_st: blk_st, theme_block: block %}
 					{%- when 'complementary' -%}

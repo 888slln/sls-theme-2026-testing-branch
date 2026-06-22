@@ -7,22 +7,22 @@
 <style>
   #SlsProductFulfilment-{{ section.id }} {
     display: grid !important;
-    gap: 8px !important;
+    gap: 7px !important;
     width: 100% !important;
-    margin-top: 0 !important;
+    margin: 2px 0 0 !important;
   }
 
   #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card {
     display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
+    align-items: flex-start !important;
+    gap: 11px !important;
     width: 100% !important;
-    min-height: 46px !important;
-    padding: 11px 14px !important;
+    min-height: 48px !important;
+    padding: 12px 14px !important;
     color: #222222 !important;
     background: #ffffff !important;
-    border: 1px solid rgba(203, 196, 188, 0.55) !important;
-    border-radius: 10px !important;
+    border: 1px solid rgba(203, 196, 188, 0.62) !important;
+    border-radius: 9px !important;
     box-shadow: none !important;
   }
 
@@ -31,15 +31,16 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 16px !important;
-    height: 16px !important;
+    width: 17px !important;
+    height: 17px !important;
     color: #222222 !important;
+    margin-top: 1px !important;
   }
 
   #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__icon svg {
     display: block !important;
-    width: 16px !important;
-    height: 16px !important;
+    width: 15px !important;
+    height: 15px !important;
     overflow: visible !important;
   }
 
@@ -56,13 +57,30 @@
     color: #222222 !important;
     font-size: 13px !important;
     font-weight: 400 !important;
-    line-height: 1.45 !important;
+    line-height: 1.35 !important;
     text-align: left !important;
   }
 
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__title,
   #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__text strong {
     color: inherit !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__title {
+    display: block !important;
+    margin: 0 0 2px !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__sub {
+    display: block !important;
+    margin: 0 !important;
+    color: #4d4d4d !important;
+    font-size: 12.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
   }
 
   #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__separator {
@@ -92,18 +110,18 @@
     color: #222222 !important;
     font-size: 13px !important;
     font-weight: 400 !important;
-    line-height: 1.45 !important;
+    line-height: 1.35 !important;
   }
 
   #SlsProductFulfilment-{{ section.id }} .sls-product-pickup .pickup-availability-button {
     display: inline-block !important;
-    margin-top: 3px !important;
+    margin-top: 4px !important;
     padding: 0 !important;
-    color: #222222 !important;
+    color: #4d4d4d !important;
     background: none !important;
     border: 0 !important;
     font: inherit !important;
-    font-size: 12px !important;
+    font-size: 12.5px !important;
     line-height: 1.35 !important;
     text-decoration: underline !important;
     text-underline-offset: 2px !important;
@@ -112,7 +130,6 @@
 
   @media only screen and (max-width: 749px) {
     #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card {
-      align-items: flex-start !important;
       padding: 11px 12px !important;
     }
   }
@@ -126,9 +143,8 @@
       </svg>
     </span>
     <p class="sls-fulfilment-card__text">
-      <span data-sls-shipping-prefix>Order before <strong>2pm AEST</strong></span>
-      <span class="sls-fulfilment-card__separator" data-sls-shipping-separator aria-hidden="true">-</span>
-      <span data-sls-shipping-status>ships today</span>
+      <span class="sls-fulfilment-card__title" data-sls-shipping-title>Ships today</span>
+      <span class="sls-fulfilment-card__sub" data-sls-shipping-sub>Order before 2pm AEST</span>
     </p>
   </div>
 
@@ -170,10 +186,9 @@
     var root = document.getElementById('SlsProductFulfilment-{{ section.id }}');
     if (!root) return;
 
-    var prefixEl = root.querySelector('[data-sls-shipping-prefix]');
-    var separatorEl = root.querySelector('[data-sls-shipping-separator]');
-    var statusEl = root.querySelector('[data-sls-shipping-status]');
-    if (!prefixEl || !separatorEl || !statusEl) return;
+    var titleEl = root.querySelector('[data-sls-shipping-title]');
+    var subEl = root.querySelector('[data-sls-shipping-sub]');
+    if (!titleEl || !subEl) return;
 
     var cutoffHour = 14;
     var cutoffMinute = 0;
@@ -323,24 +338,23 @@
       var dispatchDate = canShipToday ? today : nextDispatchDate(today, isPastCutoff);
 
       if (canShipToday) {
-        prefixEl.innerHTML = 'Order before <strong>2pm AEST</strong>';
-        separatorEl.hidden = false;
-        statusEl.textContent = 'ships today';
+        titleEl.textContent = 'Ships today';
+        subEl.textContent = 'Order before 2pm AEST';
         return;
       }
 
       if (isHoliday) {
-        prefixEl.textContent = 'Public holiday';
-        separatorEl.hidden = false;
-        statusEl.textContent = 'shipping resumes ' + weekdays[dispatchDate.getDay()];
+        titleEl.textContent = 'Public holiday';
+        subEl.textContent = 'Shipping resumes ' + weekdays[dispatchDate.getDay()];
         return;
       }
 
-      prefixEl.textContent = 'Order now';
-      separatorEl.hidden = false;
-      statusEl.textContent = sameDate(dispatchDate, addDays(today, 1))
-        ? 'ships tomorrow'
-        : 'ships ' + weekdays[dispatchDate.getDay()];
+      titleEl.textContent = sameDate(dispatchDate, addDays(today, 1))
+        ? 'Ships tomorrow'
+        : 'Ships ' + weekdays[dispatchDate.getDay()];
+      subEl.textContent = dispatchDate.getDay() === 1
+        ? 'Secure your spot for Monday dispatch'
+        : 'Order now for priority dispatch';
     }
 
     updateShippingCard();
