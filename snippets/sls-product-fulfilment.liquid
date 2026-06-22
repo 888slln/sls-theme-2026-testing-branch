@@ -4,10 +4,124 @@
   assign pick_up_availabilities = selected_variant.store_availabilities | where: 'pick_up_enabled', true
 -%}
 
+<style>
+  #SlsProductFulfilment-{{ section.id }} {
+    display: grid !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-height: 46px !important;
+    padding: 11px 14px !important;
+    color: #222222 !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(203, 196, 188, 0.55) !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__icon {
+    flex: 0 0 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 16px !important;
+    height: 16px !important;
+    color: #222222 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__icon svg {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    overflow: visible !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__icon svg * {
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__text {
+    display: block !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    color: #222222 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+    text-align: left !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__text strong {
+    color: inherit !important;
+    font-weight: 700 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card__separator {
+    margin: 0 4px !important;
+    color: #867e73 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-product-pickup,
+  #SlsProductFulfilment-{{ section.id }} .sls-product-pickup .pickup-availability-preview,
+  #SlsProductFulfilment-{{ section.id }} .sls-product-pickup .pickup-availability-info {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #222222 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-product-pickup .svg-wrapper {
+    display: none !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-product-pickup p,
+  #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card--pickup .caption-large {
+    margin: 0 !important;
+    color: #222222 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+  }
+
+  #SlsProductFulfilment-{{ section.id }} .sls-product-pickup .pickup-availability-button {
+    display: inline-block !important;
+    margin-top: 3px !important;
+    padding: 0 !important;
+    color: #222222 !important;
+    background: none !important;
+    border: 0 !important;
+    font: inherit !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 2px !important;
+    cursor: pointer !important;
+  }
+
+  @media only screen and (max-width: 749px) {
+    #SlsProductFulfilment-{{ section.id }} .sls-fulfilment-card {
+      align-items: flex-start !important;
+      padding: 11px 12px !important;
+    }
+  }
+</style>
+
 <div class="sls-product-fulfilment mb{{ fulfilment_margin }}" id="SlsProductFulfilment-{{ section.id }}" data-sls-product-fulfilment>
   <div class="sls-fulfilment-card sls-fulfilment-card--shipping">
     <span class="sls-fulfilment-card__icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" class="at-icon">
+      <svg viewBox="0 0 24 24">
         <path d="M12 6v6l4 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </span>
@@ -20,7 +134,7 @@
 
   <div class="sls-fulfilment-card sls-fulfilment-card--pickup">
     <span class="sls-fulfilment-card__icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" class="at-icon">
+      <svg viewBox="0 0 24 24">
         <path d="M12 21s6-4.7 6-11a6 6 0 1 0-12 0c0 6.3 6 11 6 11Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M12 12.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
       </svg>
