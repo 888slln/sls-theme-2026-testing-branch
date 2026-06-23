@@ -1276,6 +1276,7 @@ function updateSlsCartNoteTool(drawer, noteOverride) {
   const noteField = drawer.querySelector('#CartDrawer-Note');
   const noteValue = typeof noteOverride === 'string' ? noteOverride : (noteField?.value || '');
   noteToolLabel.textContent = noteValue.trim() ? 'Note Added' : 'Order Note';
+  drawer.classList.toggle('sls-order-note-tip-has-note', Boolean(noteValue.trim()));
 }
 
 const slsOrderNoteTipText = [
@@ -1332,7 +1333,7 @@ function ensureSlsOrderNoteTip(drawer) {
   return { tip, noteButton };
 }
 
-function hideSlsOrderNoteTip(drawer) {
+function hideSlsOrderNoteTip(drawer, dismiss = false) {
   const tip = drawer?.querySelector?.('[data-sls-order-note-tip]');
   const state = drawer ? slsOrderNoteTipState.get(drawer) : null;
   if(state?.timer) {
@@ -1348,6 +1349,7 @@ function hideSlsOrderNoteTip(drawer) {
     tip.setAttribute('aria-hidden', 'true');
   }
   drawer?.classList?.remove('sls-order-note-tip-visible');
+  drawer?.classList?.toggle('sls-order-note-tip-dismissed', Boolean(dismiss));
 }
 
 function setSlsOrderNoteTipText(drawer, index, animate = true) {
@@ -1380,6 +1382,7 @@ function showSlsOrderNoteTip(drawer) {
   setSlsOrderNoteTipText(drawer, state.index || 0, false);
   tip.classList.add('is-visible');
   tip.setAttribute('aria-hidden', 'false');
+  drawer.classList.remove('sls-order-note-tip-dismissed');
   drawer.classList.add('sls-order-note-tip-visible');
 
   if(state.timer) window.clearInterval(state.timer);
@@ -1417,7 +1420,7 @@ function initSlsOrderNoteTip(drawer) {
 
   if(noteButton.dataset.slsOrderNoteTipBound !== 'true') {
     noteButton.dataset.slsOrderNoteTipBound = 'true';
-    noteButton.addEventListener('click', () => hideSlsOrderNoteTip(drawer));
+    noteButton.addEventListener('click', () => hideSlsOrderNoteTip(drawer, true));
     noteButton.addEventListener('focus', () => {
       if(drawer.getAttribute('aria-hidden') === 'false' && !hasSlsOrderNoteValue(drawer)) showSlsOrderNoteTip(drawer);
     });
@@ -1428,8 +1431,8 @@ function initSlsOrderNoteTip(drawer) {
 
   if(noteField && noteField.dataset.slsOrderNoteTipBound !== 'true') {
     noteField.dataset.slsOrderNoteTipBound = 'true';
-    noteField.addEventListener('focus', () => hideSlsOrderNoteTip(drawer));
-    noteField.addEventListener('input', () => hideSlsOrderNoteTip(drawer));
+    noteField.addEventListener('focus', () => hideSlsOrderNoteTip(drawer, true));
+    noteField.addEventListener('input', () => hideSlsOrderNoteTip(drawer, true));
   }
 
   if(hasSlsOrderNoteValue(drawer)) hideSlsOrderNoteTip(drawer);
@@ -3775,7 +3778,7 @@ class CartOption extends HTMLElement {
         var target = document.getElementById(ftbk);
         this.setAttribute('aria-controls', ftbk);
         if(target) {
-          if(ftbk === 'cartNote') hideSlsOrderNoteTip(drawer);
+          if(ftbk === 'cartNote') hideSlsOrderNoteTip(drawer, true);
           bindSheetBackdropClose(target, scopeRoot);
           target.classList.add("active");
           setToolSelectedState(scopeRoot, this);

@@ -1876,6 +1876,7 @@ cart-drawer.sls-native-cart .sls-order-note-tip__text {
 }
 
 cart-drawer.sls-native-cart .sls-order-note-tip.is-visible,
+cart-drawer.sls-native-cart.active:not(.is-empty):not(.sls-order-note-tip-dismissed):not(.sls-order-note-tip-has-note) .sls-order-note-tip,
 cart-drawer.sls-native-cart.sls-order-note-tip-visible .sls-order-note-tip {
   opacity:1 !important;
   visibility:visible !important;
@@ -2347,6 +2348,7 @@ cart-drawer.sls-native-cart .sls-cart-sheet__actions {
   }
 
   cart-drawer.sls-native-cart .sls-order-note-tip.is-visible,
+  cart-drawer.sls-native-cart.active:not(.is-empty):not(.sls-order-note-tip-dismissed):not(.sls-order-note-tip-has-note) .sls-order-note-tip,
   cart-drawer.sls-native-cart.sls-order-note-tip-visible .sls-order-note-tip {
     transform:translate3d(0,0,0) !important;
   }
