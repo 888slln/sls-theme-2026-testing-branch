@@ -671,10 +671,17 @@
               <a href="#cartCoupon" class="cftBtn sls-cart-tool pr">{% render 'icon-tag' %}<span>{% if discount_codes.size > 1 %}{{ discount_codes.size }} Codes{% elsif discount_codes.size == 1 %}{{ discount_codes.first }}{% else %}Coupon{% endif %}</span></a>
             {%- endif -%}
             {%- if sls_show_order_note -%}
-              <a href="#cartNote" class="cftBtn sls-cart-tool pr">
-                <svg class="at-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
-                <span>{% if cart.note != blank %}Note Added{% else %}Order Note{% endif %}</span>
-              </a>
+              <div class="sls-order-note-tip-anchor">
+                {%- if cart.note == blank -%}
+                  <div class="sls-order-note-tip" data-sls-order-note-tip role="tooltip" aria-hidden="true">
+                    <span class="sls-order-note-tip__text" data-sls-order-note-tip-text>Need us to hold your order? Add a note here.</span>
+                  </div>
+                {%- endif -%}
+                <a href="#cartNote" class="cftBtn sls-cart-tool pr">
+                  <svg class="at-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+                  <span>{% if cart.note != blank %}Note Added{% else %}Order Note{% endif %}</span>
+                </a>
+              </div>
             {%- endif -%}
             {%- if settings.giftwrap and settings.gift_product != blank and is_gift -%}
               <a href="#giftWrap" class="cftBtn sls-cart-tool pr">

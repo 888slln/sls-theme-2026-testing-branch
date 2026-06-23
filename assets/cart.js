@@ -1278,6 +1278,166 @@ function updateSlsCartNoteTool(drawer, noteOverride) {
   noteToolLabel.textContent = noteValue.trim() ? 'Note Added' : 'Order Note';
 }
 
+const slsOrderNoteTipText = [
+  'Not picking up soon? Let us know when.',
+  'Need us to hold your order? Add a note here.',
+  'Any special requests? Pop them in your order note.',
+  'Picking up later than usual? Let us know.',
+  'Need something packed separately? Add a quick note.',
+  'Want us to know anything before packing? Leave it here.'
+];
+const slsOrderNoteTipState = new WeakMap();
+
+function getSlsOrderNoteValue(drawer) {
+  return drawer?.querySelector?.('#CartDrawer-Note')?.value || '';
+}
+
+function hasSlsOrderNoteValue(drawer) {
+  const noteValue = getSlsOrderNoteValue(drawer).trim();
+  if(noteValue) return true;
+
+  const noteToolLabel = drawer?.querySelector?.('.sls-cart-tool[href="#cartNote"] span');
+  return noteToolLabel?.textContent?.trim()?.toLowerCase() === 'note added';
+}
+
+function ensureSlsOrderNoteTip(drawer) {
+  const noteButton = drawer?.querySelector?.('.sls-cart-tool[href="#cartNote"]');
+  if(!drawer || !noteButton) return null;
+
+  let anchor = noteButton.closest('.sls-order-note-tip-anchor');
+  if(!anchor) {
+    anchor = document.createElement('div');
+    anchor.className = 'sls-order-note-tip-anchor';
+    noteButton.parentNode?.insertBefore(anchor, noteButton);
+    anchor.appendChild(noteButton);
+  }
+
+  let tip = anchor.querySelector('[data-sls-order-note-tip]');
+  if(!tip) {
+    tip = document.createElement('div');
+    tip.className = 'sls-order-note-tip';
+    tip.setAttribute('data-sls-order-note-tip', '');
+    tip.setAttribute('role', 'tooltip');
+    tip.setAttribute('aria-hidden', 'true');
+
+    const tipText = document.createElement('span');
+    tipText.className = 'sls-order-note-tip__text';
+    tipText.setAttribute('data-sls-order-note-tip-text', '');
+    tipText.textContent = slsOrderNoteTipText[0];
+    tip.appendChild(tipText);
+
+    anchor.insertBefore(tip, noteButton);
+  }
+
+  return { tip, noteButton };
+}
+
+function hideSlsOrderNoteTip(drawer) {
+  const tip = drawer?.querySelector?.('[data-sls-order-note-tip]');
+  const state = drawer ? slsOrderNoteTipState.get(drawer) : null;
+  if(state?.timer) {
+    window.clearInterval(state.timer);
+    state.timer = null;
+  }
+  if(state?.showTimer) {
+    window.clearTimeout(state.showTimer);
+    state.showTimer = null;
+  }
+  if(tip) {
+    tip.classList.remove('is-visible', 'is-changing');
+    tip.setAttribute('aria-hidden', 'true');
+  }
+  drawer?.classList?.remove('sls-order-note-tip-visible');
+}
+
+function setSlsOrderNoteTipText(drawer, index, animate = true) {
+  const tip = drawer?.querySelector?.('[data-sls-order-note-tip]');
+  const text = tip?.querySelector?.('[data-sls-order-note-tip-text]');
+  if(!tip || !text) return;
+
+  const nextText = slsOrderNoteTipText[index % slsOrderNoteTipText.length];
+  if(!animate || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    text.textContent = nextText;
+    return;
+  }
+
+  tip.classList.add('is-changing');
+  window.setTimeout(() => {
+    text.textContent = nextText;
+    tip.classList.remove('is-changing');
+  }, 180);
+}
+
+function showSlsOrderNoteTip(drawer) {
+  const state = drawer ? slsOrderNoteTipState.get(drawer) : null;
+  const ensured = ensureSlsOrderNoteTip(drawer);
+  const tip = ensured?.tip;
+  const noteButton = ensured?.noteButton;
+  if(!drawer || !state || !tip || !noteButton || drawer.getAttribute('aria-hidden') === 'true') return;
+  if(drawer.getAttribute('data-sls-show-order-note') === 'false') return;
+  if(drawer.classList.contains('is-empty') || hasSlsOrderNoteValue(drawer)) return;
+
+  setSlsOrderNoteTipText(drawer, state.index || 0, false);
+  tip.classList.add('is-visible');
+  tip.setAttribute('aria-hidden', 'false');
+  drawer.classList.add('sls-order-note-tip-visible');
+
+  if(state.timer) window.clearInterval(state.timer);
+  state.timer = window.setInterval(() => {
+    if(drawer.getAttribute('aria-hidden') === 'true' || drawer.querySelector('#cartNote.active') || hasSlsOrderNoteValue(drawer)) {
+      hideSlsOrderNoteTip(drawer);
+      return;
+    }
+    state.index = ((state.index || 0) + 1) % slsOrderNoteTipText.length;
+    setSlsOrderNoteTipText(drawer, state.index, true);
+  }, 4500);
+}
+
+function initSlsOrderNoteTip(drawer) {
+  if(!drawer) return;
+  const tips = drawer.querySelectorAll('[data-sls-order-note-tip]');
+  tips.forEach((tip, index) => {
+    if(index > 0) tip.remove();
+  });
+
+  const ensured = ensureSlsOrderNoteTip(drawer);
+  const tip = ensured?.tip;
+  const noteButton = ensured?.noteButton;
+  const noteField = drawer.querySelector('#CartDrawer-Note');
+  if(!tip || !noteButton) return;
+
+  let state = slsOrderNoteTipState.get(drawer);
+  if(!state) {
+    state = { index: 0, timer: null, showTimer: null };
+    slsOrderNoteTipState.set(drawer, state);
+  }
+
+  if(!tip.id) tip.id = `sls-order-note-tip-${Math.random().toString(36).slice(2, 9)}`;
+  noteButton.setAttribute('aria-describedby', tip.id);
+
+  if(noteButton.dataset.slsOrderNoteTipBound !== 'true') {
+    noteButton.dataset.slsOrderNoteTipBound = 'true';
+    noteButton.addEventListener('click', () => hideSlsOrderNoteTip(drawer));
+    noteButton.addEventListener('focus', () => {
+      if(drawer.getAttribute('aria-hidden') === 'false' && !hasSlsOrderNoteValue(drawer)) showSlsOrderNoteTip(drawer);
+    });
+    noteButton.addEventListener('blur', () => {
+      if(drawer.getAttribute('aria-hidden') === 'false' && !drawer.classList.contains('active')) hideSlsOrderNoteTip(drawer);
+    });
+  }
+
+  if(noteField && noteField.dataset.slsOrderNoteTipBound !== 'true') {
+    noteField.dataset.slsOrderNoteTipBound = 'true';
+    noteField.addEventListener('focus', () => hideSlsOrderNoteTip(drawer));
+    noteField.addEventListener('input', () => hideSlsOrderNoteTip(drawer));
+  }
+
+  if(hasSlsOrderNoteValue(drawer)) hideSlsOrderNoteTip(drawer);
+  else if(drawer.classList.contains('active') && drawer.getAttribute('aria-hidden') === 'false' && !drawer.querySelector('#cartNote.active')) {
+    showSlsOrderNoteTip(drawer);
+  }
+}
+
 const slsWalletObservers = new WeakMap();
 
 function isSlsIosDevice() {
@@ -1541,6 +1701,7 @@ function applySlsCartThemeConfig(scope = document) {
     applySlsEmptyButtons(drawer, config);
     updateSlsCartPoints(drawer);
     updateSlsCartNoteTool(drawer);
+    initSlsOrderNoteTip(drawer);
     applySlsWalletPlatformPreference(drawer);
     bindSlsWalletPreferenceObserver(drawer);
     runSlsCartIntegrityCheck(drawer);
@@ -2830,10 +2991,17 @@ class CartDrawer extends HTMLElement {
     setSlsPageScrollLock(true, this);
     requestAnimationFrame(this.slsUpdateScrollCue);
     setTimeout(this.slsUpdateScrollCue, 420);
+    initSlsOrderNoteTip(this);
+    showSlsOrderNoteTip(this);
+    const tipState = slsOrderNoteTipState.get(this);
+    if(tipState) {
+      tipState.showTimer = window.setTimeout(() => showSlsOrderNoteTip(this), 680);
+    }
   }
 
   close() {
     clearTimeout(this.slsCartOpeningTimer);
+    hideSlsOrderNoteTip(this);
     this.classList.remove('active','poptop','sls-cart-opening','sls-cart-settled');
     this.setAttribute('aria-hidden', 'true');
     this.dataset.slsOpenSource = 'closed';
@@ -3607,6 +3775,7 @@ class CartOption extends HTMLElement {
         var target = document.getElementById(ftbk);
         this.setAttribute('aria-controls', ftbk);
         if(target) {
+          if(ftbk === 'cartNote') hideSlsOrderNoteTip(drawer);
           bindSheetBackdropClose(target, scopeRoot);
           target.classList.add("active");
           setToolSelectedState(scopeRoot, this);

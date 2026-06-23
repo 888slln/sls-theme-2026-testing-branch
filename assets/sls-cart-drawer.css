@@ -1817,6 +1817,76 @@ cart-drawer.sls-native-cart .sls-cart-tool:focus-visible {
   outline:none !important;
 }
 
+cart-drawer.sls-native-cart .sls-order-note-tip-anchor {
+  position:relative !important;
+  display:block !important;
+  min-width:0 !important;
+}
+
+cart-drawer.sls-native-cart .sls-order-note-tip-anchor .sls-cart-tool {
+  width:100% !important;
+}
+
+cart-drawer.sls-native-cart .sls-order-note-tip {
+  position:absolute !important;
+  right:0 !important;
+  bottom:calc(100% + 10px) !important;
+  z-index:12 !important;
+  width:100% !important;
+  max-width:100% !important;
+  padding:9px 11px !important;
+  box-sizing:border-box !important;
+  border:1px solid rgba(134,126,115,.18) !important;
+  border-radius:14px !important;
+  background:#fffaf4 !important;
+  color:#2b211b !important;
+  font-size:12px !important;
+  line-height:1.35 !important;
+  font-weight:400 !important;
+  letter-spacing:0 !important;
+  text-transform:none !important;
+  text-align:left !important;
+  box-shadow:0 12px 28px rgba(43,33,27,.11) !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  transform:translate3d(0,6px,0) !important;
+  transition:opacity .22s ease, transform .22s cubic-bezier(.22,1,.36,1), visibility .22s ease !important;
+}
+
+cart-drawer.sls-native-cart .sls-order-note-tip::after {
+  content:"" !important;
+  position:absolute !important;
+  right:50% !important;
+  bottom:-6px !important;
+  width:11px !important;
+  height:11px !important;
+  border-right:1px solid rgba(134,126,115,.18) !important;
+  border-bottom:1px solid rgba(134,126,115,.18) !important;
+  background:#fffaf4 !important;
+  transform:translateX(50%) rotate(45deg) !important;
+}
+
+cart-drawer.sls-native-cart .sls-order-note-tip__text {
+  position:relative !important;
+  z-index:1 !important;
+  display:block !important;
+  color:inherit !important;
+  font:inherit !important;
+}
+
+cart-drawer.sls-native-cart .sls-order-note-tip.is-visible,
+cart-drawer.sls-native-cart.sls-order-note-tip-visible .sls-order-note-tip {
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:translate3d(0,0,0) !important;
+}
+
+cart-drawer.sls-native-cart .sls-order-note-tip.is-changing {
+  opacity:0 !important;
+  transform:translate3d(0,4px,0) !important;
+}
+
 cart-drawer.sls-native-cart .sls-cart-rewards {
   display:block !important;
   margin:0 0 6px !important;
@@ -2266,6 +2336,25 @@ cart-drawer.sls-native-cart .sls-cart-sheet__actions {
 }
 
 @media screen and (max-width:767px) {
+  cart-drawer.sls-native-cart .sls-order-note-tip {
+    right:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    padding:9px 10px !important;
+    border-radius:13px !important;
+    font-size:12px !important;
+    transform:translate3d(0,6px,0) !important;
+  }
+
+  cart-drawer.sls-native-cart .sls-order-note-tip.is-visible,
+  cart-drawer.sls-native-cart.sls-order-note-tip-visible .sls-order-note-tip {
+    transform:translate3d(0,0,0) !important;
+  }
+
+  cart-drawer.sls-native-cart .sls-order-note-tip.is-changing {
+    transform:translate3d(0,4px,0) !important;
+  }
+
   cart-drawer.sls-native-cart .sls-cart-sheet.cftDraw {
     left:0 !important;
     right:0 !important;
@@ -2601,6 +2690,7 @@ cart-drawer.sls-native-cart[data-sls-show-recommendations="false"] .recommendad-
 cart-drawer.sls-native-cart[data-sls-show-coupon="false"] [href="#cartCoupon"],
 cart-drawer.sls-native-cart[data-sls-show-coupon="false"] #cartCoupon,
 cart-drawer.sls-native-cart[data-sls-show-order-note="false"] [href="#cartNote"],
+cart-drawer.sls-native-cart[data-sls-show-order-note="false"] .sls-order-note-tip,
 cart-drawer.sls-native-cart[data-sls-show-order-note="false"] #cartNote {
   display:none !important;
 }
@@ -2647,6 +2737,7 @@ cart-drawer.sls-native-cart[data-sls-show-marquee="false"][data-sls-show-shippin
   cart-drawer.sls-native-cart,
   cart-drawer.sls-native-cart #CartDrawer.sls-cart-drawer,
   cart-drawer.sls-native-cart .sls-cart-item,
+  cart-drawer.sls-native-cart .sls-order-note-tip,
   cart-drawer.sls-native-cart.sls-cart-opening .sls-cart-gift-goal,
   cart-drawer.sls-native-cart.sls-cart-opening .sls-cart-recommendations,
   cart-drawer.sls-native-cart.sls-cart-opening .sls-cart-empty,
